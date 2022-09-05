@@ -1,0 +1,49 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: k2g
+spec:
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage3"
+     - type: "configmap"
+       value: "stage3-transform"
+
+  source:
+    ref:
+      kind: KafkaTopic
+      apiVersion: kafka.strimzi.io/v1beta1
+      name: room1
+
+  steps:
+
+  # Prevent consuming own messages
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: predicate-filter-action
+    properties:
+      expression: $.source != "gitter"
+
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: k2g.jslt
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-sink
+    properties:
+      token: "{{secret:stage3/gitter.token}}"
+      room: "{{secret:stage3/gitter.room}}"
+
+  # sink:
+  #   ref:
+  #     kind: Kamelet
+  #     apiVersion: camel.apache.org/v1
+  #     name: log-sink

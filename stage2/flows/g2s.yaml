@@ -1,0 +1,66 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: g2s
+spec:
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage2"
+     - type: "configmap"
+       value: "stage2-transform"
+
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+      token: "{{secret:stage2/gitter.token}}"
+      room:  "{{secret:stage2/gitter.room}}"
+
+
+  steps:
+
+  # Filter BOT messages
+  # Bot message pattern is: [username@source: message text] -->
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: predicate-filter-action
+    properties:
+      expression: $.text =~ /(?!\*\*.*@.*\*\*:).*/
+
+
+  # JSON Transformation
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: insert-header-action
+    properties:
+      name: channel
+      value: "{{secret:stage2/slack.channel.id}}"
+      # value: "{{slack.channel.id}}"
+
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: "{{transform.path:g2s.jslt}}"
+
+  
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: slack-sink
+    properties:
+      token: "{{secret:stage2/slack.token}}"
+      # token: "{{slack.token}}"
+
+  # sink:
+  #   ref:
+  #     kind: Kamelet
+  #     apiVersion: camel.apache.org/v1
+  #     name: log-sink    

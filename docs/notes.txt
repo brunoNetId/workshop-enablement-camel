@@ -1,0 +1,17 @@
+Versions
+--------
+ - JBang: Apache Camel 3.18.0 (CamelJBang)
+ - Camel K Red Hat: 1.6.x
+
+
+Running stages
+--------------
+
+	- Deploy configuration (reset if previously deployed)
+		./reset.sh
+
+    - Deploy and Run on OCP:
+        ./deploy.sh
+
+    - Run locally with JBang
+        ./local.sh

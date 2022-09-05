@@ -1,0 +1,130 @@
+Versions
+--------
+ - JBang: Apache Camel 3.18.0 (CamelJBang)
+ - Camel K Red Hat: 1.6.x
+ - Camel K Community: 1.9.x
+
+
+Important differences between Camel K 1.6.x and 1.9.x
+-----------------------------------------------------
+
+Camel K's configuration:
+ - v1.6.x:
+    (deprecated now)
+    spec.integration.configuration:
+ - v1.9.x:
+    metadata.annotations.trait.camel.apache.org/mount.X
+
+
+JSLT-action
+-----------
+ - v1.6.x:
+   > not included with Operator's deployment
+ - v1.9.x:
+   > included but issue with byte[] input, needs to be converted to String
+
+ Workaround:
+    oc apply -f kamelets/jslt-action.kamelet.yaml
+
+
+
+Create Kamelets
+---------------
+oc apply -f kamelets/jslt-action.kamelet.yaml
+oc apply -f kamelets/gitter-source.kamelet.yaml
+oc apply -f kamelets/gitter-sink.kamelet.yaml
+oc apply -f kamelets/slack-sink.kamelet.yaml
+
+
+Create configuration
+--------------------
+
+stage1:
+oc create cm stage1-transform --from-file=g2s.jslt
+oc create secret generic stage1 --from-env-file=g2s.properties
+
+stage2
+oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
+oc create secret generic stage2 --from-env-file=stage2.properties
+
+stage3
+oc create cm stage3-transform --from-file=g2s.jslt --from-file=s2g.jslt
+oc create secret generic stage3 --from-env-file=stage3.properties
+
+Running the Kamelet Bindings
+----------------------------
+ - v1.9.x (community version):
+    remotely on OCP:
+        oc apply -f g2s-camel-1-9-x.yaml
+    locally with JBang
+        camel run g2s-camel-1-9-x.yaml g2s.jslt --property g2s.properties
+
+ - v1.6.x (Red Hat version):
+    remotely on OCP:
+        oc apply -f g2s.yaml
+    locally with JBang
+        camel run g2s.yaml g2s.jslt --property g2s.properties
+
+
+Running the Camel K DSL
+-----------------------
+ - v1.6.x (Red Hat version)
+    remotely on OCP:
+        kamel run g2s.xml --config secret:stage1 --config configmap:stage1-transform
+    locally with JBang
+        camel run g2s.xml g2s.jslt --property g2s.properties
+
+
+OpenShift Data Foundation
+-------------------------
+
+Tested with:
+    OpenShift Data Foundation
+    4.10.5 provided by Red Hat
+
+Reference documentation:
+    https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.10/html/red_hat_openshift_data_foundation_architecture/openshift_data_foundation_installation_overview
+
+Use default recommended namespace:
+    - openshift-storage
+
+Once the operator installed, the following warning will show:
+    Warning alert:StorageSystem required
+    Create a StorageSystem instance to use this Operator.
+
+Click "Create StorageSystem"
+    Step 1:
+        > default values
+    Step 2:
+        > choose 0.5 TiB (SmallScale)
+        > tick 3 worker nodes
+    Step 3:
+        > default values
+    Step 4:
+        > Create StorageSystem
+
+Inspect running pods under
+    openshift-storage
+
+Ensure all pods are up and running (no errors/alerts)
+    (it takes a few minutes)
+    > ensure the 'noobaa core' pod is up and running
+    > ensure the 'noobaa endpoint' pod is also available
+
+From the 'Developer -> Topology' view
+    click in the 'Open URL' button of the 'noobaa core' pod
+        > enter your credentials
+            > Authorize access
+                > allow selected permissions
+
+    access will be denied:
+        > click "OK, Take Me To NooBaa Login"
+        > use the email/password from:
+            > secret: noobaa-admin
+        > tick 'keep me logged in'
+
+To obtain connectivity details and credencials:
+    > from the NooBaa console:
+        > select 'Buckets'
+            > click on 'Connect Applications'
+                copy URL/accessKey/secretKey to configure your application

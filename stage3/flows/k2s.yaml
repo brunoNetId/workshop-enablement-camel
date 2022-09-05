@@ -1,0 +1,50 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: k2s
+spec:
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage3"
+     - type: "configmap"
+       value: "stage3-transform"
+
+  source:
+    ref:
+      kind: KafkaTopic
+      apiVersion: kafka.strimzi.io/v1beta1
+      name: room1
+
+  steps:
+
+  # Prevent consuming own messages
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: predicate-filter-action
+    properties:
+      expression: $.source != "slack"
+
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: k2s.jslt
+
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: slack-sink
+    properties:
+      token: "{{secret:stage3/slack.token}}"
+
+
+  # sink:
+  #   ref:
+  #     kind: Kamelet
+  #     apiVersion: camel.apache.org/v1
+  #     name: log-sink

@@ -1,0 +1,55 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: s2g
+spec:
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage2"
+     - type: "configmap"
+       value: "stage2-transform"
+
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: slack-source
+    properties:
+      token: "{{secret:stage2/slack.token}}"
+      channel:  "{{secret:stage2/slack.channel.name}}"
+      delay: 2000
+
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: predicate-filter-action
+    properties:
+      expression: $.user!='U03NW6H8N5V'
+   
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: "{{transform.path:s2g.jslt}}"
+
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-sink
+    properties:
+      token: "{{secret:stage2/gitter.token}}"
+      room: "{{secret:stage2/gitter.room}}"
+      # token: "{{gitter.token}}"
+      # room: "{{gitter.room}}"
+
+
+  # sink:
+  #   ref:
+  #     kind: Kamelet
+  #     apiVersion: camel.apache.org/v1
+  #     name: log-sink    
