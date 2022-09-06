@@ -155,13 +155,15 @@ gitter.room=6317569e6da03739849c519a
 
 
 . Create Kamelet Binding skeleton
-
-	To start with, we will simply consume Gitter messages and print them. We pick the following 2 Kamelets to bind:
-
-		- gitter-source
-		- log-sink
-
-	Create a YAML file 'g2s' (gitter 2 slack) containing the following definition:
++
+To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
++
+--
+- gitter-source
+- log-sink
+--
++
+Create a YAML file `g2s.yaml` (gitter 2 slack) containing the following definition:
 +
 ```yaml
 apiVersion: camel.apache.org/v1alpha1
@@ -192,7 +194,7 @@ spec:
       name: log-sink 
 ```
 +
-Now create the properties file (stage1.properties) with the following entries:
+Now create the properties file `stage1.properties` containing the following entries:
 +
 ```properties
 # Allows HTTP streaming from Gitter
@@ -202,3 +204,8 @@ camel.main.streamCachingEnabled=false
 gitter.token=YOUR_ACCESS_TOKEN
 gitter.room=YOUR_ROOM_ID
 ```
+
+IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
+
+NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from Gitter. Read more here: https://developer.gitter.im/docs/streaming-api
+ 
