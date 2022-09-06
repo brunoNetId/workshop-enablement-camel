@@ -79,12 +79,12 @@ spec:
         - split:
             streaming: true
             tokenize:
-              token: ":3}}"
+              token: "}}"
               includeTokens: true
               trim: true
 
         - set-body:
-            simple: "${body.trim}:3}}"
+            simple: "${body.trim}}}"
   
         - to: kamelet:sink
 
