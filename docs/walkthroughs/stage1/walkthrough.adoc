@@ -26,12 +26,16 @@ Create a new App that will communicate with Gitter:
 
 1. Click `Your Apps -> New app`
 +
-1. Enter a new Name and set http://localhost:8080 as `Redirect URL`. For exameple:
+1. Enter a new Name and set `\http://localhost:8080` as `Redirect URL`. For exameple:
 +
 --
-	camelbot
-	http://localhost:8080
+```
+Name:
+  camelbot
 
+Redirect URL:
+  http://localhost:8080
+```
 Gitter will generate your App's access credentials, for example:
 
 <image>
