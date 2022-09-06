@@ -120,7 +120,7 @@ Click `JOIN ROOM` at the bottom of the chat room. At this point you see your ava
 Running the cURL command again to obtain the rooms should return the identifier of the room you just joined, something similar to:
 +
 ```json
-[{"id":"6317569e6da03739849c519a",  ... }]
+[{"id":"6317569e6da03739849c519a",   }]
 ```
 +
 At this stage, you should have available all the configuration identifiers to define the Kamelet Binding in the next section using the following:
@@ -153,29 +153,29 @@ gitter.room=6317569e6da03739849c519a
 apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
-	name: g2s
+  name: g2s
 spec:
-	integration:
-	configuration:
-		- type: "secret"
-		value: "stage1"
-		- type: "configmap"
-		value: "stage1-transform"
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage1"
+     - type: "configmap"
+       value: "stage1-transform"
 
-	source:
-	ref:
-		kind: Kamelet
-		apiVersion: camel.apache.org/v1
-		name: gitter-source
-	properties:
-		token: "{{secret:stage1/gitter.token}}"
-		room:  "{{secret:stage1/gitter.room}}"
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+      token: "{{secret:stage1/gitter.token}}"
+      room:  "{{secret:stage1/gitter.room}}"
 
-	sink:
-	ref:
-		kind: Kamelet
-		apiVersion: camel.apache.org/v1
-		name: log-sink 
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: log-sink 
 ```
 +
 Now create the properties file (stage1.properties) with the following entries:
