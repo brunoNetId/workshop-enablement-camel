@@ -1,7 +1,17 @@
 = Lab 1 - Gitter to Slack bridge
 
-Introduction to Camel K's basic concepts and how to deploy your first integration.
+== Overview
+This first stage is all about completing our first integration flow using a Kamelet Binding.
 
+Difficulty level: +
+
+* EASY
+
+There is no previous Camel experience required. The picture billow illustrates the processing flow:
+
+<image>
+
+The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
 == Access to Gitter's chat platform
 
