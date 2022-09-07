@@ -9,7 +9,7 @@ Difficulty level: +
 
 There is no previous Camel experience required. The picture billow illustrates the data flow traversing our Camel instance:
 
-image::images/processing-flow.png[title="Data flow",align="center",scale=50%]
+image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
