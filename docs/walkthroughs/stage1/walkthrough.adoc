@@ -170,6 +170,8 @@ gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
 gitter.room=6317569e6da03739849c519a
 ```
 
+{empty} +
+
 == Create the integration flow
 
 === Process overview
@@ -314,6 +316,8 @@ Create the JSLT file `g2s.jslt` containing the following definition:
 * The field `channel` denotes the target room in Slack where messages will be pushed. For now we use a temporary value. +
 * The field `text` includes JsonPath rules extracting values from the input Gitter event.
 ====
+{empty} +
+
 . Modify your YAML definition to include the JSLT action between your Kamelet source and sink.
 +
 The resulting YAML file should look as follows:
@@ -340,7 +344,7 @@ spec:
       apiVersion: camel.apache.org/v1
       name: jslt-action
     properties:
-      template: "g2s.jslt"
+      template: g2s.jslt
 
   sink:
     ref:
@@ -350,13 +354,21 @@ spec:
 ```
 {empty} +
 
-. Now include your JSLT file in your Camel JBang command and run it. It should look as follows:
+. Run Camel JBang again ensuring you include your JSLT file. It should look as follows:
 +
 ```bash
 camel run g2s.yaml g2s.jslt \
 --local-kamelet-dir=$PWD/../kamelets \
 --properties=stage1.properties
 ```
+
+. From Gitter send another chat message and inspect your terminal output. You should see an incoming event now transformed and looking similar to this:
++
+```json
+{"channel":"TO_BE_DEFINED","text":"*demo-user@gitter*: test"}]
+```
+
+{empty} +
 
 === The Kubernetes user deployment flow
 
