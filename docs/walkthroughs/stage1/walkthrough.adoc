@@ -244,8 +244,9 @@ camel run g2s.yaml \
 Camel JBang will build a local runnable and start Camel. In the logs you should see Camel connecting to Gitter and the following output should show:
 +
 	some logs
-+
-=== The Kuebernetes user deployment flow
+
+
+=== The Kubernetes user deployment flow
 
 gsgfg
 
