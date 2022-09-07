@@ -15,7 +15,7 @@ Difficulty level: +
 There is no previous Camel experience required. The picture billow illustrates the data flow traversing our Camel instance:
 
 // image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
-image::images/processing-flow.png[align="center", width=80%]
+image::images/data-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
@@ -172,6 +172,30 @@ gitter.room=6317569e6da03739849c519a
 
 == Create the integration flow
 
+=== Process overview
+
+The diagram below illustrates the processing flow you're about to create:
+
+image::images/processing-flow.png[align="center", width=80%]
+
+
+* There are 3 Kamelets in use:
++
+====
+A source::
+consumes events from Gitter
+An action::
+	transforms Gitter events to Slack events (in JSON format)
+A sink::
+	produces events to Slack
+====
+
+```
+
+```
+
+=== User profiles
+
 This workshop has been designed to attend two different user profiles:
 
 The Kubernetes user (no previous Camel experience)::
@@ -183,6 +207,9 @@ It's up to you to choose which user to impersonate. We recommend choosing the Ca
 
 === The Camel user development flow
 
+The tool that will help us to test locally is *Camel JBang*.
+
+TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks with Camel. 
 
 . To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
@@ -222,6 +249,9 @@ Now create the properties file `stage1.properties` containing the following entr
 # Allows HTTP streaming from Gitter
 camel.main.streamCachingEnabled=false
 
+# On shutdown it reduces waiting time when stoping Camel's streaming listener
+camel.main.shutdownTimeout = 5
+
 # Gitter credentials
 gitter.token=YOUR_ACCESS_TOKEN
 gitter.room=YOUR_ROOM_ID
@@ -241,9 +271,82 @@ camel run g2s.yaml \
 --properties=stage1.properties
 ```
 +
-Camel JBang will build a local runnable and start Camel. In the logs you should see Camel connecting to Gitter and the following output should show:
+Camel JBang will build a local runnable and start Camel. +
+In the output logs you should see Camel connecting to Gitter, similar to the following:
 +
-	some logs
+```
+	... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
+	... : Opening connection to Gitter...
+	... : Gitter HTTP Streaming started
+```
++
+Now, from Gitter's chat room, send a message, for example "Hello Camel". +
+Your terminal should show the arrival of a Gitter event similar to the following JSON payload:
++
+```json
+{"id":"6318848405ad4a3701dccfb4","text":"Hello Camel","html":"Hello Camel","sent":"2022-09-07T11:46:12.825Z","readBy":0,"urls":[],"mentions":[],"issues":[],"meta":[],"v":1,"fromUser":{"id":"xxxxxxxxxxxxxxxx","username":"xxxxx"         }}
+```
++
+Hopefully you've been successful in capturing Gitter messages with Camel. +
+Press `Ctrl`+`C` to stop Camel.
++
+```
+```
++
+. Now we need to perform some data transformation to match the JSON sctructure the target system (Slack) requires.
++
+We choose from the Kamelet Catalog the JSLT action to transform the body.
++
+TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's inspired in XSLT (XML Transformation) to define stylesheets containing transformation rules for JSON.
++
+Create the JSLT file `g2s.jslt` containing the following definition:
++
+```json
+{
+    "channel":"TO_BE_DEFINED",
+    "text":"*"+.fromUser.username+"@gitter*: "+.text
+}
+```
++
+[NOTE]
+====
+* The field `channel` denotes the target room in Slack where messages will be pushed. For now we use a temporary value. +
+* The field `text` includes JsonPath rules extracting values from the input Gitter event.
+====
+. Modify your YAML definition to include the JSLT action between your Kamelet source and sink.
++
+The resulting YAML file should look as follows:
++
+```yaml
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: g2s
+spec:
+
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
+
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: "g2s.jslt"
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: log-sink 
+```
 
 
 === The Kubernetes user deployment flow
