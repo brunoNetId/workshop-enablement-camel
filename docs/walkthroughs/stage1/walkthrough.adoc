@@ -190,9 +190,7 @@ A sink::
 	produces events to Slack
 ====
 
-```
-
-```
+{empty} +
 
 === User profiles
 
@@ -203,7 +201,9 @@ The way this user consumes Camel is by selecting catalog Kamelets and creating K
 
 The Camel developer:: The traditional Camel developer would, first, typically use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 
-It's up to you to choose which user to impersonate. We recommend choosing the Camel developer, as the instructions will easily guide you, but if time is a constraint then choose the Kubernetes user.
+It's up to you to choose which user to impersonate. As the guiding instructions are easy to follow we recommend choosing the Camel developer. However, if time is a constraint then choose the Kubernetes user.
+
+{empty} +
 
 === The Camel user development flow
 
@@ -260,6 +260,8 @@ gitter.room=YOUR_ROOM_ID
 IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
 +
 NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
++
+{empty} +
 
 . Run your YAML definition with Camel JBang
 + 
@@ -290,9 +292,8 @@ Your terminal should show the arrival of a Gitter event similar to the following
 Hopefully you've been successful in capturing Gitter messages with Camel. +
 Press `Ctrl`+`C` to stop Camel.
 +
-```
-```
-+
+{empty} +
+
 . Now we need to perform some data transformation to match the JSON sctructure the target system (Slack) requires.
 +
 We choose from the Kamelet Catalog the JSLT action to transform the body.
@@ -347,7 +348,15 @@ spec:
       apiVersion: camel.apache.org/v1
       name: log-sink 
 ```
+{empty} +
 
+. Now include your JSLT file in your Camel JBang command and run it. It should look as follows:
++
+```bash
+camel run g2s.yaml g2s.jslt \
+--local-kamelet-dir=$PWD/../kamelets \
+--properties=stage1.properties
+```
 
 === The Kubernetes user deployment flow
 
