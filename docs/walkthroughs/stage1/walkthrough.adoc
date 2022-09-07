@@ -7,9 +7,9 @@ Difficulty level: +
 
 * EASY
 
-There is no previous Camel experience required. The picture billow illustrates the processing flow:
+There is no previous Camel experience required. The picture billow illustrates the data flow traversing our Camel instance:
 
-<image>
+image:images/processing-flow.png[title="Data flow"]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
@@ -207,5 +207,4 @@ gitter.room=YOUR_ROOM_ID
 
 IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
 
-NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from Gitter. Read more here: https://developer.gitter.im/docs/streaming-api
- 
+NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
