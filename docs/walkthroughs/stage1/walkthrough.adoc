@@ -9,13 +9,16 @@ Difficulty level: +
 
 There is no previous Camel experience required. The picture billow illustrates the data flow traversing our Camel instance:
 
-image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
+// image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
+image::images/processing-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
 == Access to Gitter's chat platform
 
 . Create an App in Gitter, and connect to a chat room.
++
+TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
 +
 You can login to Gitter using one of these accounts:
 +
@@ -30,7 +33,7 @@ https://developer.gitter.im/login
 +
 Once logged in, you'll be presented with your personal access token and an empty list of apps (if never created one before).
 +
-<image>
+image::images/gitter-dev-token.png[align="left", width=50%,border-color="green", border-width="3"]
 +
 Create a new App that will communicate with Gitter:
 
@@ -48,7 +51,7 @@ Redirect URL:
 ```
 Gitter will generate your App's access credentials, for example:
 
-<image>
+image::images/gitter-dev-new-app.png[align="left", width=60%,border-color="green", border-width="3"]
 --
 
 1. Authorise the new App.
@@ -128,6 +131,8 @@ A number of public rooms were made available for this workshop (roomX). Choose a
 For example, if choosing `room1`, use the following invite URL
 
 		https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
++
+image::images/gitter-dev-new-app-approve.png[align="left", width=50%,border-color="green", border-width="3"]
 +
 Click `JOIN ROOM` at the bottom of the chat room. At this point you see your avatar included in the room on the right hand side of the room.
 +
