@@ -1,4 +1,9 @@
+:toc:
+:toc-placement!:
+
 = Lab 1 - Gitter to Slack bridge
+
+toc::[]
 
 == Overview
 This first stage is all about completing our first integration flow using a Kamelet Binding.
@@ -14,13 +19,15 @@ image::images/processing-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
 
-== Access to Gitter's chat platform
+== Access Gitter's chat platform
 
-. Create an App in Gitter, and connect to a chat room.
-+
 TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
+
+=== Create an App in Gitter.
+
+. Login in Gitter
 +
-You can login to Gitter using one of these accounts:
+You can use one of the following accounts to join Gitter:
 +
 --
 * GitHub
@@ -33,7 +40,7 @@ https://developer.gitter.im/login
 +
 Once logged in, you'll be presented with your personal access token and an empty list of apps (if never created one before).
 +
-image::images/gitter-dev-token.png[align="left", width=50%,border-color="green", border-width="3"]
+image::images/gitter-dev-token.png[align="left", width=30%,border-color="green", border-width="3"]
 +
 Create a new App that will communicate with Gitter:
 
@@ -51,12 +58,13 @@ Redirect URL:
 ```
 Gitter will generate your App's access credentials, for example:
 
-image::images/gitter-dev-new-app.png[align="left", width=60%,border-color="green", border-width="3"]
+image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green", border-width="3"]
 --
 
-1. Authorise the new App.
-+
-We need to complete the OAuth web authentication flow.
+
+=== Authorise your App.
+
+. We need to complete the OAuth web authentication flow.
 +
 .. Componse the following URL call:
 
@@ -66,11 +74,18 @@ For example:
 
 		https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
 +
-.. Open a browser tab, enter your URL in the address bar and press enter. The invocation will return a redirect that will cause a browser connection error since we we're not running a listening app on 8080, but it allows us to obtain the returned authorisation code from the address bar that should be similar to the following:
 
-		http://localhost:8080/?code=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b
+.. Open a browser tab, enter your URL in the address bar and press enter. The browser will load an authorization page as per the picture below:
 +
-.. Now we have to exchange the code to obtain an access token. Use the following cURL base command (replace with your credentials).
+image::images/gitter-dev-new-app-approve.png[align="left", width=30%,border-color="green", border-width="3"]
++
+Click `ALLOW`.
++
+The approval action will trigger a redirect that will cause a browser connection error since we we're not running a listening app on 8080, but it allows us to obtain the returned authorisation code from the address bar that should be similar to the following:
++
+- \http://localhost:8080/?code=`0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b``
++
+.. Take note of the code, now we have to exchange it to obtain an access token. Use the following cURL base command (replace values using your credentials).
 +
 ```curl
 CLIENT_ID=YOUR_APP_OAUTH_KEY \
@@ -121,18 +136,15 @@ curl -v https://api.gitter.im/v1/rooms \
 ```
 +
 The command above will probably return an empty list if you have not yet joined any Gitter room.
-+
-.. Join a Gitter room.
-+
-A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
+
+=== Join a Gitter room.
+. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
 
 		https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link&utm_campaign=share-link
 +
 For example, if choosing `room1`, use the following invite URL
 
 		https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-+
-image::images/gitter-dev-new-app-approve.png[align="left", width=50%,border-color="green", border-width="3"]
 +
 Click `JOIN ROOM` at the bottom of the chat room. At this point you see your avatar included in the room on the right hand side of the room.
 +
@@ -158,10 +170,89 @@ gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
 gitter.room=6317569e6da03739849c519a
 ```
 
+== Create the integration flow
 
-. Create Kamelet Binding skeleton
+This workshop has been designed to attend two different user profiles:
+
+The Kubernetes user (no previous Camel experience)::
+The way this user consumes Camel is by selecting catalog Kamelets and creating Kamelet bindings in YAML definitions. The user creates local YAML files and then pushes them to OpenShift. The Camel K operator automates the process of building, creating images and deploying the integrations. 
+
+The Camel developer:: The traditional Camel developer would, first, typically use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
+
+It's up to you to choose which user to impersonate. We recommend choosing the Camel developer, as the instructions will easily guide you, but if time is a constraint then choose the Kubernetes user.
+
+=== The Camel user development flow
+
+
+. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
-To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
+--
+- gitter-source
+- log-sink
+--
++
+Create a YAML file `g2s.yaml` (gitter to slack) containing the following definition:
++
+```yaml
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: g2s
+spec:
+
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: log-sink 
+```
++
+Now create the properties file `stage1.properties` containing the following entries:
++
+```properties
+# Allows HTTP streaming from Gitter
+camel.main.streamCachingEnabled=false
+
+# Gitter credentials
+gitter.token=YOUR_ACCESS_TOKEN
+gitter.room=YOUR_ROOM_ID
+```
++
+IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
++
+NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
+
+. Run your YAML definition with Camel JBang
++ 
+Use the following command to run locally your Kamelet Binding:
++
+```bash
+camel run g2s.yaml \
+--local-kamelet-dir=$PWD/../kamelets \
+--properties=stage1.properties
+```
++
+Camel JBang will build a local runnable and start Camel. In the logs you should see Camel connecting to Gitter and the following output should show:
++
+	some logs
++
+=== The Kuebernetes user deployment flow
+
+gsgfg
+
+
+==== Create Kamelet Binding skeleton
+
+. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
 --
 - gitter-source
