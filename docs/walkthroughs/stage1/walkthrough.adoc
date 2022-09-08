@@ -239,7 +239,7 @@ At this stage you're ready to replace the Log sink Kamelet by the real one, the 
 +
 Please follow the link below to complete the Slack onboarding process.
 +
-* link:onboarding-gitter.adoc[Slack's platform onboarding]
+* link:onboarding-slack.adoc[Slack's platform onboarding]
 +
 {empty} +
 
