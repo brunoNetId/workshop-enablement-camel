@@ -50,6 +50,8 @@ image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green
 
 . We need to complete the OAuth web authentication flow.
 +
+NOTE: For reference, here's the specification describing the authentication flow: https://www.rfc-editor.org/rfc/rfc6749#section-4.1 
++
 .. Componse the following URL call:
 
 		https://gitter.im/login/oauth/authorize?client_id=YOUR_APP_OAUTH_KEY&response_type=code&redirect_uri=http://localhost:8080
