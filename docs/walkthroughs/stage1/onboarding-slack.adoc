@@ -12,7 +12,7 @@ To accelerate the onboarding process in Slack, we've created a public workspace 
 
 Follow the invite link to join the workshop's workspace in Slack:
 
-https://join.slack.com/t/camelworkshop/shared_invite/zt-1fvfhatch-HQKSJyob_YIY3nRGhJ7tWA
+* https://join.slack.com/t/camelworkshop/shared_invite/zt-1fvfhatch-HQKSJyob_YIY3nRGhJ7tWA
 
 CAUTION: The workspace is open to the public, please be mindful of your actions, don't abuse the space.
 
@@ -37,8 +37,7 @@ To connect from Camel to the chat platform, you need to register an App in Slack
 
 If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
 
-* <<_creating_your_own_app_for_slack>>
-
+* link:#_creating_your_own_app_for_slack[Creating your own App for Slack]
 
 If you're part of a workshop group, an App has been made available for all students to share.
 
@@ -134,7 +133,7 @@ image::images/slack-app-oauth-token.png[align="left", width=80%]
 Once your App is created, you're ready to add it to your workspace room (or channel). +
 Click the link below to follow instructions to add your app
 
-* <<_adding_an_app_to_a_room>>
+* link:#_adding_an_app_to_a_room[Adding an App to a room]
 
 {empty} +
 
