@@ -37,13 +37,13 @@ To connect from Camel to the chat platform, you need to register an App in Slack
 
 If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
 
-* link:#_creating_your_own_app_for_slack[Creating your own App for Slack]
+* link:#creating-your-own-app-for-slack[Creating your own App for Slack]
 
 If you're part of a workshop group, an App has been made available for all students to share.
 
 {empty} +
 
-==== Adding an App to a room
+==== [[adding-an-app-to-a-room]]Adding an App to a room
 
 Once you have an App available, follow the steps below:
 
@@ -83,7 +83,7 @@ Click the link below to jump back to the main guide walktrough:
 {empty} +
 {empty} +
 
-==== Creating your own App for Slack
+==== [[creating-your-own-app-for-slack]] Creating your own App for Slack
 
 . Connect to the following URL
 +
@@ -133,7 +133,7 @@ image::images/slack-app-oauth-token.png[align="left", width=80%]
 Once your App is created, you're ready to add it to your workspace room (or channel). +
 Click the link below to follow instructions to add your app
 
-* link:#_adding_an_app_to_a_room[Adding an App to a room]
+* link:#adding-an-app-to-a-room[Adding an App to a room]
 
 {empty} +
 
