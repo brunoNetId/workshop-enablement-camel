@@ -1,14 +1,14 @@
+:toc:
+:toc-placement!:
+
+toc::[]
+
+== Gitter's platform onboarding
 
 
+=== Join a Slack workspace.
 
-
-You may be 
-
-If you're doing this workshop with a group, please ask for an invite link to join the workshop's slack workspace.
-
-* Instructions with an invite link
-* Instructions to create your own Slack workspace
-
+To accelerate the onboarding process in Slack, we've created a public workspace for anyone to freely join and use for the purpose of this enablement workshop. 
 
 Follow the invite link to join the workshop's workspace in Slack:
 
@@ -16,12 +16,8 @@ https://join.slack.com/t/camelworkshop/shared_invite/zt-1fvfhatch-HQKSJyob_YIY3n
 
 CAUTION: The workspace is open to the public, please be mindful of your actions, don't abuse the space.
 
- - paste the link in browser tab
- - select the account provider and follow the sign-in process
- - if this is the first time in Slack, click `Create Account`
- - That's it.
 
-NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, it shouldn't make a difference when completing the workshop.
+NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, it should be valid and shouldn't create any conflict with this enablement material.
 
 {empty} +
 
@@ -29,13 +25,15 @@ NOTE: if you were unsuccessful joining the public workspace provided, feel free 
 === Join a Slack room (channel).
 . A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations.
 +
-You can also create your own room, use the prefix `room_`, for example:
+Alternatively, you can also create your own room, use the prefix `room_`, for example:
 
-* `room_john`
+* `room_x`
+
+{empty} +
 
 === Connecting Camel to Slack
 
-To connect from Camel to the chat platform, you need to register in Slack an App.
+To connect from Camel to the chat platform, you need to register an App in Slack.
 
 If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
 
