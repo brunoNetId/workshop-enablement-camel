@@ -49,6 +49,10 @@ gitter.token=YOUR_ACCESS_TOKEN
 gitter.room=YOUR_ROOM_ID
 ```
 +
+Ensure you configure your settings using your _Gitter_ details accordingly
++
+{empty} +
++
 NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
 +
 IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
@@ -67,7 +71,7 @@ oc create project demo-camelk
 Then create a _Secret_ containing your configuration. Run the following `oc` command:
 +
 ```bash
-oc create secret generic stage1 --from-env-file=stage1.properties
+oc create secret generic stage1 --from-file=stage1.properties
 
 ```
 {empty} +
