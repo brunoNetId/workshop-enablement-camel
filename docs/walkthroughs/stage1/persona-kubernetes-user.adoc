@@ -19,6 +19,7 @@ metadata:
   name: g2s
   annotations:
     trait.camel.apache.org/mount.configs: "secret:stage1"
+
 spec:
 
   source:
@@ -245,8 +246,8 @@ kind: KameletBinding
 metadata:
   name: g2s
   annotations:
-    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
     trait.camel.apache.org/mount.configs: "secret:stage1"
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
 spec:
 
   source:
