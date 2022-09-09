@@ -50,7 +50,12 @@ image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green
 
 . We need to complete the OAuth web authentication flow.
 +
-NOTE: For reference, here's the specification describing the authentication flow: https://www.rfc-editor.org/rfc/rfc6749#section-4.1 
+[NOTE]
+--
+For reference, here's the specification describing the authentication flow:
+
+* https://www.rfc-editor.org/rfc/rfc6749#section-4.1 
+--
 +
 .. Componse the following URL call:
 

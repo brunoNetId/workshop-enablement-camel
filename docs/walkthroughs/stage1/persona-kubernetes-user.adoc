@@ -341,3 +341,5 @@ Once more The Camel K operator will rebuild the integration and replace the pod 
 image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
+
+You've successfully completed stage 1 !!

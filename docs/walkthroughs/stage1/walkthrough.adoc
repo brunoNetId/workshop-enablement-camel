@@ -16,12 +16,15 @@ Target persona: +
 
 * *Kubernetes User*
 
-There is no previous Camel experience required. The picture billow illustrates the data flow traversing our Camel instance:
+There is no previous Camel experience required. +
+The picture billow illustrates the data flow traversing our Camel instance:
 
 // image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
 image::images/data-flow.png[align="center", width=80%]
 
-The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms. The instructions below will assist you in doing so.
+The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms.
+
+For now, follow the onboarding instructions below for Gitter. That will allow us to start with the first integration steps. Later in the walkthrough we will complete the Slack onboarding process.
 
 == Access Gitter's chat platform
 

@@ -13,6 +13,8 @@ The development tool that will help us iterate our code in our local environment
 
 image::images/camel-jbang.png[align="center", width=50%]
 
+{empty} +
+
 TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks a Camel developer undergoes. 
 
 . To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
@@ -310,13 +312,13 @@ The only amendments really to be done are:
 
 {empty} +
 
-. Replace your Log sink Kamelet by the Slack one.
+. Apply configuration changes.
 +
-Copy from below the portions of YAML to be modified in your Kamelet Binding, and include/replace them in your Kamelet Binding definition.
+Copy from below the portions of YAML to be modified in your definition, and include/replace them in your Kamelet Binding.
 +
 [NOTE]
 ====
-there are 3 pieces to include/replace:
+There are 3 pieces to include/replace:
 
 . secret/configmap configuration
 . kamelet source properties
@@ -411,6 +413,8 @@ oc apply -f g2s.yaml
 The Camel K operator will immediately react. It will start building the integration and deploy it.
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
++
+{empty} +
 
 .. Check the logs.
 +
