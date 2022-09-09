@@ -17,13 +17,10 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: g2s
+  annotations:
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
+    trait.camel.apache.org/mount.configs: "secret:stage1"
 spec:
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage1"
-     - type: "configmap"
-       value: "stage1-transform"
 
   source:
     ref:
@@ -31,8 +28,8 @@ spec:
       apiVersion: camel.apache.org/v1
       name: gitter-source
     properties:
-      token: "{{secret:stage1/gitter.token}}"
-      room:  "{{secret:stage1/gitter.room}}"
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
 
   sink:
     ref:
@@ -93,7 +90,6 @@ When the operator deploys the integration, you will be able to inspect the logs 
 ----
 ... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
 ... : Opening connection to Gitter...
-... : Gitter HTTP Streaming started
 ----
 +
 {empty} +
@@ -151,13 +147,10 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: g2s
+  annotations:
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
+    trait.camel.apache.org/mount.configs: "secret:stage1"
 spec:
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage1"
-     - type: "configmap"
-       value: "stage1-transform"
 
   source:
     ref:
@@ -165,8 +158,8 @@ spec:
       apiVersion: camel.apache.org/v1
       name: gitter-source
     properties:
-      token: "{{secret:stage1/gitter.token}}"
-      room:  "{{secret:stage1/gitter.room}}"
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
 ----
 +
 ```yaml
@@ -227,13 +220,10 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: g2s
+  annotations:
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
+    trait.camel.apache.org/mount.configs: "secret:stage1"
 spec:
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage1"
-     - type: "configmap"
-       value: "stage1-transform"
 
   source:
     ref:
@@ -241,8 +231,8 @@ spec:
       apiVersion: camel.apache.org/v1
       name: gitter-source
     properties:
-      token: "{{secret:stage1/gitter.token}}"
-      room:  "{{secret:stage1/gitter.room}}"
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
 
   steps:
   - ref:
@@ -322,7 +312,7 @@ slack.token=YOUR_TOKEN
 +
 ```bash
 oc delete secret stage1
-oc create secret generic stage1 --from-env-file=stage1.properties
+oc create secret generic stage1 --from-file=stage1.properties
 ```
 {empty} +
 

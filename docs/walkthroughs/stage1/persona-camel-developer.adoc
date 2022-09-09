@@ -85,7 +85,6 @@ In the output logs you should see Camel connecting to Gitter, similar to the fol
 ----
 ... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
 ... : Opening connection to Gitter...
-... : Gitter HTTP Streaming started
 ----
 +
 Now, from Gitter's chat room, send a message, for example "Hello Camel". +
@@ -427,7 +426,6 @@ When the operator deploys the integration, you should see Camel connecting to Gi
 ... : Apache Camel 3.14.2.redhat-00047 (camel-1) started in 1s193ms (build:0ms init:1s1ms start:192ms)
 ...
 ... : Opening connection to Gitter...
-... : Gitter HTTP Streaming started
 ----
 +
 {empty} +

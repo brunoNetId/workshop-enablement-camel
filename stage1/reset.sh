@@ -7,4 +7,4 @@ oc delete cm stage1-transform
 oc delete secret stage1
 
 oc create cm stage1-transform --from-file=maps
-oc create secret generic stage1 --from-env-file=$CONFIG_PATH/stage1.properties
+oc create secret generic stage1 --from-file=$CONFIG_PATH/stage1.properties
