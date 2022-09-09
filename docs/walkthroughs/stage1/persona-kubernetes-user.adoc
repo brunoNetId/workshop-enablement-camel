@@ -18,7 +18,6 @@ kind: KameletBinding
 metadata:
   name: g2s
   annotations:
-    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
     trait.camel.apache.org/mount.configs: "secret:stage1"
 spec:
 
@@ -50,8 +49,6 @@ gitter.room=YOUR_ROOM_ID
 ```
 +
 Ensure you configure your settings using your _Gitter_ details accordingly
-+
-{empty} +
 +
 NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
 +
@@ -87,12 +84,19 @@ The Camel K operator will immediately react. It will start building the integrat
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
 
+.. Check your deployment
++
+Inspect in your OpenShift Developer view your pod is in healthy state and running:
++
+image::images/ocp-dev-pod-healthy.png[align="left", width=80%]
+
 .. Check the logs.
 +
 When the operator deploys the integration, you will be able to inspect the logs from the running pod to check all looks normal. You should see Camel connecting to Gitter and starting the streaming listener:
 +
 ----
-... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
+... : Apache Camel 3.14.2.redhat-00047 (camel-1) started in 825ms (build:0ms init:708ms start:117ms)
+...
 ... : Opening connection to Gitter...
 ----
 +
