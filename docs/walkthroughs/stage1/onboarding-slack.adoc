@@ -17,13 +17,13 @@ Follow the invite link to join the workshop's workspace in Slack:
 CAUTION: The workspace is open to the public, please be mindful of your actions, don't abuse the space.
 
 
-NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, it should be valid and shouldn't create any conflict with this enablement material.
+NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, you should be able to complete the workshop in the same manner.
 
 {empty} +
 
 
 === Join a Slack room (channel).
-. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations.
+. A number of public rooms were made available in the public workspace for the workshop (room1, room2, ...roomX). Choose a room number that nobody uses to avoid noisy conversations.
 +
 Alternatively, you can also create your own room, use the prefix `room_`, for example:
 
@@ -33,13 +33,13 @@ Alternatively, you can also create your own room, use the prefix `room_`, for ex
 
 === Connecting Camel to Slack
 
-To connect from Camel to the chat platform, you need to register an App in Slack.
+To connect from Camel to the chat platform, an App needs to be registered in Slack. You would just need to add the registered App to a particular room to allow Camel to pick up messages.
 
-If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
+* If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
 
-* link:#creating-your-own-app-for-slack[Creating your own App for Slack]
+** link:#creating-your-own-app-for-slack[Creating your own App for Slack]
 
-If you're part of a workshop group, an App has been made available for all students to share.
+* If you're part of a workshop group, an App has been made available for all students to share. Proceed with the instructions that follow to add the shared App to your selected room.
 
 {empty} +
 
@@ -67,9 +67,9 @@ image::images/slack-add-app.png[align="left", width=50%]
 +
 image::images/slack-add-app-to-room.png[align="left", width=60%]
 
-Your room has now the App registered. Camel can use the App credentials to communicate with Slack.
+Your room has now the App included. Camel can use the App credentials to communicate with Slack.
 
-If you are sharing the App with the group, ask for the App credentials to your workshop admin.
+If you are sharing the App with a group, ask your workshop's admin for the App credentials to configure Camel.
 
 {empty} +
 
@@ -78,7 +78,9 @@ If you are sharing the App with the group, ask for the App credentials to your w
 You are now ready to complete your integration definition. +
 Click the link below to jump back to the main guide walktrough:
 
-* link:walkthrough.adoc#step8[Complete your Stage 1 integration flow]
+* Continue defining your Stage 1 integration flow as:
+** link:walkthrough.adoc#step8[The Kubernetes user]
+** link:walkthrough.adoc#step8[The Camel developer]
 
 {empty} +
 {empty} +
@@ -96,7 +98,7 @@ image::images/slack-create-app.png[align="left", width=20%]
 Select `From scratch`, then
 +
 .. Give it a name, for example `MyCamelApp`.
-.. Select `CamelWorkshop` (or your own workspace if you created it)
+.. Select `CamelWorkshop` (or your own workspace if you created one)
 .. Click `Create App`
 +
 Once the App created you'll be presented with its `Basic Information`
@@ -130,8 +132,10 @@ Slack then generates and presents the Oauth token for your App:
 +
 image::images/slack-app-oauth-token.png[align="left", width=80%]
 
+{empty} +
+
 Once your App is created, you're ready to add it to your workspace room (or channel). +
-Click the link below to follow instructions to add your app
+Click the link below to jump (scroll up) to the section with instructions on how to add your app:
 
 * link:#adding-an-app-to-a-room[Adding an App to a room]
 
