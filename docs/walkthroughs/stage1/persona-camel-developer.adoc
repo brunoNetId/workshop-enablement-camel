@@ -1,8 +1,19 @@
-=== [[camel-developer]] The Camel user development flow
+= [[camel-developer]] The Camel user development flow
 
-The tool that will help us to test locally is *Camel JBang*.
+The instructions below are divided in two segments:
 
-TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks with Camel. 
+* Local development (and testing)
+* Deployment in OpenShift
+
+{empty} +
+
+== Local development 
+
+The development tool that will help us iterate our code in our local environment is _Camel JBang_.
+
+image::images/camel-jbang.png[align="center", width=50%]
+
+TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks a Camel developer undergoes. 
 
 . To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
@@ -95,12 +106,12 @@ TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's ins
 +
 Create the JSLT file `g2s.jslt` containing the following definition:
 +
-```json
+----
 {
     "channel":"TO_BE_DEFINED",
     "text":"*"+.fromUser.username+"@gitter*: "+.text
 }
-```
+----
 +
 [NOTE]
 ====
@@ -282,3 +293,142 @@ camel run g2s.yaml g2s.jslt \
 image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
++
+We can consider the local development done. We have a full data flow definition that routes messages from Gitter to Slack. The next step is to deploy the definition in OpenShift
+
+{empty} +
+
+== Deployment in OpenShift
+
+The definitions that we have developed can almost be taken 'as-is' into OpenShift. 
+
+The only amendments really to be done are:
+--
+* Ensure we keep tokens secured with Secrets
+* Ensure the Kamelet Binding can load the JSLT file as a resource. 
+--
+
+{empty} +
+
+. Replace your Log sink Kamelet by the Slack one.
++
+Copy from below the portions of YAML to be modified in your Kamelet Binding, and include/replace them in your Kamelet Binding definition.
++
+[NOTE]
+====
+there are 3 pieces to include/replace:
+
+. secret/configmap configuration
+. kamelet source properties
+. kamelet sink properties
+====
++
+----
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: g2s
+spec:
+----
++
+```yaml
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage1"
+     - type: "configmap"
+       value: "stage1-transform"
+```
++
+----
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+----
++
+```yaml
+      token: "{{secret:stage1/gitter.token}}"
+      room:  "{{secret:stage1/gitter.room}}"
+```
++
+----
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: g2s.jslt
+
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: slack-sink
+    properties:
+----
++
+```yaml
+      token: "{{secret:stage1/slack.token}}"
+```
++
+{empty} +
+
+
+. Push configuration and resources to _OpenShift_
++
+.. Ensure you select your target _OpenShift_ working project, for example by running:
++
+```bash
+oc create project demo-camelk
+
+```
++
+.. Create a _Secret_ containing your configuration. Run the following `oc` command:
++
+```bash
+oc create secret generic stage1 --from-env-file=stage1.properties
+
+```
++
+.. Create a _ConfigMap_ containing your JSLT mapping. Run the following `oc` command:
++
+```bash
+oc create cm stage1-transform --from-file=g2s.jslt
+```
+{empty} +
+
+. Deploy your YAML definition containing your Kamelet Binding
+.. Run the following `oc` command to deploy the integration:
++
+```bash
+oc apply -f g2s.yaml
+```
++
+The Camel K operator will immediately react. It will start building the integration and deploy it.
++
+NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
+
+.. Check the logs.
++
+When the operator deploys the integration, you will be able to inspect the logs from the running pod to check all looks normal. You should see Camel connecting to Gitter and starting the streaming listener:
++
+----
+... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
+... : Opening connection to Gitter...
+... : Gitter HTTP Streaming started
+----
++
+{empty} +
+
+
+. One more time, from Gitter send one last message. If all goes well you should see the message listed in your Slack chat window
++
+image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
++
+{empty} +
++
+You've successfully completed stage 1 !!

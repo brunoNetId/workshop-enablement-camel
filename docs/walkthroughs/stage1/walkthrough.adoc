@@ -64,9 +64,9 @@ The way this user consumes Camel is by selecting catalog Kamelets and creating K
 
 The Camel developer:: The traditional Camel developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 
-NOTE: The YAML definitions are identical for both profiles. Although the this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process. 
+NOTE: The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process. 
 
-It's up to you to choose which user to impersonate. As the instructions are easy to follow we recommend choosing the Camel developer, which will anyway mimic the Kubernetes user when deploying in OpenShift. However, if time is a constraint then choose the Kubernetes user.
+It's up to you to choose which user to impersonate. Considering how easy are the instructions to follow, we recommend choosing the Camel developer, which will anyway mimic the Kubernetes user when deploying in OpenShift. However, if time is a constraint then choose the Kubernetes user.
 
 Time to choose, continue as:
 

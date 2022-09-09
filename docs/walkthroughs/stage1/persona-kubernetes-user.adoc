@@ -1,4 +1,6 @@
-=== [[kubernetes-user]] The Kubernetes user deployment flow
+= [[kubernetes-user]] The Kubernetes user deployment flow
+
+The instructions below will make you progress one Camel step at a time rather than providing a complete _Kamelet Binding_ of the full data flow. This will allow you to play with different _Kamelets_ and understand better the mechanics of _Kamelet Bindings_.
 
 . Create the definitions
 .. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
@@ -56,16 +58,16 @@ IMPORTANT: You will notice the presence of the property `streamCachingEnabled` t
 +
 {empty} +
 
-. Push the configuration to OpenShift
+. Push the configuration to _OpenShift_
 +
-Ensure you select your target OpenShift working project, for example by running:
+Ensure you select your target _OpenShift_ working project, for example by running:
 +
 ```bash
 oc create project demo-camelk
 
 ```
 +
-Them create a Secret containing your configuration. Run the following `oc` command:
+Then create a _Secret_ containing your configuration. Run the following `oc` command:
 +
 ```bash
 oc create secret generic stage1 --from-env-file=stage1.properties
@@ -73,7 +75,8 @@ oc create secret generic stage1 --from-env-file=stage1.properties
 ```
 {empty} +
 
-. Deploy your YAML definition containing your Kamelet Binding:
+. Deploy your YAML definition containing your Kamelet Binding
+.. Run the following `oc` command to deploy the integration:
 +
 ```bash
 oc apply -f g2s.yaml
@@ -83,7 +86,7 @@ The Camel K operator will immediately react. It will start building the integrat
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
 
-. Check the logs.
+.. Check the logs.
 +
 When the operator deploys the integration, you will be able to inspect the logs from the running pod to check all looks normal. You should see Camel connecting to Gitter and starting the streaming listener:
 +
@@ -93,10 +96,12 @@ When the operator deploys the integration, you will be able to inspect the logs 
 ... : Gitter HTTP Streaming started
 ----
 +
+{empty} +
+
 . Send a message from Gitter
 +
 Now, from Gitter's chat room, send a message, for example "Hello Camel". +
-Your pod logs should show the arrival of a Gitter event similar to the following JSON payload:
+The logs in your pod should show the arrival of a Gitter event similar to the following JSON payload:
 +
 ```json
 {"id":"6318848405ad4a3701dccfb4","text":"Hello Camel","html":"Hello Camel","sent":"2022-09-07T11:46:12.825Z","readBy":0,"urls":[],"mentions":[],"issues":[],"meta":[],"v":1,"fromUser":{"id":"xxxxxxxxxxxxxxxx","username":"demo-user"         }}
@@ -114,12 +119,12 @@ TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's ins
 +
 .. Create the JSLT file `g2s.jslt` containing the following definition:
 +
-```json
+----
 {
     "channel":"TO_BE_DEFINED",
     "text":"*"+.fromUser.username+"@gitter*: "+.text
 }
-```
+----
 +
 [NOTE]
 ====
@@ -135,6 +140,7 @@ Run the following `oc` command:
 ```bash
 oc create cm stage1-transform --from-file=g2s.jslt
 ```
+{empty} +
 
 . Modify your YAML definition to include the JSLT action between your Kamelet source and sink.
 +
@@ -180,6 +186,7 @@ spec:
       apiVersion: camel.apache.org/v1
       name: log-sink 
 ----
++
 {empty} +
 
 
@@ -189,7 +196,7 @@ spec:
 oc apply -f g2s.yaml
 ```
 +
-The Camel K operator needs again to download the JSLT dependencies, but after some time it will replace the pod with a new instance containing the data transformation.
+The Camel K operator needs again to download dependencies (JSLT), but after some time it will replace the pod with a new instance containing the data transformation.
 +
 {empty} +
 
