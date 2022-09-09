@@ -16,6 +16,8 @@ Target persona: +
 
 * *Kubernetes User*
 
+{empty} +
+
 [NOTE]
 --
 Since the first lab covered in detail the workflows for both personas, we consider you're now well equipped with the knowledge and tools to choose your preferred methodology going forward.
@@ -36,7 +38,7 @@ Luckily for us, we've already done all the necessary onboarding setup with both 
 
 == Create the integration flows
 
-=== Gitter to Slack flow
+=== Gitter to Slack
 
 This process is identical to the one we've already created in Lab 1, except there is situation we need to prevent. Let's ask ourselves the following:
 
@@ -44,7 +46,7 @@ This process is identical to the one we've already created in Lab 1, except ther
 
 Obviously, the interaction between both platforms would enter in a ping-pong effect between the App in Gitter and the App in Slack.
 
-image::images/death-loop.png[align="center", width=80%]
+image::images/death-loop.png[align="center", width=60%]
 
 We need to put in place a filtering mechanism that will prevent the interaction from entering in a death loop.
 

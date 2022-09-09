@@ -296,6 +296,12 @@ image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
 +
+Hopefully you'll see a successful interaction between both chat systems, similar to the image abov.
++
+Press `Ctrl`+`C` to stop your Camel instance.
++
+{empty} +
++
 We can consider the local development done. We have a full data flow definition that routes messages from Gitter to Slack. The next step is to deploy the definition in OpenShift
 
 {empty} +
@@ -330,33 +336,26 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: g2s
-spec:
 ----
 +
 ```yaml
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage1"
-     - type: "configmap"
-       value: "stage1-transform"
+  annotations:
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
+    trait.camel.apache.org/mount.configs: "secret:stage1"
 ```
 +
 ----
+spec:
+
   source:
     ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
       name: gitter-source
     properties:
-----
-+
-```yaml
-      token: "{{secret:stage1/gitter.token}}"
-      room:  "{{secret:stage1/gitter.room}}"
-```
-+
-----
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
+
   steps:
   - ref:
       kind: Kamelet
@@ -371,11 +370,8 @@ spec:
       apiVersion: camel.apache.org/v1
       name: slack-sink
     properties:
+      token: "{{slack.token}}"
 ----
-+
-```yaml
-      token: "{{secret:stage1/slack.token}}"
-```
 +
 {empty} +
 
@@ -392,8 +388,7 @@ oc create project demo-camelk
 .. Create a _Secret_ containing your configuration. Run the following `oc` command:
 +
 ```bash
-oc create secret generic stage1 --from-env-file=stage1.properties
-
+oc create secret generic stage1 --from-file=stage1.properties
 ```
 +
 .. Create a _ConfigMap_ containing your JSLT mapping. Run the following `oc` command:
@@ -418,10 +413,19 @@ NOTE: Be patient, this action will take some time to complete as the operator ne
 
 .. Check the logs.
 +
-When the operator deploys the integration, you will be able to inspect the logs from the running pod to check all looks normal. You should see Camel connecting to Gitter and starting the streaming listener:
+You can use the `kamel` client to inspect the logs from the running pod where you integration `g2s` is deployed.
++
+Run the command:
++
+```bash
+kamel logs g2s
+```
++
+When the operator deploys the integration, you should see Camel connecting to Gitter and starting the streaming listener:
 +
 ----
-... : Apache Camel 3.18.0 (CamelJBang) started in 2s124ms (build:170ms init:1s738ms start:216ms JVM-uptime:4s)
+... : Apache Camel 3.14.2.redhat-00047 (camel-1) started in 1s193ms (build:0ms init:1s1ms start:192ms)
+...
 ... : Opening connection to Gitter...
 ... : Gitter HTTP Streaming started
 ----
@@ -429,7 +433,9 @@ When the operator deploys the integration, you will be able to inspect the logs 
 {empty} +
 
 
-. One more time, from Gitter send one last message. If all goes well you should see the message listed in your Slack chat window
+. Test your deployment
++
+One more time, from Gitter send one last message. If all goes well you should see the message listed in your Slack chat window
 +
 image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
