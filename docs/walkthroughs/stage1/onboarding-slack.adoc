@@ -79,8 +79,8 @@ You are now ready to complete your integration definition. +
 Click the link below to jump back to the main guide walktrough:
 
 * Continue defining your Stage 1 integration flow as:
-** link:walkthrough.adoc#step8[The Kubernetes user]
-** link:walkthrough.adoc#step8[The Camel developer]
+** link:persona-kubernetes-user.adoc#step-slack-sink[The Kubernetes user]
+** link:persona-camel-developer.adoc#step-slack-sink[The Camel developer]
 
 {empty} +
 {empty} +
