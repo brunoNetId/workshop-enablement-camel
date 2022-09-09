@@ -92,7 +92,7 @@ image::images/ocp-dev-pod-healthy.png[align="left", width=80%]
 
 .. Check the logs.
 +
-When the operator deploys the integration, you will be able to inspect the logs from the running pod to check all looks normal. You should see Camel connecting to Gitter and starting the streaming listener:
+You should see Camel connecting to Gitter and wait for the stream to start:
 +
 ----
 ... : Apache Camel 3.14.2.redhat-00047 (camel-1) started in 825ms (build:0ms init:708ms start:117ms)
@@ -104,7 +104,8 @@ When the operator deploys the integration, you will be able to inspect the logs 
 
 . Send a message from Gitter
 +
-Now, from Gitter's chat room, send a message, for example "Hello Camel". +
+Now, from Gitter's chat room, send a message, for example "Hello Camel".
++
 The logs in your pod should show the arrival of a Gitter event similar to the following JSON payload:
 +
 ```json
@@ -123,12 +124,12 @@ TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's ins
 +
 .. Create the JSLT file `g2s.jslt` containing the following definition:
 +
-----
+```
 {
     "channel":"TO_BE_DEFINED",
     "text":"*"+.fromUser.username+"@gitter*: "+.text
 }
-----
+```
 +
 [NOTE]
 ====
