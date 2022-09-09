@@ -147,7 +147,16 @@ oc create cm stage1-transform --from-file=g2s.jslt
 ```
 {empty} +
 
-. Modify your YAML definition to include the JSLT action between your Kamelet source and sink.
+. Modify your YAML definition.
++
+Include the following pieces of definitions:
++
+--
+* the trait to mount your _ConfigMap_
+* the JSLT action between your _Kamelet_ source and sink.
+--
++
+{empty} +
 +
 The resulting YAML file should look as follows (you can copy the middle snippet into your code):
 +
@@ -157,8 +166,14 @@ kind: KameletBinding
 metadata:
   name: g2s
   annotations:
-    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
     trait.camel.apache.org/mount.configs: "secret:stage1"
+----
++
+```yaml
+    trait.camel.apache.org/mount.resources: "configmap:stage1-transform"
+```
++
+----
 spec:
 
   source:
