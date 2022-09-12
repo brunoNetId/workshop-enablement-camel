@@ -435,8 +435,6 @@ An interesting exercise would be to replace Slack's user ID by the real user nam
 
 . Ensure the filter works.
 +
-Finally, to test the filter and validate it's working well, let's ensure that Gitter-to-Slack messages do not circle back to Gitter.
-+
 We now have both flows in place:
 +
 --
@@ -444,7 +442,10 @@ We now have both flows in place:
 * Slack to Gitter
 --
 +
-From your Gitter chat room, send a message. The expected outcome should be as follows:
+As a final step, to test the filter and validate it's working well, let's ensure that Gitter-to-Slack messages do not circle back to Gitter.
++
+From your Gitter chat room, send a message. +
+The expected outcome should be as follows:
 
 * You see the message in Slack
 * You don't see a new message in Gitter
