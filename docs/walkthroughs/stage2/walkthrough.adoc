@@ -399,12 +399,12 @@ oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
 .. Run the following `oc` command to deploy the integration:
 +
 ```bash
-oc apply -f g2s.yaml
+oc apply -f s2g.yaml
 ```
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the filter's maven dependencies, build the application and create the image before the integration can be deployed.
 
-.. Check your deployment
+.. Wait for readyness
 +
 Check the pod's deployment and logs to ensure all is in healthy state.
 +
