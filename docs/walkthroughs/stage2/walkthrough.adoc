@@ -351,7 +351,7 @@ slack.token=YOUR_TOKEN
 ----
 +
 ```properties
-slack.channel.namen=YOUR_SLACK_ROOM
+slack.channel.name=YOUR_SLACK_ROOM
 ```
 +
 {empty} +
@@ -360,9 +360,9 @@ slack.channel.namen=YOUR_SLACK_ROOM
 +
 .. Run the following command to crate the JSLT file:
 +
-----
+```bash
 touch s2g.jslt
-----
+```
 +
 .. Define its mapping definition.
 +
