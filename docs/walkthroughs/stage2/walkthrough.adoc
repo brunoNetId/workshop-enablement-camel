@@ -391,7 +391,7 @@ oc delete secret stage2
 oc create secret generic stage2 --from-file=stage2.properties
 
 oc delete cm stage2-transform
-oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2t.jslt
+oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
 ```
 {empty} +
 
