@@ -2,6 +2,17 @@
 
 The instructions below will make you progress one Camel step at a time rather than providing a complete _Kamelet Binding_ of the full data flow. This will allow you to play with different _Kamelets_ and understand better the mechanics of _Kamelet Bindings_.
 
+. Create a folder where you will work
++
+For example:
++
+```bash
+mkdir lab1
+cd lab1
+```
++
+{empty}
+
 . Create the definitions
 .. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
