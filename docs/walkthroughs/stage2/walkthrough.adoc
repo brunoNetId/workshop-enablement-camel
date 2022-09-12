@@ -86,6 +86,7 @@ You can tell from the list above that this second lab suits very well the _Kuber
 ```bash
 cp -r lab1 lab2
 cd lab2
+
 ```
 +
 .. rename all occurrences of `stage1` to `stage2`. +
@@ -192,6 +193,7 @@ oc create secret generic stage2 --from-file=stage2.properties
 +
 ```bash
 oc apply -f g2s.yaml
+
 ```
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the filter's maven dependencies, build the application and create the image before the integration can be deployed.
@@ -263,6 +265,7 @@ Run the following command to crate the YAML file:
 +
 ```bash
 touch s2g.yaml
+
 ```
 
 . Define its source
@@ -362,6 +365,7 @@ slack.channel.name=YOUR_SLACK_ROOM
 +
 ```bash
 touch s2g.jslt
+
 ```
 +
 .. Define its mapping definition.
@@ -392,6 +396,7 @@ oc create secret generic stage2 --from-file=stage2.properties
 
 oc delete cm stage2-transform
 oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
+
 ```
 {empty} +
 
@@ -400,6 +405,7 @@ oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
 +
 ```bash
 oc apply -f s2g.yaml
+
 ```
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the filter's maven dependencies, build the application and create the image before the integration can be deployed.
