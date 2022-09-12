@@ -2,13 +2,10 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: g2s
+  annotations:
+    trait.camel.apache.org/mount.configs: "secret:stage2"
+    trait.camel.apache.org/mount.resources: "configmap:stage2-transform"
 spec:
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage2"
-     - type: "configmap"
-       value: "stage2-transform"
 
   source:
     ref:
@@ -16,8 +13,8 @@ spec:
       apiVersion: camel.apache.org/v1
       name: gitter-source
     properties:
-      token: "{{secret:stage2/gitter.token}}"
-      room:  "{{secret:stage2/gitter.room}}"
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
 
 
   steps:
@@ -31,17 +28,7 @@ spec:
     properties:
       expression: $.text =~ /(?!\*\*.*@.*\*\*:).*/
 
-
   # JSON Transformation
-  - ref:
-      kind: Kamelet
-      apiVersion: camel.apache.org/v1
-      name: insert-header-action
-    properties:
-      name: channel
-      value: "{{secret:stage2/slack.channel.id}}"
-      # value: "{{slack.channel.id}}"
-
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
@@ -56,11 +43,4 @@ spec:
       apiVersion: camel.apache.org/v1
       name: slack-sink
     properties:
-      token: "{{secret:stage2/slack.token}}"
-      # token: "{{slack.token}}"
-
-  # sink:
-  #   ref:
-  #     kind: Kamelet
-  #     apiVersion: camel.apache.org/v1
-  #     name: log-sink    
+      token: "{{slack.token}}"

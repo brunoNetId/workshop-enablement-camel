@@ -1,4 +1,4 @@
 {
-    "channel": $headers.channel,
+    "channel":"C041XMH9M41",
     "text":"*"+.fromUser.displayName+"@gitter*: "+.text
 }
