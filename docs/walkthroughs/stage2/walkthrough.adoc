@@ -301,7 +301,7 @@ spec:
       apiVersion: camel.apache.org/v1
       name: predicate-filter-action
     properties:
-      expression: "!$.botId"
+      expression: "!$.botId || $.botId == null"
   
   # JSON Transformation
   - ref:
@@ -330,9 +330,9 @@ spec:
 +
 [NOTE]
 --
-The filter is a lot simpler, because Slack includes a `botId` field when messages are App generated.
+The filter is simpler, because Slack includes a `botId` field when messages are App generated.
 
-* Its expression allows messages to go through when not including `botId`.
+* Its expression allows messages to go through when not including `botId` (or equal to null).
 --
 +
 {empty} +
