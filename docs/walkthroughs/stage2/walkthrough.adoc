@@ -214,7 +214,7 @@ Was that the case? if not, try to find out why, resolve, and try again.
 
 This process is equivalent to the previous one, but designed to enable the opposite data flow.
 
-It also requires a filtering mechanism to block events sent by Slack, that originally were emitted from Gitter-to-Slack Camel transactions.
+It also requires a filtering mechanism to block events from Slack, originally emitted from Gitter-to-Slack Camel transactions.
 
 {empty} +
 
@@ -314,14 +314,14 @@ spec:
 --
 The filter is a lot simpler, because Slack includes a `botId` field when messages are App generated.
 
-* Its expression allows messages not including `botId`.
+* Its expression allows messages to go through when not including `botId`.
 --
 +
 {empty} +
 
-. Include necessary Slack configuration your properties file.
+. Include an extra _Slack_ parameter to your properties file.
 +
-.. Copy from below the parameter definition `slack.channel.name`, paste it into your properties file, and set its value with your Slack room.
+Copy from below the parameter definition `slack.channel.name`, paste it into your properties file, and set its value to the Slack room you're using.
 +
 ----
 # Allows HTTP streaming from Gitter
@@ -341,15 +341,8 @@ slack.channel.namen=YOUR_SLACK_ROOM
 ```
 +
 {empty} +
-.. Update your _Secret_ by running:
-+
-```bash
-oc delete secret stage2
-oc create secret generic stage1 --from-file=stage2.properties
-```
-{empty} +
 
-. Define its JSLT transformation
+. Define the JSLT transformation.
 +
 .. Run the following command to crate the JSLT file:
 +
@@ -357,7 +350,7 @@ oc create secret generic stage1 --from-file=stage2.properties
 touch s2g.jslt
 ----
 +
-.. Define its source
+.. Define its mapping definition.
 +
 Copy the snippet below and paste it into your new `s2g.jslt` file:
 +
@@ -366,6 +359,7 @@ Copy the snippet below and paste it into your new `s2g.jslt` file:
     "text":"**"+.user+"@slack**: "+.text
 }
 ```
+{empty} +
 
 
 . Push the configuration to _OpenShift_
