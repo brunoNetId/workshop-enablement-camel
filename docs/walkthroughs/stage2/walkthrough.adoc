@@ -81,7 +81,20 @@ You can tell from the list above that this second lab suits very well the _Kuber
 
 . Create the skeleton
 +
-Using the sources of _Stage1_ as a base, make a copy of your previous exercise, and rename all occurrences of `stage1` to `stage2`.
+.. Using the sources of _Stage1_ as a base, make a copy of your previous exercise, for example:
++
+```bash
+cp -r lab1 lab2
+cd lab2
+```
++
+.. rename all occurrences of `stage1` to `stage2`. +
+This action should include:
+
+* replacing the annotations in the YAML file from `stage1` to `stage2` 
+* renaming `stage1.properties` to `stage2.properties`
++
+{empty} +
 
 . Include the filter
 +
@@ -414,7 +427,7 @@ You will notice two inmediate differences:
 +
 [NOTE]
 --
-An interesting exercise would be to replace the Slack user ID, by the real user name. We leave the task for a more advanced scenario to be covered in the future.
+An interesting exercise would be to replace Slack's user ID by the real user name. We leave this task for a future more advanced scenario.
 --
 +
 {empty} +
