@@ -2,13 +2,10 @@ apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
   name: k2s
+  annotations:
+    trait.camel.apache.org/mount.configs: "secret:stage3"
+    trait.camel.apache.org/mount.resources: "configmap:stage3-transform"
 spec:
-  integration:
-    configuration:
-     - type: "secret"
-       value: "stage3"
-     - type: "configmap"
-       value: "stage3-transform"
 
   source:
     ref:
@@ -40,7 +37,7 @@ spec:
       apiVersion: camel.apache.org/v1
       name: slack-sink
     properties:
-      token: "{{secret:stage3/slack.token}}"
+      token: "{{slack.token}}"
 
 
   # sink:
