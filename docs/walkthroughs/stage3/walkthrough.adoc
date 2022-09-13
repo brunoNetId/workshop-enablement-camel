@@ -122,6 +122,15 @@ mkdir flows
 mv *.yaml flows/ 
 ```
 +
+.. Rename the bindings:
++
+```bash
+sed -i '' 's/g2s/g2k/g' flows/g2k.yaml
+sed -i '' 's/g2s/k2s/g' flows/k2s.yaml
+sed -i '' 's/s2g/s2k/g' flows/s2k.yaml
+sed -i '' 's/s2g/k2g/g' flows/k2g.yaml
+```
++
 .. Prepare JSLTs:
 +
 ```bash
