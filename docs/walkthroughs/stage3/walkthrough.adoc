@@ -143,6 +143,87 @@ touch maps/k2g.jslt
  
 ```
 
+. Define the JSLT transformation to the new standard data model.
++
+Copy the snippet below and paste it into your new `s2k.jslt` file:
++
+```
+{
+	"timestamp": string(round(parse-time(.sent, "yyyy-MM-dd'T'HH:mm:ss.SSSX"))),
+	"source":"gitter", 
+	"user": .fromUser.displayName, 
+	"text": .text
+}
+```
++
+[NOTE]
+====
+We include various fields to provide context.
+====
+{empty} +
+
+. Replace the sink to target Kafka
++
+The original definition remains intact except for the sink to be replaced by a _Kafka_ destination. +
+Copy the sink snippet down below and paste it in your _Kamelet Binding_:
++
+----
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: g2k
+  annotations:
+    trait.camel.apache.org/mount.configs: "secret:stage3"
+    trait.camel.apache.org/mount.resources: "configmap:stage3-transform"
+spec:
+
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: gitter-source
+    properties:
+      token: "{{gitter.token}}"
+      room:  "{{gitter.room}}"
+
+  steps:
+
+  # Filter BOT messages
+  # Bot message pattern is: [username@system: message text] -->
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: predicate-filter-action
+    properties:
+      expression: $.text =~ /(?!\*\*.*@.*\*\*:).*/
+
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: jslt-action
+    properties:
+      template: g2k.jslt
+----
++
+```yaml
+  sink:
+    ref:
+      kind: KafkaTopic
+      apiVersion: kafka.strimzi.io/v1beta1
+      name: YOUR_ROOM_NAME
+```
++
+[IMPORTANT]
+====
+Ensure you configure the sink's `name` (Kafka topic) by replacing `YOUR_ROOM_NAME` with your chat's room name.
+====
++
+[NOTE]
+====
+* The sink definition in a Kamelet Binding can either be a Kamelet Sink from the Catalog, or a platform resource (Kafka or KNative).
+* Kafka definitions just require the name of the topic. The Camel K operator automatically wires the connectivity to the Kafka platform available in the environment.
+====
+{empty} +
 
 . Include the filter
 +
