@@ -1,7 +1,7 @@
 :toc:
 :toc-placement!:
 
-= Lab 2 - Gitter to Slack bridge (bi-directional)
+= Lab 2 - Gitter ⇔ Slack (two ways)
 
 toc::[]
 
