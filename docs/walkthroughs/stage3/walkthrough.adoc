@@ -27,8 +27,12 @@ The picture billow illustrates an asynchronous decoupled architecture, via a str
 
 TIP: At first it seems unnecessary to double the number of data flows, but benefits outweighs complexity, we gain an easily extensible architecture. In later labs you'll see new additions to the architecture.
 
+{empty} +
+
 // image::images/processing-flow.png[title="Data flow",align="center",title-align=center, width=80%]
 image::images/data-flow.png[align="center", width=90%]
+
+{empty} +
 
 In terms of implementation effort for this lab, your main task is to split each of your current data flows (from Lab-2) in two different parts:
 
@@ -47,6 +51,8 @@ This implies that instead of applying platform specific data transformations (eg
 
 - System specific to standard data model (e.g. Gitter/Slack to Kafka)
 - Standard data model to System specific (e.g. Kafka to Gitter/Slack)
+
+{empty} +
 
 The illustration below describes data exchanges via Kafka:
 
@@ -117,7 +123,7 @@ The two data flows we have created in previous labs are almost identical in term
 . transform events
 . push events
 
-For the Gitter/Slack to Kafka processes, the steps are the same, we just need to switch to the standard data model (step 3) and target Kafka (step 4).
+For the processes from Gitter/Slack to Kafka, the steps remain the same, we just need to switch to the standard data model (step 3) and target Kafka instead (step 4).
 
 {empty} +
 
@@ -573,7 +579,49 @@ And that's all it takes for this first stint.
 
 {empty} +
 
+== Deploy and test
 
+We've covered a lot of ground. It would be normal to make mistakes. Hopefully the helper guide kept those to a minimum and, once deployed, you can see your integrations working in healthy state and delivering the expected outcome.
+
+
+. Push the configuration to _OpenShift_
++
+Recreate the _Secret_ and _ConfigMap_ to include both JSLTs. +
+Run the following `oc` command:
++
+```bash
+oc create secret generic stage3 --from-file=stage3.properties
+oc create cm stage3-transform --from-file=maps
+```
+{empty} +
+
+. Deploy the YAML definition containing your new Kamelet Binding
+.. Run the following `oc` command to deploy the integration:
++
+```bash
+oc apply -f g2k.yaml
+oc apply -f k2s.yaml
+oc apply -f s2k.yaml
+oc apply -f k2g.yaml
+```
++
+NOTE: Be patient, this action will take some time to complete as the operator needs to download all related dependencies, build the applications and create the images before the integrations can be deployed.
+
+.. Wait for readyness
++
+Check the deployment of all pods and their logs to ensure all is in healthy state.
++
+{empty} +
+
+. Send messages to test the system.
++
+Go to you Slack's chat room and send a message, for example "Hello from Slack".
++
+If all goes well your message should show up in Gitter.
++
+image::images/stage2-msg-slack-gitter.png[align="left", width=80%]
++
+{empty} +
 
 +
 {empty} +
