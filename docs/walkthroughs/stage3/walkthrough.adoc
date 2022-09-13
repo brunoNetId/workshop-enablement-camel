@@ -88,7 +88,7 @@ A sink::
 
 {empty} +
 
-As in lab 1 & 2, this lab also fits very well the _Kubernetes_ user. We keep using Kamelets to enable the data flows between the different platforms.
+As in lab 1 & 2, this one also fits the _Kubernetes_ user. We compose the definitions using Kamelets to enable the data flows between the different platforms.
 
 {empty} +
 
@@ -127,10 +127,10 @@ mv *.yaml flows/
 ```bash
 rm *.jslt
 mkdir maps
-touch g2k.jslt
-touch k2s.jslt
-touch s2k.jslt
-touch k2s.jslt
+touch maps/g2k.jslt
+touch maps/k2s.jslt
+touch maps/s2k.jslt
+touch maps/k2g.jslt
  
 ```
 
