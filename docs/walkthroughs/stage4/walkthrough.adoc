@@ -30,8 +30,6 @@ Estimated time: +
 
 The picture billow illustrates all chat systems communicating via kafka, including the to-be-integrated Discord system, and optionally (for those willing to go the extra mile) Telegram.
 
-{empty} +
-
 image::images/stage-overview-discord.png[align="center", width=90%]
 
 {empty} +
@@ -93,3 +91,123 @@ HTTP invokation::
 ====
 
 {empty} +
+
+Obviously, developing this process is the task of an experienced Camel developer. When the Kamelet is fully implemented, the Camel developer can place it along the rest of _Kamelets_ in the catalogue, that would allow non-Camel users (the _Kubernetes_ user) to consume it inside _Kamelet Bindings_.
+
+{empty} +
+
+=== Process definition
+
+The best approach to make rapid progress developing this Kamelet, is to use Camel JBang in your local environment.
+
+image::../stage1/images/camel-jbang.png[align="left", width=40%]
+
+. Setup your lab folder
+.. Create your working folder:
++
+```bash
+mkdir lab4
+cd lab4
+```
++
+.. Create a configuration file
++
+```bash
+touch stage4.properties
+```
++
+Include your _Discord_ details:
++
+```properties
+# Discord credentials
+token=YOUR_TOKEN
+channel=YOUR_ROOM_ID
+```
++
+Ensure you configure with your _Discord_ values, and save changes.
++
+{empty} +
+
+. Create a skeleton using Camel JBang in YAML format:
++
+For example:
++
+```bash
+camel init test-discord.yaml
+```
+
+. Open and Edit the `test-discord.yaml` file
++
+Replace the parameter:
++
+--
+* `period: "1000"`
+--
++
+By the parameter `repeatCount` (copy/replace from the snippet below):
++
+----
+# camel-k: language=yaml
+
+# Write your routes here, for example:
+- from:
+    uri: "timer:yaml"
+    parameters:
+----
++
+```yaml
+      repeatCount: "1"
+```
++
+----
+    steps:
+      - setBody:
+          constant: "Hello Camel from yaml"
+      - log: "${body}"
+----
+
+. Run your test route with:
++
+```bash
+camel run test-discord.yaml --reload \
+--properties=stage4.properties
+```
++
+The output in your terminal should show, once, the following: `Hello Camel from yaml`.
+
+{empty}
+
+. Simulate a Discord payload
++
+Let's modify the code to simulate the JSON payload Discord expects. Replace the body with the following:
++
+```yaml
+      - setBody:
+          constant: '{"content": "Hello from Camel"}'
+```
++
+Save changes. +
+Camel JBang will react: it will run the new definition on the fly.
++
+{empty} +
+
+. Invoke Discord
++
+Modify the code to call Discord's API to post a message. +
+Replace the body with the following:
++
+```yaml
+      - remove-headers:
+          pattern: "*"
+      - set-header:
+          name: Content-Type
+          simple: application/json
+      - set-header:
+          name: Authorization
+          simple: Bot {{token}}
+      - to:
+          uri: "https://discordapp.com/api/channels/{{channel}}/messages"
+```
++
+Save changes. +
+Camel JBang will react: it will run the new definition on the fly.

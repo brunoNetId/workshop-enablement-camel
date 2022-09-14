@@ -5,7 +5,8 @@ toc::[]
 
 == Discord's platform onboarding
 
-TIP: If you're unfamiliar with _Discord_, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
+TIP: If you're unfamiliar with _Discord_, it is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
+
 
 [NOTE]
 --

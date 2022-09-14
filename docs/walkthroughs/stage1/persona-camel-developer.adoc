@@ -17,7 +17,20 @@ image::images/camel-jbang.png[align="center", width=50%]
 
 TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks a Camel developer undergoes. 
 
-. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
+. Create a folder where you will work
++
+For example:
++
+```bash
+mkdir lab1
+cd lab1
+```
++
+{empty}
+
+. Create the definitions
++
+.. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
 +
 --
 - gitter-source
@@ -49,7 +62,7 @@ spec:
       name: log-sink 
 ```
 +
-Now create the properties file `stage1.properties` containing the following entries:
+.. Now create the properties file `stage1.properties` containing the following entries:
 +
 ```properties
 # Allows HTTP streaming from Gitter
