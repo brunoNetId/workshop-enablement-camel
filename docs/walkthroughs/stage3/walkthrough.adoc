@@ -157,6 +157,8 @@ As in lab 1 & 2, this one also fits the _Kubernetes_ user. We compose the defini
 
 . Replace the sink to target Kafka
 +
+Open and edit your `g2k.yaml` file.
++
 The original definition remains intact except for the sink to be replaced by a _Kafka_ destination. +
 Copy the sink snippet down below and paste it in your _Kamelet Binding_:
 +

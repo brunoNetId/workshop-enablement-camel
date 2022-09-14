@@ -342,7 +342,7 @@ spec:
 +
 [NOTE]
 --
-The filter is simpler, because Slack includes a `botId` field when messages are App generated.
+The filter is simpler, because Slack includes a `botId` field when messages are app-generated.
 
 * Its expression allows messages to go through when not including `botId` (or equal to null).
 --
@@ -425,6 +425,8 @@ NOTE: Be patient, this action will take some time to complete as the operator ne
 .. Wait for readyness
 +
 Check the pod's deployment and logs to ensure all is in healthy state.
++
+image::images/ocp-dev-pod-healthy-s2g.png[align="left", width=80%]
 +
 {empty} +
 
