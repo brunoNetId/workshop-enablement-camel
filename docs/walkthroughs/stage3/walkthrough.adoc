@@ -182,9 +182,8 @@ spec:
       room:  "{{gitter.room}}"
 
   steps:
-
-  # Filter BOT messages
-  # Bot message pattern is: [username@system: message text] -->
+    
+  # Filter action to prevent death loops
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
@@ -222,7 +221,7 @@ Ensure you configure the sink's `name` (Kafka topic) by replacing `YOUR_ROOM_NAM
 
 . Define the JSLT transformation to the new standard data model.
 +
-Copy the snippet below and paste it into your new `s2k.jslt` file:
+Copy the snippet below and paste it into your new `g2k.jslt` file:
 +
 ```
 {
