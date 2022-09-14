@@ -251,6 +251,8 @@ Very similar changes apply for the Slack -> Kafka flow.
 
 . Replace the sink to target Kafka
 +
+Open and edit your `s2k.yaml` file.
++
 The original definition remains intact except for the sink to be replaced by a _Kafka_ destination. +
 Copy the sink snippet down below and paste it in your _Kamelet Binding_:
 +
@@ -277,7 +279,7 @@ spec:
 
   steps:
 
-  # Filter BOT messages
+  # Filter action to prevent death loops
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
@@ -379,6 +381,8 @@ produces events to Gitter/Slack.
 
 . Modify the Kamelet Binding
 +
+Open and edit your `k2g.yaml` file.
++
 Two modifications are required:
 +
 --
@@ -410,8 +414,7 @@ spec:
 ----
   steps:
 
-  # Filter BOT messages
-  # Bot message pattern is: [username@system: message text] -->
+  # Filter action to prevent death loops
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
@@ -424,12 +427,14 @@ spec:
 ```
 +
 ----
+  # JSON Transformation
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
       name: jslt-action
     properties:
       template: "{{transform.path:k2g.jslt}}"
+
 
   sink:
     ref:
