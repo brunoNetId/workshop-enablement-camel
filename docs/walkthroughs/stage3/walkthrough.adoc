@@ -64,6 +64,12 @@ image::images/standard-data-model.png[align="center", width=90%]
 
 == Setup
 
+First of all, ensure you eliminate Lab2's deployed bindings, otherwise they will enter in conflict with the ones we're about to create:
+```bash
+oc delete klb g2s
+oc delete klb s2g
+```
+
 We continue growing our solution where we left it in Lab 2. +
 We use Lab-2 as the base for this next stage.
 
@@ -607,10 +613,10 @@ oc create cm stage3-transform --from-file=maps
 .. Run the following `oc` command to deploy the integration:
 +
 ```bash
-oc apply -f g2k.yaml
-oc apply -f k2s.yaml
-oc apply -f s2k.yaml
-oc apply -f k2g.yaml
+oc apply -f flows/g2k.yaml
+oc apply -f flows/k2s.yaml
+oc apply -f flows/s2k.yaml
+oc apply -f flows/k2g.yaml
 ```
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all related dependencies, build the applications and create the images before the integrations can be deployed.
