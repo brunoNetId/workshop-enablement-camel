@@ -48,7 +48,7 @@ and optionally:
 {empty} +
 
 
-== Access Discord's chat platform
+== [[discord-onboarding]] Access Discord's chat platform
 
 Please follow the link below to complete the Discord onboarding process. The guide will describe step by step the setup process. When done, you will be able to continue with the normal flow of the lab.
 
@@ -102,6 +102,12 @@ The best approach to make rapid progress developing this Kamelet, is to use Came
 
 image::../stage1/images/camel-jbang.png[align="left", width=40%]
 
+{empty} +
+
+==== Prototype the Camel route
+
+The first step is to create a little prototype that will validate our _Camel_ route implementation.
+
 . Setup your lab folder
 .. Create your working folder:
 +
@@ -125,6 +131,10 @@ channel=YOUR_ROOM_ID
 ```
 +
 Ensure you configure with your _Discord_ values, and save changes.
++
+* If you're sharing an App with the group, use the App's token your admin has provided.
+* If you created your own App, use your App's Bot token.
+
 +
 {empty} +
 
@@ -174,12 +184,12 @@ camel run test-discord.yaml --reload \
 ```
 +
 The output in your terminal should show, once, the following: `Hello Camel from yaml`.
-
-{empty}
-
-. Simulate a Discord payload
 +
-Let's modify the code to simulate the JSON payload Discord expects. Replace the body with the following:
+{empty} +
+
+. Simulate a _Discord_ payload
++
+Let's modify the code to simulate the JSON payload _Discord_ expects. Replace the body with the following:
 +
 ```yaml
       - setBody:
@@ -187,14 +197,28 @@ Let's modify the code to simulate the JSON payload Discord expects. Replace the 
 ```
 +
 Save changes. +
-Camel JBang will react: it will run the new definition on the fly.
+_Camel JBang_ will react: it will run the new definition on the fly.
 +
 {empty} +
 
-. Invoke Discord
+. Post to _Discord_
 +
-Modify the code to call Discord's API to post a message. +
-Replace the body with the following:
+Modify the code to call _Discord_'s API to post a message. +
+Include the following snipped in your YAML file:
++
+----
+# camel-k: language=yaml
+
+# Write your routes here, for example:
+- from:
+    uri: "timer:yaml"
+    parameters:
+      repeatCount: "1"
+    steps:
+      - setBody:
+          constant: '{"content": "Hello from Camel"}'
+      - log: "${body}"
+----
 +
 ```yaml
       - remove-headers:
@@ -211,3 +235,13 @@ Replace the body with the following:
 +
 Save changes. +
 Camel JBang will react: it will run the new definition on the fly.
++
+If all goes well, Discord will receive the message and display it in the room, as shown below:
++
+image::images/discord-room-hello.png[align="left", width=40%]
+
+{empty} +
+
+==== Encapsulate as a Sink
+
+Now that our prototype is fully functional, let's encapsulate the code as a Kamalet Sink.
