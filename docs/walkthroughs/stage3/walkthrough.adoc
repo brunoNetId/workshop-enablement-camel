@@ -676,15 +676,17 @@ s2k    Ready   1
 
 . Send messages to test the system.
 +
-Go to you Slack's chat room and send a message, for example "Hello from Slack".
+.. Go to you Gitter's room and send a message, for example "Hello from Gitter".
+
+.. Then go to you Slack's room and send a message, for example "Hello from Slack".
 +
-If all goes well your message should show up in Gitter.
+If all goes well you should see something simlar to the picture below:
 +
-image::images/stage2-msg-slack-gitter.png[align="left", width=80%]
+image::images/stage3-msg-chat-test.png[align="left", width=90%]
 +
 {empty} +
 
 +
 {empty} +
 
-You have now completed Stage 3 !!
+Bravo! You've completed Stage 3 !!
