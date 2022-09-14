@@ -1,1 +1,50 @@
-pending content
+:toc:
+:toc-placement!:
+
+= Lab 4 - Discord Integration
+
+toc::[]
+
+== Overview
+Up until now we have evolved a solution to interconnect _Gitter_ and _Slack_, and crucially, with the addition of AMQ Streams, now allows for new systems to easily integrate with the platform. In this new Lab we're going to add a new chat option: _Discord_.
+
+_Discord_ is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
+
+The difficulty of this new stage is that we don't have in our _Kamelet Catalog_ connecitivity with _Discord_. We need to create our own connectors.
+
+Target persona: +
+
+* *Camel Developer*
+
+Difficulty level: +
+
+* *MEDIUM*
+
+Estimated time: +
+
+* *20 mn*
+
+
+{empty} +
+
+
+The picture billow illustrates all chat systems communicating via kafka, including the to-be-integrated Discord system, and optionally (for those willing to go the extra mile) Telegram.
+
+{empty} +
+
+image::images/lab-overview-discord.png[align="center", width=90%]
+
+{empty} +
+
+In terms of implementation effort for this lab, the main tasks to complete are the following:
+
+- Create a Discord Sink Kamelet
+- Craete a Kafka to Discord flow using the new Kamelet
+- Create a Discord to Kafka flow using Camel K (DSL)
+
+and optionally:
+
+- Create a Telegram to Kafka flow
+- Create a Kafka to Teletram flow
+
+{empty} +
