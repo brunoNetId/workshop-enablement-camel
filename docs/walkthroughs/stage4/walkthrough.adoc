@@ -32,7 +32,7 @@ The picture billow illustrates all chat systems communicating via kafka, includi
 
 {empty} +
 
-image::images/lab-overview-discord.png[align="center", width=90%]
+image::images/stage-overview-discord.png[align="center", width=90%]
 
 {empty} +
 
