@@ -577,7 +577,7 @@ Copy the snippet below and paste it into your new `k2s.jslt` file:
 +
 ```
 {
-    "channel":"YOUR_ROOM",
+    "channel":"YOUR_ROOM_ID",
     "text":"*"+.user+"@"+.source+"*: "+.text
 }
 ```
@@ -606,6 +606,37 @@ Run the following `oc` command:
 ```bash
 oc create secret generic stage3 --from-file=stage3.properties
 oc create cm stage3-transform --from-file=maps
+```
+{empty} +
+
+. Create the kafka topic
++ 
+Run the following command:
++
+```bash
+mkdir kafka && touch kafka/room_x.yaml
+```
++
+Edit your `room_x.yaml` file under the `kafka` directory. Add the following definition
++
+```yaml
+kind: KafkaTopic
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: YOUR_ROOM_NAME
+  labels:
+    strimzi.io/cluster: my-cluster
+```
++
+[IMPORTANT]
+====
+Ensure you configure the topic's `name` by replacing `YOUR_ROOM_NAME` with your chat's room name.
+====
++
+Push the definition to OpenShift with the following command:
++
+```bash
+oc apply -f kafka/room_x.yaml
 ```
 {empty} +
 
