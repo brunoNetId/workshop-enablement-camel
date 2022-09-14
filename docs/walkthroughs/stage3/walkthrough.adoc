@@ -453,12 +453,12 @@ Ensure you configure the source's `name` (Kafka topic) by replacing `YOUR_ROOM_N
 +
 [NOTE]
 ====
-The filter definition is specifically blocking events coming from Gitter itself. As now Kafka sits in the middle, we are simultaneously producing and consuming Kafka events from/to Gitter, which can cause event loops. 
+The filter definition is specifically blocking events coming from _Gitter_ itself. As now Kafka sits in the middle, we are simultaneously producing and consuming Kafka events from/to Gitter, which can cause event loops. 
 ====
 +
 [NOTE]
 ====
-* The source definition in a Kamelet Binding can either be a Kamelet Source from the Catalog, or a platform resource (Kafka or KNative). The operator auto-wires the connectivity to Kafka for us.
+The source definition in a Kamelet Binding can either be a Kamelet Source from the Catalog, or a platform resource (Kafka or KNative). The operator auto-wires the connectivity to Kafka for us.
 ====
 {empty} +
 
@@ -491,6 +491,8 @@ Very similar changes apply for the Kafka -> Slack flow.
 
 . Modify the Kamelet Binding
 +
+Open and edit your `k2s.yaml` file.
++
 Two modifications are required:
 +
 --
@@ -521,9 +523,8 @@ spec:
 +
 ----
   steps:
-
-  # Filter BOT messages
-  # Bot message pattern is: [username@system: message text] -->
+    
+  # Filter action to prevent death loops
   - ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1
@@ -541,7 +542,7 @@ spec:
       apiVersion: camel.apache.org/v1
       name: jslt-action
     properties:
-      template: "{{transform.path:k2s.jslt}}"
+      template: k2s.jslt
 
   sink:
     ref:
