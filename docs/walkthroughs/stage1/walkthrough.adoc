@@ -8,13 +8,18 @@ toc::[]
 == Overview
 This first stage is all about completing our first integration flow using a Kamelet Binding.
 
+Target persona: +
+
+* *Kubernetes User*
+
 Difficulty level: +
 
 * *EASY*
 
-Target persona: +
+Estimated time: +
 
-* *Kubernetes User*
+* *20 mn*
+
 
 There is no previous Camel experience required. +
 The picture billow illustrates the data flow traversing our Camel instance:

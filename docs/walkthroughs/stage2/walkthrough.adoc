@@ -8,13 +8,18 @@ toc::[]
 == Overview
 Lab 1 enabled a Gitter to Slack data flow. On this second lab we want the flow to work in both directions so that users from both chat platforms can exchange messages and have a conversation.
 
+Target persona: +
+
+* *Kubernetes User*
+
 Difficulty level: +
 
 * *EASY*
 
-Target persona: +
+Estimated time: +
 
-* *Kubernetes User*
+* *10 mn*
+
 
 {empty} +
 

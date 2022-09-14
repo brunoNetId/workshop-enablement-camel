@@ -8,6 +8,10 @@ toc::[]
 == Overview
 Lab 1 and 2 enabled Gitter/Slack conversations. However their connectivity was tightly coupled with dedicated data translations between both platforms. On this third lab we want to break them away to open up the architecture to welcome additional systems and services.
 
+Target persona: +
+
+* *Kubernetes User*
+
 Difficulty level: +
 
 * *EASY*
@@ -16,9 +20,6 @@ Estimated time: +
 
 * *20 mn*
 
-Target persona: +
-
-* *Kubernetes User*
 
 {empty} +
 
