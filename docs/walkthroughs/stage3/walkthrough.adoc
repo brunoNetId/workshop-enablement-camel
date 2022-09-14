@@ -656,6 +656,22 @@ NOTE: Be patient, this action will take some time to complete as the operator ne
 +
 Check the deployment of all pods and their logs to ensure all is in healthy state.
 +
+You can run the following command to check their state:
++
+```bash
+oc get klb
+```
++
+When the pods are ready, the command should return:
++
+----
+NAME   PHASE   REPLICAS
+g2k    Ready   1
+k2g    Ready   1
+k2s    Ready   1
+s2k    Ready   1
+----
++
 {empty} +
 
 . Send messages to test the system.
