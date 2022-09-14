@@ -96,10 +96,18 @@ cd lab2
 +
 .. rename all occurrences of `stage1` to `stage2`. +
 This action should include:
-
++
+--
 * replacing the annotations in the `g2s.yaml` file from `stage1` to `stage2` 
 * renaming `stage1.properties` to `stage2.properties`
+--
 +
+or simply run the commands below in your terminal:
++
+```bash
+mv stage1.properties stage2.properties
+sed -i '' 's/stage1/stage2/g' g2s.yaml 
+```
 {empty} +
 
 . Include the filter

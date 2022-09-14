@@ -73,15 +73,13 @@ IMPORTANT: You will notice the presence of the property `streamCachingEnabled` t
 Ensure you select your target _OpenShift_ working project, for example by running:
 +
 ```bash
-oc create project demo-camelk
-
+oc new-project lab-user1
 ```
 +
 Then create a _Secret_ containing your configuration. Run the following `oc` command:
 +
 ```bash
 oc create secret generic stage1 --from-file=stage1.properties
-
 ```
 {empty} +
 
@@ -358,7 +356,7 @@ oc create secret generic stage1 --from-file=stage1.properties
 oc apply -f g2s.yaml
 ```
 +
-Once more The Camel K operator will rebuild the integration and replace the pod with a new instance that points to Slack.
+Once more the Camel K operator will rebuild the integration and replace the pod with a new instance that points to Slack.
 +
 {empty} +
 
