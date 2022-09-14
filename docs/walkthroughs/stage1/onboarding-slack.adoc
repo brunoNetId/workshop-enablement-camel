@@ -3,7 +3,7 @@
 
 toc::[]
 
-== Gitter's platform onboarding
+== Slack's platform onboarding
 
 
 === Join a Slack workspace.

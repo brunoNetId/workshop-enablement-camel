@@ -48,3 +48,48 @@ and optionally:
 - Create a Kafka to Teletram flow
 
 {empty} +
+
+
+== Access Discord's chat platform
+
+Please follow the link below to complete the Discord onboarding process. The guide will describe step by step the setup process. When done, you will be able to continue with the normal flow of the lab.
+
+* link:onboarding-discord.adoc[Discord's platform onboarding]
+
+{empty} +
+
+== Create the Sink Kamelet
+
+TIP: _Kamelets_ are [underline big]_**Camel**_ route snipp[underline big]**ets**. +
+A Kamelet encapsulates a normal _Camel_ route.
+
+Our Kamelet definition consists in defining a Camel route that targets _Discord_ as the endpoint.
+
+To integrate with _Discord_ we need to understand well its API, but don't worry, we got you covered. For reference, here's Discord's documentation on how to post messages:
+
+* https://discord.com/developers/docs/resources/channel#create-message
+
+{empty} +
+
+=== Process overview
+
+The diagram below illustrates the processing flow (Camel route) you're about to create:
+
+image::images/processing-flow-sink.png[align="center", width=90%]
+
+
+
+* There are 4 key processing steps necessary:
++
+====
+Clean Headers::
+    The incoming Camel exchange might have headers that can potentially enter in conflict with the HTTP call to Discord.
+Set Content-Type::
+	Include an HTTP header to specify the type of payload we send (JSON)
+Set Authorization::
+	Include an HTTP header with the security token
+HTTP invokation::
+    Trigger the HTTP call using the Camel HTTP component
+====
+
+{empty} +
