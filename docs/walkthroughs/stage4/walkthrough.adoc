@@ -56,7 +56,7 @@ Please follow the link below to complete the Discord onboarding process. The gui
 
 {empty} +
 
-== Create the Sink Kamelet
+== Part 1 - Create the Sink Kamelet
 
 TIP: _Kamelets_ are [underline big]_**Camel**_ route snipp[underline big]**ets**. +
 A Kamelet encapsulates a normal _Camel_ route.
@@ -255,7 +255,7 @@ If all goes well, Discord will receive the message and display it in the room, a
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
-The first goal has been accomplished. image:images/emoji-clap.png[width=2%]
+The first goal has been accomplished. image:images/emoji-clap.png[width=3%]
 +
 Press `ctrl`+`c` to stop _Camel JBang_.
 +
@@ -384,8 +384,86 @@ Again, if all goes well, Discord will receive the message and display it in the 
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
-The second goal has been accomplished. image:images/emoji-clap.png[width=2%]
+The second goal has been accomplished. image:images/emoji-clap.png[width=3%]
 +
 Press `ctrl`+`c` to stop _Camel JBang_.
 +
+{empty} +
+
+== Part 2 - Kafka ⇒ Discord
+
+We have now the building block we were missing, we can now bind our _Discord_ _Kamelet_ to Kafka to push chat conversations to Discord.
+
+=== Process overview
+
+You should by now be very familiar with the required processing steps. The diagram below illustrates the _Kafka_ to _Discord_ data flow:
+
+image::images/processing-flow-kafka2discord.png[align="center", width=90%]
+
+
+* There are 4 Kamelets in use:
++
+====
+A source::
+consumes events from Kafka.
+Two actions::
+one filters messages to prevent death loops. +
+one transforms events from the standard data model to _Discord_.
+A sink::
+produces events to _Discord_.
+====
+
+{empty} +
+
+
+
+=== Process definition
+
+. Setup the Kamelet Binding
++
+Given the process is almost identical to the Kafka to Gitter/Slack ones, we can use one of those as a base for our definition.
++
+Run the following commands in your terminal:
++
+```bash
+cp ../lab3/flows/k2s.yaml k2d.yaml
+sed -i '' 's/k2s/k2d/g'       k2d.yaml
+sed -i '' 's/slack/discord/g' k2d.yaml
+sed -i '' 's/stage3/stage4/g' k2d.yaml
+touch k2d.jslt
+```
++
+[NOTE]
+====
+The commands above changed the `k2d.yaml` binding with the following amendments:
+
+* Its name is `k2d` (Kafka to Discord)
+* The filter blocks `discord` source events
+* Applies the `k2d.jslt` transformation (to be defined)
+* Uses the new _Discord Sink Kamelet_
+====
++
+No extra changes are required on the _Kamelet Binding_, it's good to go.
++
+{empty} +
+
+
+. Define the JSLT transformation (Standard -> Discord).
++
+Copy the snippet below and paste it into your new `k2d.jslt` file:
++
+```
+{
+	"content":"**"+.user+"@"+.source+"**: "+.text
+}
+```
++
+[NOTE]
+====
+We're mapping values from the Standard data model
+====
+{empty} +
+
+And that's it, ready to be deployed.
+
 {empty} +

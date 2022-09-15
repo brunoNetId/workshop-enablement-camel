@@ -362,7 +362,7 @@ The main differences are that we are consuming events from Kafka (step 1) and th
 
 === Process overview
 
-The diagram below applies to the data flows (2 of them) from Gitter/Slack respectively to Kafka:
+The diagram below applies to the data flows (2 of them) from _Kafka_ to Gitter/Slack respectively:
 
 image::images/processing-flow-kafka2chat.png[align="center", width=90%]
 
