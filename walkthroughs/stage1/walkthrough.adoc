@@ -77,12 +77,12 @@ A sink
 
 This workshop has been designed to attend two different user profiles:
 
-The Kubernetes user (no previous Camel experience)::
+The Kubernetes user (no previous Camel experience)
 The way this user consumes Camel is by selecting catalog Kamelets and creating Kamelet bindings in YAML definitions. The user creates local YAML files and then pushes them to OpenShift. The Camel K operator automates the process of building, creating images and deploying the integrations.
 
-The Camel developer:: The traditional Camel developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
+The Camel developer The traditional Camel developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 
-NOTE: The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
+NOTE The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
 
 It's up to you to choose which user to impersonate. Considering how easy are the instructions to follow, we recommend choosing the Camel developer, which will anyway mimic the Kubernetes user when deploying in OpenShift. However, if time is a constraint then choose the Kubernetes user.
 
