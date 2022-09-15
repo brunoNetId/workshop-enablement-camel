@@ -10,7 +10,7 @@ oc create -f openshift/template.yml
 
 2. Use the console to deploy the template
 
-image::img/template.png[Template Form]
+image::docs/img/template.png[Template Form]
 
 3. Enable OpenShift Authentication
 
