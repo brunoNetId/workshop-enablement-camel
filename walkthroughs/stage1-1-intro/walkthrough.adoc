@@ -112,32 +112,6 @@ For example:
 +
 * `\https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080`
 +
-----
-https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-----
-+
-====
-https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-====
-+
-====
-\https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-====
-+
-[source, http]
-====
-https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-====
-+
-[source, http]
-====
-\https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-====
-+
-```http
-https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
-```
-+
 {empty} +
 
 .. Open a browser tab, enter your URL in the address bar and press enter. The browser will load an authorization page as per the picture below:
@@ -155,7 +129,9 @@ The approval action will trigger a redirect that will cause a browser connection
 {empty} +
 
 .. Take note of the code, now we have to exchange it to obtain an access token. +
-Use the following cURL base command (replace values using your credentials).
+Use the following cURL base command:
++
+CAUTION: ensure you replace `YOUR_APP_OAUTH_KEY` / `YOUR_APP_OAUTH_SECRET` / `YOUR_REDIRECT_CODE`
 +
 ```curl
 CLIENT_ID=YOUR_APP_OAUTH_KEY \
@@ -180,6 +156,28 @@ curl -v https://gitter.im/login/oauth/token \
 -H "accept: application/json" \
 -d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
 ```
++
+[source, curl]
+====
+CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
+CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
+CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
+&& \
+curl -v https://gitter.im/login/oauth/token \
+-H "accept: application/json" \
+-d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
+====
++
+[source, curl]
+----
+CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
+CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
+CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
+&& \
+curl -v https://gitter.im/login/oauth/token \
+-H "accept: application/json" \
+-d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
+----
 +
 {empty} +
 +
