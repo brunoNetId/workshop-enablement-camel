@@ -57,14 +57,14 @@ image::images/processing-flow.png[align="center", width=80%]
 
 * There are 3 Kamelets in use:
 +
-====
-A source::
+
+A source
 consumes events from Gitter
-An action::
+An action
 	transforms Gitter events to Slack events (in JSON format)
-A sink::
+A sink
 	produces events to Slack
-====
+
 
 {empty} +
 
