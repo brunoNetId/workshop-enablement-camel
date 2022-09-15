@@ -1,0 +1,7 @@
+apiVersion: oauth.openshift.io/v1
+kind: OAuthClient
+metadata:
+  name: "solution-explorer"
+redirectURIs:
+  - https://WALKTHROUGH_ROUTE
+grantMethod: auto
