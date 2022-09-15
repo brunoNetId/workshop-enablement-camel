@@ -132,9 +132,15 @@ channel=YOUR_ROOM_ID
 +
 Ensure you configure with your _Discord_ values, and save changes.
 +
+token::
 * If you're sharing an App with the group, use the App's token your admin has provided.
 * If you created your own App, use your App's Bot token.
-
++
+channel::
+You can find the channel id in the address bar of your Discord browser tab. The pattern is:
+* http://discord.com/channels/SERVER_ID/CHANNEL_ID
++
+image::images/discord-room-id.png[align="left", width=100%]
 +
 {empty} +
 
