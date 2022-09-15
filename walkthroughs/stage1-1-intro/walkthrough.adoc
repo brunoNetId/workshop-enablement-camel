@@ -72,7 +72,7 @@ For exameple:
 +
 --
 Name:: `camelbot`
-Redirect URL:: `\http://localhost:8080`
+// Redirect URL:: `\http://localhost:8080`
 --
 +
 Gitter will generate your App's access credentials, for example:
