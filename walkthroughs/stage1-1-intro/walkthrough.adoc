@@ -71,10 +71,17 @@ Create a new App that will communicate with Gitter:
 For exameple:
 +
 --
-test:: this
+* *Name*:
++
+`camelbot`
+* *Redirect URL*:
++
+`\http://localhost:8080`
 // Name:: `camelbot`
 // Redirect URL:: `\http://localhost:8080`
 --
++
+{empty} +
 +
 Gitter will generate your App's access credentials, for example:
 +
