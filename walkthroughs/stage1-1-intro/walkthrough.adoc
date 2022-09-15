@@ -65,20 +65,20 @@ image::images/gitter-dev-token.png[align="left", width=30%,border-color="green",
 +
 Create a new App that will communicate with Gitter:
 
-1. Click `Your Apps -> New app`
-+
-1. Enter a new Name and set `\http://localhost:8080` as `Redirect URL`. +
-For exameple:
-+
---
-Name:: `camelbot`
-Redirect URL:: `\http://localhost:8080`
---
-+
-Gitter will generate your App's access credentials, for example:
-+
-image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green", border-width="3"]
-+
+// 1. Click `Your Apps -> New app`
+// +
+// 1. Enter a new Name and set `\http://localhost:8080` as `Redirect URL`. +
+// For exameple:
+// +
+// --
+// Name:: `camelbot`
+// Redirect URL:: `\http://localhost:8080`
+// --
+// +
+// Gitter will generate your App's access credentials, for example:
+// +
+// image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green", border-width="3"]
+// +
 {empty} +
 
 === Authorise your App.
