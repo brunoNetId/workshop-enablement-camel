@@ -32,20 +32,314 @@ image::images/data-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms.
 
-For now, follow the onboarding instructions below for Gitter. That will allow us to start with the first integration steps. Later in the walkthrough we will complete the Slack onboarding process.
+The tasks to complete in this lab will guide you on how to onboard to both chat systems..
 
-[time=2]
+{empty} +
+
+[time=5]
 [id="gitter-chat"]
-== Access Gitter's chat platform
+== Gitter's platform onboarding
 
-// TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
+TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
 
-Please follow the link below to complete the Gitter onboarding process. The guide will describe step by step the setup process. When done, you will be able to start constructing the integration flow.
+=== Create an App in Gitter.
 
-gitter doc here
+. Login in Gitter
++
+You can use one of the following accounts to join Gitter:
++
+--
+* GitHub
+* GitLab
+* Twitter
+--
++
+Login to Gitter's developer portal following the URL below: + 
+https://developer.gitter.im/login
++
+Once logged in, you'll be presented with your personal access token and an empty list of apps (if never created one before).
++
+image::images/gitter-dev-token.png[align="left", width=30%,border-color="green", border-width="3"]
++
+Create a new App that will communicate with Gitter:
+
+1. Click `Your Apps -> New app`
++
+1. Enter a new Name and set `\http://localhost:8080` as `Redirect URL`. For exameple:
++
+--
+```
+Name:
+  camelbot
+
+Redirect URL:
+  http://localhost:8080
+```
+Gitter will generate your App's access credentials, for example:
+
+image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green", border-width="3"]
+--
+
+{empty} +
+
+=== Authorise your App.
+
+. We need to complete the OAuth web authentication flow.
++
+[NOTE]
+--
+For reference, here's the specification describing the authentication flow:
+
+* https://www.rfc-editor.org/rfc/rfc6749#section-4.1 
+--
++
+.. Componse the following URL call:
+
+		https://gitter.im/login/oauth/authorize?client_id=YOUR_APP_OAUTH_KEY&response_type=code&redirect_uri=http://localhost:8080
++
+For example:
+
+		https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
++
+
+.. Open a browser tab, enter your URL in the address bar and press enter. The browser will load an authorization page as per the picture below:
++
+image::images/gitter-dev-new-app-approve.png[align="left", width=30%,border-color="green", border-width="3"]
++
+Click `ALLOW`.
++
+The approval action will trigger a redirect that will cause a browser connection error since we we're not running a listening app on 8080, but it allows us to obtain the returned authorisation code from the address bar that should be similar to the following:
++
+- \http://localhost:8080/?code=`0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b``
++
+.. Take note of the code, now we have to exchange it to obtain an access token. Use the following cURL base command (replace values using your credentials).
++
+```curl
+CLIENT_ID=YOUR_APP_OAUTH_KEY \
+CLIENT_SECRET=YOUR_APP_OAUTH_SECRET \
+CODE=YOUR_REDIRECT_CODE \
+&& \
+curl -v https://gitter.im/login/oauth/token \
+-H "accept: application/json" \
+-d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
+```
++
+For example:
++
+```curl
+CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
+CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
+CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
+&& \
+curl -v https://gitter.im/login/oauth/token \
+-H "accept: application/json" \
+-d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
+```
++
+This above cURL command should return something like:
++
+```json
+{"access_token":"2d482bdf092e0e2299832b1f38d9560243083894","token_type":"Bearer"}
+```
++
+.. Now, use the returned token to obtain the Room IDs available using the following base command:
++
+```curl
+TOKEN=YOUR_ACCESS_TOKEN \
+&& \
+curl -v https://api.gitter.im/v1/rooms \
+-H "Accept: application/json" \
+-H "Authorization: Bearer "$TOKEN
+```
++
+For example:
++
+```curl
+TOKEN=2d482bdf092e0e2299832b1f38d9560243083894 \
+&& \
+curl -v https://api.gitter.im/v1/rooms \
+-H "Accept: application/json" \
+-H "Authorization: Bearer "$TOKEN
+```
++
+The command above will probably return an empty list if you have not yet joined any Gitter room.
+
+{empty} +
+
+=== Join a Gitter room.
+. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
+
+		https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link&utm_campaign=share-link
++
+For example, if choosing `room1`, use the following invite URL
+
+		https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
++
+Click `JOIN ROOM` at the bottom of the chat room. At this point you see your avatar included in the room on the right hand side of the room.
++
+Running the cURL command again to obtain the rooms should return the identifier of the room you just joined, something similar to:
++
+```json
+[{"id":"6317569e6da03739849c519a"         }]
+```
++
+At this stage, you should have available all the configuration identifiers to define the Kamelet Binding in the next section using the following:
++
+```properties
+# Gitter credentials
+gitter.token=YOUR_ACCESS_TOKEN
+gitter.room=YOUR_ROOM_ID
+```
++
+For example
++
+```properties
+# Gitter credentials
+gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
+gitter.room=6317569e6da03739849c519a
+```
+
+{empty} +
 
 [type=verification]
-Did you create the flow successfully?
+Did you complete the onboarding successfully?
+
+{empty} +
+
+
+[time=5]
+[id="slack-chat"]
+== Slack's platform onboarding
+
+
+=== Join a Slack workspace.
+
+To accelerate the onboarding process in Slack, we've created a public workspace for anyone to freely join and use for the purpose of this enablement workshop. 
+
+Follow the invite link to join the workshop's workspace in Slack:
+
+* https://join.slack.com/t/camelworkshop/shared_invite/zt-1fvfhatch-HQKSJyob_YIY3nRGhJ7tWA
+
+CAUTION: The workspace is open to the public, please be mindful of your actions, don't abuse the space.
+
+
+NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, you should be able to complete the workshop in the same manner.
+
+{empty} +
+
+
+=== Join a Slack room (channel).
+. A number of public rooms were made available in the public workspace for the workshop (room1, room2, ...roomX). Choose a room number that nobody uses to avoid noisy conversations.
++
+Alternatively, you can also create your own room, use the prefix `room_`, for example:
+
+* `room_x`
+
+{empty} +
+
+=== Connecting Camel to Slack
+
+To connect from Camel to the chat platform, an App needs to be registered in Slack. You would just need to add the registered App to a particular room to allow Camel to pick up messages.
+
+* If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
+
+** link:#creating-your-own-app-for-slack[Creating your own App for Slack]
+
+* If you're part of a workshop group, an App has been made available for all students to share. You can skip the next section and directly jump to the section with instructions to add the shared App to your selected room.
+
+** link:#adding-an-app-to-a-room[Adding an App to a room]
+
+{empty} +
+
+
+==== [[creating-your-own-app-for-slack]] Creating your own App for Slack
+
+. Connect to the following URL
++
+* https://api.slack.com/apps
+
+. Click on the `Create New App` button
++
+image::images/slack-create-app.png[align="left", width=20%]
++
+Select `From scratch`, then
++
+.. Give it a name, for example `MyCamelApp`.
+.. Select `CamelWorkshop` (or your own workspace if you created one)
+.. Click `Create App`
++
+Once the App created you'll be presented with its `Basic Information`
+
+. Select from the left menu:
++
+
+* Features => OAuth & Permissions
+
++
+.. Add scopes
++
+Scroll down the screen to find the section `Scopes`. +
+Include the following Bot scopes:
++
+--
+- channels:history
+- channels:read
+- chat:write
+- mpim:history
+--
++
+.. Generate tokens
++
+Scroll up until you find `OAuth Tokens for Your Workspace`. +
+Click `Install in Workspace`.
++
+You will be requested permissions to access the workspace, click `Allow`.
++
+Slack then generates and presents the Oauth token for your App:
++
+image::images/slack-app-oauth-token.png[align="left", width=80%]
+
+{empty} +
+
+Once your App is created, you're ready to add it to your workspace room (or channel). +
+Follow the instructions below on how to add your app:
+
+{empty} +
+
+
+==== [[adding-an-app-to-a-room]]Adding an App to a room
+
+Once you have an App available, follow the steps below:
+
+. Join a Slack room (channel)
++
+A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations.
++
+You can also create your own room, use the prefix `room_`, for example:
+
+* `room_x`
+
+. Open the channel details of the room you joined
++
+image::images/slack-room-details.png[align="left", width=20%]
+
+. Click on the `Integrations` tab, and add an App
++
+image::images/slack-add-app.png[align="left", width=50%]
+
+. Find the `CamelWorkshopApp` (or your own app), and click `Add`
++
+image::images/slack-add-app-to-room.png[align="left", width=60%]
+
+Your room has now the App included. Camel can use the App credentials to communicate with Slack.
+
+If you are sharing the App with a group, ask your workshop's admin for the App credentials to configure Camel.
+
+
+{empty} +
+
+[type=verification]
+Did you complete the onboarding successfully?
 
 {empty} +
 
