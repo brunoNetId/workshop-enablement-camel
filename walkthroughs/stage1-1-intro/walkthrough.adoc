@@ -71,7 +71,7 @@ Create a new App that will communicate with Gitter:
 For exameple:
 +
 --
-test this
+test:: this
 // Name:: `camelbot`
 // Redirect URL:: `\http://localhost:8080`
 --
