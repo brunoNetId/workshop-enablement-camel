@@ -186,49 +186,52 @@ The command above will probably return an empty list if you have not yet joined 
 {empty} +
 
 === Join a Gitter room.
-. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
-+
-```http
-https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-```
-+
-{empty} +
-+
-For example, if choosing `room1`, use the following invite URL
-+
-```http
-https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-```
-+
-{empty} +
-+
-Click `JOIN ROOM` at the bottom of the chat room. At this point you see your avatar included in the room on the right hand side of the room.
-+
-Running the cURL command again to obtain the rooms should return the identifier of the room you just joined, something similar to:
-+
-```json
-[{"id":"6317569e6da03739849c519a"         }]
-```
-+
-{empty} +
-+
-At this stage, you should have available all the configuration identifiers to define the Kamelet Binding in the next section using the following:
-+
-```properties
-# Gitter credentials
-gitter.token=YOUR_ACCESS_TOKEN
-gitter.room=YOUR_ROOM_ID
-```
-+
-{empty} +
-+
-For example
-+
-```properties
-# Gitter credentials
-gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
-gitter.room=6317569e6da03739849c519a
-```
+
+temp
+
+// . A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
+// +
+// ```http
+// https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link&utm_campaign=share-link
+// ```
+// +
+// {empty} +
+// +
+// For example, if choosing `room1`, use the following invite URL
+// +
+// ```http
+// https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
+// ```
+// +
+// {empty} +
+// +
+// Click `JOIN ROOM` at the bottom of the chat room. At this point you see your avatar included in the room on the right hand side of the room.
+// +
+// Running the cURL command again to obtain the rooms should return the identifier of the room you just joined, something similar to:
+// +
+// ```json
+// [{"id":"6317569e6da03739849c519a"         }]
+// ```
+// +
+// {empty} +
+// +
+// At this stage, you should have available all the configuration identifiers to define the Kamelet Binding in the next section using the following:
+// +
+// ```properties
+// # Gitter credentials
+// gitter.token=YOUR_ACCESS_TOKEN
+// gitter.room=YOUR_ROOM_ID
+// ```
+// +
+// {empty} +
+// +
+// For example
+// +
+// ```properties
+// # Gitter credentials
+// gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
+// gitter.room=6317569e6da03739849c519a
+// ```
 
 {empty} +
 
