@@ -189,9 +189,13 @@ By the parameter `repeatCount` (copy/replace from the snippet below):
 
 . Run your test route with:
 +
+// ```bash
+// camel run test-discord.yaml --reload \
+// --properties=stage4.properties
+// ```
++
 ```bash
-camel run test-discord.yaml --reload \
---properties=stage4.properties
+camel run * --reload
 ```
 +
 The output in your terminal should show, once, the following: `Hello Camel from yaml`.
@@ -251,7 +255,7 @@ If all goes well, Discord will receive the message and display it in the room, a
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
-The first goal has been accomplished. image:images/emoji-clap.png[width=5%]
+The first goal has been accomplished. image:images/emoji-clap.png[width=2%]
 +
 Press `ctrl`+`c` to stop _Camel JBang_.
 +
@@ -304,7 +308,7 @@ spec:
     properties:
       token:
         title: Security Token
-        description: The Gitter security token
+        description: The bot security token
         type: string
       channelid:
         title: Channel Identifier
@@ -318,6 +322,7 @@ spec:
   template:
     from:
       uri: "kamelet:source"
+      steps:
 ```
 +
 .. include your prototype code
@@ -334,3 +339,53 @@ spec:
       - to:
           uri: "https://discordapp.com/api/channels/{{channel}}/messages"
 ```
++ 
+{empty} +
+
+. Test your Kamelet
++
+.. Modify your prototype `test-discord.yaml`
++
+Replace the HTTP logic by your Kamelet:  
++
+----
+# camel-k: language=yaml
+
+# Write your routes here, for example:
+- from:
+    uri: "timer:yaml"
+    parameters:
+      repeatCount: "1"
+    steps:
+      - setBody:
+          constant: '{"content": "Hello from Camel"}'
+      - log: "${body}"
+----
++
+```yaml
+      - to:
+          uri: "kamelet:discord-sink"
+          parameters:
+            token:   "{{token}}"
+            channel: "{{channel}}"
+```
++
+Save changes.
++
+{empty} +
++
+.. Run it
++
+```bash
+camel run *
+```
++
+Again, if all goes well, Discord will receive the message and display it in the room, as shown below:
++
+image::images/discord-room-hello.png[align="left", width=40%]
++
+The second goal has been accomplished. image:images/emoji-clap.png[width=2%]
++
+Press `ctrl`+`c` to stop _Camel JBang_.
++
+{empty} +

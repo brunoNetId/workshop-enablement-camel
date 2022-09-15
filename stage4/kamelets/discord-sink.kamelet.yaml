@@ -38,7 +38,7 @@ spec:
     properties:
       token:
         title: Security Token
-        description: The Gitter security token
+        description: The bot security token
         type: string
       channelid:
         title: Channel Identifier
