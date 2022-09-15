@@ -138,7 +138,10 @@ token::
 +
 channel::
 You can find the channel id in the address bar of your Discord browser tab. The pattern is:
++
+--
 * http://discord.com/channels/SERVER_ID/CHANNEL_ID
+--
 +
 image::images/discord-room-id.png[align="left", width=100%]
 +
@@ -181,6 +184,8 @@ By the parameter `repeatCount` (copy/replace from the snippet below):
           constant: "Hello Camel from yaml"
       - log: "${body}"
 ----
++
+{empty} +
 
 . Run your test route with:
 +
@@ -203,7 +208,7 @@ Let's modify the code to simulate the JSON payload _Discord_ expects. Replace th
 ```
 +
 Save changes. +
-_Camel JBang_ will react: it will run the new definition on the fly.
+_Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
 {empty} +
 
@@ -240,14 +245,92 @@ Include the following snipped in your YAML file:
 ```
 +
 Save changes. +
-Camel JBang will react: it will run the new definition on the fly.
+_Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
 If all goes well, Discord will receive the message and display it in the room, as shown below:
 +
 image::images/discord-room-hello.png[align="left", width=40%]
-
++
+The first goal has been accomplished. image:images/emoji-clap.png[width=5%]
++
+Press `ctrl`+`c` to stop _Camel JBang_.
++
 {empty} +
 
 ==== Encapsulate as a Sink
 
 Now that our prototype is fully functional, let's encapsulate the code as a Kamalet Sink.
+
+. Create skeleton
++
+Use the following command to create a Kamelet skeleton:
++
+```bash
+camel init discord-sink.kamelet.yaml
+```
++
+Open the file in your editor.
++
+{empty} +
+
+. Define your Kamelet
++
+.. define its type as _Sink_
++
+----
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: discord-sink
+  labels:
+----
++
+```yaml
+    camel.apache.org/kamelet.type: "sink"
+```
++
+.. define metadata and parameters
++
+```yaml
+spec:
+  definition:
+    title: "Discord Sink"
+    description: |-
+      Send messages to Discord.
+    required:
+      - token
+      - room
+    type: object
+    properties:
+      token:
+        title: Security Token
+        description: The Gitter security token
+        type: string
+      channelid:
+        title: Channel Identifier
+        description: The channel id
+        type: string
+  types:
+    out:
+      mediaType: application/json
+  dependencies:
+  - "camel:kamelet"
+  template:
+    from:
+      uri: "kamelet:source"
+```
++
+.. include your prototype code
++
+```yaml
+      - remove-headers:
+          pattern: "*"
+      - set-header:
+          name: Content-Type
+          simple: application/json
+      - set-header:
+          name: Authorization
+          simple: Bot {{token}}
+      - to:
+          uri: "https://discordapp.com/api/channels/{{channel}}/messages"
+```
