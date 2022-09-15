@@ -1,0 +1,146 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  app: solution-explorer
+  template: solution-explorer
+message: Template for exposing labs with Solution Explorer
+metadata:
+  annotations:
+    description: Template for exposing labs with Solution Explorer
+    openshift.io/display-name: Solution Explorer
+    openshift.io/long-description: Template for exposing labs with Solution Explorer
+  name: solution-explorer
+  namespace: openshift
+objects:
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: solution-explorer
+  spec:
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: solution-explorer
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: solution-explorer
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+    volumeMode: Filesystem
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: solution-explorer
+    labels:
+      app: solution-explorer
+  spec:
+    strategy:
+      type: Recreate
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      activeDeadlineSeconds: 21600
+    triggers:
+      - type: ConfigChange
+    replicas: 1
+    revisionHistoryLimit: 2
+    test: false
+    selector:
+      app: solution-explorer
+    template:
+      metadata:
+        labels:
+          app: solution-explorer
+      spec:
+        serviceAccountName: solution-explorer
+        volumes:
+          - name: user-walkthroughs
+            persistentVolumeClaim:
+              claimName: solution-explorer
+        containers:
+          - resources: {}
+            terminationMessagePath: /dev/termination-log
+            name: solution-explorer
+            env:
+              - name: OPENSHIFT_HOST
+                value: ${OPENSHIFT_CONSOLE_URL}
+              - name: OPENSHIFT_VERSION
+                value: '4'
+              - name: OPENSHIFT_API
+                value: openshift.default.svc
+              - name: OPENSHIFT_OAUTH_HOST
+                value: ${OPENSHIFT_OAUTH_HOST}
+              - name: KUBERNETES_NAMESPACE
+                valueFrom:
+                  fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+              - name: OPENSHIFT_OAUTHCLIENT_ID
+                value: "solution-explorer"
+              - name: NODE_ENV
+                value: production
+              - name: WALKTHROUGH_LOCATIONS
+                value: ${WALKTHROUGH_LOCATIONS}
+              - name: INTEGREATLY_VERSION
+                value: "1.0.10"
+              - name: DATABASE_LOCATION
+                value: /opt/user-walkthroughs
+              - name: INSTALLATION_TYPE
+                value: workshop
+            ports:
+              - name: http
+                containerPort: 5001
+                protocol: TCP
+            imagePullPolicy: Always
+            volumeMounts:
+              - name: user-walkthroughs
+                mountPath: /opt/user-walkthroughs
+            terminationMessagePolicy: File
+            image: 'quay.io/gcamposo/tutorial-web-app:1.0.10'
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
+        dnsPolicy: ClusterFirst
+        securityContext: {}
+        schedulerName: default-scheduler
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: solution-explorer
+    labels:
+      app: solution-explorer
+  spec:
+    ports:
+      - name: http
+        protocol: TCP
+        port: 5001
+        targetPort: 5001
+    internalTrafficPolicy: Cluster
+    sessionAffinity: None
+    selector:
+      app: solution-explorer
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    annotations:
+      serviceaccounts.openshift.io/oauth-redirectreference.solution-explorer: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"solution-explorer"}}'
+    name: solution-explorer
+parameters:
+- description: The git URL of the walkthroughs
+  displayName: WALKTHROUGH_LOCATIONS
+  name: WALKTHROUGH_LOCATIONS
+  required: true
+- description: OCP Oauth URL without https://
+  displayName: OPENSHIFT_OAUTH_HOST
+  name: OPENSHIFT_OAUTH_HOST
+  required: true
+- description: URL for OpenShift console
+  displayName: OPENSHIFT_CONSOLE_URL
+  name: OPENSHIFT_CONSOLE_URL
+  required: true
