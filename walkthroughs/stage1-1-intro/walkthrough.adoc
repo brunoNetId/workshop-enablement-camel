@@ -79,6 +79,8 @@ For example:
 `\http://localhost:8080`
 --
 +
+{empty} +
++
 Gitter will generate your App's access credentials, for example:
 +
 image::images/gitter-dev-new-app.png[align="left", width=40%,border-color="green", border-width="3"]
@@ -107,6 +109,8 @@ https://gitter.im/login/oauth/authorize?client_id=YOUR_APP_OAUTH_KEY&response_ty
 {empty} +
 +
 For example:
++
+* `\https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080`
 +
 ----
 https://gitter.im/login/oauth/authorize?client_id=4b03ca9d94d128f1a219027b776722059cc89bba&response_type=code&redirect_uri=http://localhost:8080
