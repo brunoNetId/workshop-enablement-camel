@@ -219,10 +219,11 @@ To accelerate the onboarding process in Slack, we've created a public workspace 
 Follow the invite link to join the workshop's workspace in Slack:
 
 * https://join.slack.com/t/camelworkshop/shared_invite/zt-1fvfhatch-HQKSJyob_YIY3nRGhJ7tWA
-
++
+{empty} +
++
 CAUTION: The workspace is open to the public, please be mindful of your actions, don't abuse the space.
-
-
++
 NOTE: if you were unsuccessful joining the public workspace provided, feel free to create you own Slack workspace, you should be able to complete the workshop in the same manner.
 
 {empty} +
