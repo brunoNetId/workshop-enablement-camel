@@ -8,6 +8,15 @@ endif::[]
 
 This first stage is all about completing our first integration flow using a Kamelet Binding.
 
+++++
+<p>
+Content in a passthrough block is passed to the output unprocessed.
+That means you can include raw HTML, like this embedded Gist:
+</p>
+
+<script src="https://gist.github.com/mojavelinux/5333524.js">
+</script>
+++++
 
 *Overview*
 This first stage is all about completing our first integration flow using a Kamelet Binding.
@@ -157,28 +166,6 @@ curl -v https://gitter.im/login/oauth/token \
 -d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
 ```
 +
-[source, curl]
-====
-CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
-CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
-CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
-&& \
-curl -v https://gitter.im/login/oauth/token \
--H "accept: application/json" \
--d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
-====
-+
-[source, curl]
-----
-CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
-CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
-CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
-&& \
-curl -v https://gitter.im/login/oauth/token \
--H "accept: application/json" \
--d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
-----
-+
 {empty} +
 +
 This above cURL command should return something like:
@@ -190,6 +177,8 @@ This above cURL command should return something like:
 {empty} +
 
 .. Now, use the returned token to obtain the Room IDs available using the following base command:
++
+CAUTION: ensure you replace `YOUR_ACCESS_TOKEN`
 +
 ```curl
 TOKEN=YOUR_ACCESS_TOKEN \
@@ -213,15 +202,15 @@ curl -v https://api.gitter.im/v1/rooms \
 +
 {empty} +
 +
-The command above will probably return an empty list if you have not yet joined any Gitter room.
+The command above will probably return an empty list if you have not yet joined any _Gitter_ room.
 
 {empty} +
 
 === Join a Gitter room.
 
-temp
-
-. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Replace `YOUR_ROOM` in the following invite URL to join the lab room:
+. A number of public rooms were made available for this workshop (roomX). Choose a room number that nobody uses to avoid noisy conversations. Use the invite URL below to join the lab room:
++
+CAUTION: ensure you replace `YOUR_ROOM`
 +
 ```http
 https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link&utm_campaign=share-link
