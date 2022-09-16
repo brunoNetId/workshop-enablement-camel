@@ -62,6 +62,99 @@ spec:
     name: none-authservice
 ----
 
+== test level 2
+
+
+full test:
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+[source,yaml,role="copypaste"]
+----
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+----
+----
+  authenticationService:
+    name: none-authservice
+----
+
+=== test level 3
+
+
+full test:
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+[source,yaml,role="copypaste"]
+----
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+----
+----
+  authenticationService:
+    name: none-authservice
+----
+
+==== test level 4
+
+
+full test:
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+[source,yaml,role="copypaste"]
+----
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+----
+----
+  authenticationService:
+    name: none-authservice
+----
+
 // ++++
 // <p>Click on the button to copy the text from the text field. Try to paste the text (e.g. ctrl+v) afterwards in a different window, to see the effect.</p>
 // <input type="text" value="Hello World" id="myInput">
