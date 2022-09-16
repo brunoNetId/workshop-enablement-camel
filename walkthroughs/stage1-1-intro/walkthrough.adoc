@@ -8,22 +8,50 @@ endif::[]
 
 This first stage is all about completing our first integration flow using a Kamelet Binding.
 
+
+```yaml
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+```
+[source,yaml]
 ----
-Login successful.
-
-You have access to the following projects and can switch between them with 'oc project <projectname>':
-
-    shared-db-earth
-    shared-kafka-earth
-  * user1
-    user1-che
-    user1-dayinthel-0605
-    user1-shared-475f
-
-Using project "user1".
-Welcome! See 'oc help' to get started.
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
 ----
 
+full test:
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+[source,yaml,role="copypaste"]
+----
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+----
+----
+  authenticationService:
+    name: none-authservice
+----
 
 ++++
 <p>Click on the button to copy the text from the text field. Try to paste the text (e.g. ctrl+v) afterwards in a different window, to see the effect.</p>
