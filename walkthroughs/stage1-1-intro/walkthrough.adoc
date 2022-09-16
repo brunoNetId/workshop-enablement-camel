@@ -105,6 +105,66 @@ TIP: If you're unfamiliar with Gitter, it is an open-source chat platform design
 
 === Create an App in Gitter.
 
+
+
+This first stage is all about completing our first integration flow using a Kamelet Binding.
+
+```curl
+CLIENT_ID=YOUR_APP_OAUTH_KEY \
+CLIENT_SECRET=YOUR_APP_OAUTH_SECRET \
+CODE=YOUR_REDIRECT_CODE \
+&& \
+curl -v https://gitter.im/login/oauth/token \
+-H "accept: application/json" \
+-d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
+```
+
+```yaml
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+```
+[source,yaml]
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+
+full test:
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+----
+[source,yaml,role="copypaste"]
+----
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+----
+----
+  authenticationService:
+    name: none-authservice
+----
+
+
+
 . Login in Gitter
 +
 You can use one of the following accounts to join Gitter:
