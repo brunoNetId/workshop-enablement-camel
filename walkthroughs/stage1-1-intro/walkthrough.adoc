@@ -96,6 +96,31 @@ spec:
 === test level 3
 
 
+. Replace the content in the YAML editor with the following content:
++
+[source,yaml,role="copypaste"]
+----
+apiVersion: enmasse.io/v1beta1
+kind: AddressSpace
+metadata:
+  name: amq
+spec:
+  plan: standard-small
+  type: standard
+  endpoints:
+    - name: messaging
+      service: messaging
+      expose:
+        type: route
+        routeServicePort: amqps
+        routeTlsTermination: passthrough
+      exports:
+        - kind: ConfigMap
+          name: amq-config
+  authenticationService:
+    name: none-authservice
+----
+
 full test:
 ----
 apiVersion: enmasse.io/v1beta1
