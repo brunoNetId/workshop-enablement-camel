@@ -96,6 +96,24 @@ spec:
 === test level 3
 
 
+. You should see something like the following (the project names may be different):
++
+----
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    shared-db-earth
+    shared-kafka-earth
+  * user1
+    user1-che
+    user1-dayinthel-0605
+    user1-shared-475f
+
+Using project "user1".
+Welcome! See 'oc help' to get started.
+----
+
 . Replace the content in the YAML editor with the following content:
 +
 [source,yaml,role="copypaste"]
