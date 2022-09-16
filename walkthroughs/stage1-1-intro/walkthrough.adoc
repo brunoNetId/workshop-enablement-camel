@@ -8,6 +8,23 @@ endif::[]
 
 This first stage is all about completing our first integration flow using a Kamelet Binding.
 
+----
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    shared-db-earth
+    shared-kafka-earth
+  * user1
+    user1-che
+    user1-dayinthel-0605
+    user1-shared-475f
+
+Using project "user1".
+Welcome! See 'oc help' to get started.
+----
+
+
 ++++
 <p>Click on the button to copy the text from the text field. Try to paste the text (e.g. ctrl+v) afterwards in a different window, to see the effect.</p>
 <input type="text" value="Hello World" id="myInput">
