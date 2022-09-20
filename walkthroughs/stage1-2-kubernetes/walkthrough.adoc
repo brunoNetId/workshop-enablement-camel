@@ -1,4 +1,26 @@
-= [[kubernetes-user]] The Kubernetes user deployment flow
+:walkthrough: Gitter to Slack bridge ()
+
+ifdef::env-github[]
+endif::[]
+
+[id='lab1-part2-kubernetes']
+= Lab 1 - Gitter to Slack bridge (part-2, Kubernetes user)
+
+// = [[kubernetes-user]] The Kubernetes user deployment flow
+
+Impersonate the Kubernetes user to complete Lab-1's Gitter to Slack processing flow.
+
+The instructions below are divided in two segments:
+
+* Local development (and testing)
+* Deployment in OpenShift
+
+{empty} +
+
+
+[time=10]
+[id="main"]
+== Bridge definition and deployment 
 
 The instructions below will make you progress one Camel step at a time rather than providing a complete _Kamelet Binding_ of the full data flow. This will allow you to play with different _Kamelets_ and understand better the mechanics of _Kamelet Bindings_.
 

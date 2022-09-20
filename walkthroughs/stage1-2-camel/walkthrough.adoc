@@ -1,4 +1,14 @@
-= [[camel-developer]] The Camel user development flow
+:walkthrough: Gitter to Slack bridge ()
+
+ifdef::env-github[]
+endif::[]
+
+[id='lab1-part2-camel']
+= Lab 1 - Gitter to Slack bridge (part-2, Camel developer)
+
+// = [[camel-developer]] The Camel user development flow
+
+Impersonate the Camel developer to complete Lab-1's Gitter to Slack processing flow.
 
 The instructions below are divided in two segments:
 
@@ -7,6 +17,8 @@ The instructions below are divided in two segments:
 
 {empty} +
 
+[time=10]
+[id="local"]
 == Local development 
 
 The development tool that will help us iterate our code in our local environment is _Camel JBang_.
@@ -318,6 +330,9 @@ We can consider the local development done. We have a full data flow definition 
 
 {empty} +
 
+
+[time=5]
+[id="openshift"]
 == Deployment in OpenShift
 
 The definitions that we have developed can almost be taken 'as-is' into OpenShift. 

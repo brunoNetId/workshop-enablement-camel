@@ -103,7 +103,8 @@ objects:
               - name: user-walkthroughs
                 mountPath: /opt/user-walkthroughs
             terminationMessagePolicy: File
-            image: 'quay.io/gcamposo/tutorial-web-app:1.0.10'
+            # image: 'quay.io/gcamposo/tutorial-web-app:1.0.10'
+            image: 'quay.io/redhatintegration/tutorial-web-app:2.28.1-workshop'
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         dnsPolicy: ClusterFirst

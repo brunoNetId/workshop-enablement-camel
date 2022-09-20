@@ -15,3 +15,9 @@ Running stages
 
     - Run locally with JBang
         ./local.sh
+
+
+Running tutorial docs
+---------------------
+
+    docker run --rm -it --name solex -p 5001:5001 -v $PWD/walkthroughs:/opt/user-walkthroughs -e NODE_ENV=production -e THREESCALE_WILDCARD_DOMAIN=local.localdomain -e OPENSHIFT_VERSION=4 -e WALKTHROUGH_LOCATIONS=/opt/user-walkthroughs quay.io/redhatintegration/tutorial-web-app:latest

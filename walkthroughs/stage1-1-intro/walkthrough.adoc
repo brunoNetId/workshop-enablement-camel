@@ -3,221 +3,30 @@
 ifdef::env-github[]
 endif::[]
 
-[id='git-slack-bridge']
-= Lab 1 - Gitter to Slack bridge
+[id='lab1-part1-intro']
+= Lab 1 - Gitter to Slack bridge (part-1, Introduction)
 
-This first stage is all about completing our first integration flow using a Kamelet Binding.
+This first stage (part-1) is all about completing our first integration flow using a Kamelet Binding.
 
-```curl
-CLIENT_ID=YOUR_APP_OAUTH_KEY \
-CLIENT_SECRET=YOUR_APP_OAUTH_SECRET \
-CODE=YOUR_REDIRECT_CODE \
-&& \
-curl -v https://gitter.im/login/oauth/token \
--H "accept: application/json" \
--d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
-```
-
-```yaml
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-```
-[source,yaml]
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-
-full test:
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-[source,yaml,role="copypaste"]
-----
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-----
-----
-  authenticationService:
-    name: none-authservice
-----
-
-== test level 2
-
-
-full test:
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-[source,yaml,role="copypaste"]
-----
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-----
-----
-  authenticationService:
-    name: none-authservice
-----
-
-=== test level 3
-
-
-. You should see something like the following (the project names may be different):
-+
-----
-Login successful.
-
-You have access to the following projects and can switch between them with 'oc project <projectname>':
-
-    shared-db-earth
-    shared-kafka-earth
-  * user1
-    user1-che
-    user1-dayinthel-0605
-    user1-shared-475f
-
-Using project "user1".
-Welcome! See 'oc help' to get started.
-----
-
-. Replace the content in the YAML editor with the following content:
-+
-[source,yaml,role="copypaste"]
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-  authenticationService:
-    name: none-authservice
-----
-
-full test:
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-[source,yaml,role="copypaste"]
-----
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-----
-----
-  authenticationService:
-    name: none-authservice
-----
-
-==== test level 4
-
-
-full test:
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-[source,yaml,role="copypaste"]
-----
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-----
-----
-  authenticationService:
-    name: none-authservice
-----
-
-// ++++
-// <p>Click on the button to copy the text from the text field. Try to paste the text (e.g. ctrl+v) afterwards in a different window, to see the effect.</p>
-// <input type="text" value="Hello World" id="myInput">
-// <button onclick="navigator.clipboard.writeText(document.getElementById('myInput').value)">copy text</button>
-// ++++
-
-*Overview*
-This first stage is all about completing our first integration flow using a Kamelet Binding.
+{empty} +
 
 Target persona: +
 
 * *Kubernetes User*
 
+{empty} +
+
 Difficulty level: +
 
 * *EASY*
 
+{empty} +
+
 Estimated time: +
 
 * *20 mn*
+
+{empty} +
 
 
 There is no previous Camel experience required. +
@@ -233,7 +42,7 @@ The tasks to complete in this lab will guide you on how to onboard to both chat 
 
 [time=5]
 [id="gitter-chat"]
-== Gitter's platform onboarding
+== Gitter\'s platform onboarding
 
 TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
 
@@ -242,62 +51,6 @@ TIP: If you're unfamiliar with Gitter, it is an open-source chat platform design
 === Create an App in Gitter.
 
 
-
-This first stage is all about completing our first integration flow using a Kamelet Binding.
-
-```curl
-CLIENT_ID=YOUR_APP_OAUTH_KEY \
-CLIENT_SECRET=YOUR_APP_OAUTH_SECRET \
-CODE=YOUR_REDIRECT_CODE \
-&& \
-curl -v https://gitter.im/login/oauth/token \
--H "accept: application/json" \
--d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
-```
-
-```yaml
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-```
-[source,yaml]
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-
-full test:
-----
-apiVersion: enmasse.io/v1beta1
-kind: AddressSpace
-metadata:
-  name: amq
-spec:
-----
-[source,yaml,role="copypaste"]
-----
-  plan: standard-small
-  type: standard
-  endpoints:
-    - name: messaging
-      service: messaging
-      expose:
-        type: route
-        routeServicePort: amqps
-        routeTlsTermination: passthrough
-      exports:
-        - kind: ConfigMap
-          name: amq-config
-----
-----
-  authenticationService:
-    name: none-authservice
-----
 
 
 
@@ -320,7 +73,9 @@ Once logged in, you'll be presented with your personal access token and an empty
 +
 image::images/gitter-dev-token.png[align="left", width=30%,border-color="green", border-width="3"]
 +
-Create a new App that will communicate with Gitter:
+{empty} +
+
+. Create a new App that will communicate with Gitter:
 
 1. Click `Your Apps -> New app`
 +
@@ -503,14 +258,17 @@ gitter.room=6317569e6da03739849c519a
 {empty} +
 
 [type=verification]
-Did you complete the onboarding successfully?
+Were you able to join a Gitter room successfully?
+
+[type=verification]
+Did you complete Gitter's onboarding successfully?
 
 {empty} +
 
 
 [time=5]
 [id="slack-chat"]
-== Slack's platform onboarding
+== Slack\'s platform onboarding
 
 
 === Join a Slack workspace.
@@ -539,7 +297,7 @@ Alternatively, you can also create your own room, use the prefix `room_`, for ex
 
 {empty} +
 
-=== Connecting Camel to Slack
+=== Connect Camel to Slack
 
 To connect from Camel to the chat platform, an App needs to be registered in Slack. You would just need to add the registered App to a particular room to allow Camel to pick up messages.
 
@@ -553,8 +311,8 @@ To connect from Camel to the chat platform, an App needs to be registered in Sla
 
 {empty} +
 
-
 ==== [[creating-your-own-app-for-slack]] Creating your own App for Slack
+
 
 . Connect to the following URL
 +
@@ -637,17 +395,21 @@ Your room has now the App included. Camel can use the App credentials to communi
 
 If you are sharing the App with a group, ask your workshop's admin for the App credentials to configure Camel.
 
-
 {empty} +
+
+=== Completion checks
 
 [type=verification]
-Did you complete the onboarding successfully?
+Were you able to add an App to a Slack room?
+
+[type=verification]
+Did you complete Slack's onboarding successfully?
 
 {empty} +
 
-[time=5]
-[id="flow]
-== Create the integration flow
+[time=2]
+[id="flow"]
+== Preview of the integration flow
 
 === Process overview
 
@@ -673,22 +435,57 @@ A sink
 
 This workshop has been designed to attend two different user profiles:
 
-The Kubernetes user (no previous Camel experience)
-The way this user consumes Camel is by selecting catalog Kamelets and creating Kamelet bindings in YAML definitions. The user creates local YAML files and then pushes them to OpenShift. The Camel K operator automates the process of building, creating images and deploying the integrations.
 
-The Camel developer The traditional Camel developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
+* *The Kubernetes user* (no previous Camel experience) +
+The way this user consumes _Camel_ is by selecting catalog _Kamelets_ and creating _Kamelet Bindings_ in YAML definitions. The user creates local YAML files and then pushes them to _OpenShift_. The _Camel K_ operator automates the process of building, creating images and deploying the integrations.
 
-NOTE The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
+* *The Camel developer* +
+The traditional _Camel_ developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
++
+// {empty} +
+// +
+NOTE: The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
+
+{empty} +
 
 It's up to you to choose which user to impersonate. Considering how easy are the instructions to follow, we recommend choosing the Camel developer, which will anyway mimic the Kubernetes user when deploying in OpenShift. However, if time is a constraint then choose the Kubernetes user.
 
 Time to choose, continue as:
 
+// * link:../stage1-5-kubernetes/walkthrough.adoc[Kubernetes persona]
+
+
 * persona-kubernetes-user.adoc
 * persona-camel-developer.adoc
 
-[type=verification]
-Did you create the flow successfully?
+
+// [type=taskResource]
+// .Camel
+// ****
+// * link:https://camel.apache.org/[Test taskResource, window="_blank"]
+// ****
+
+
+// [type=verification]
+// Did you create the flow successfully?
+
+// [type=verificationFail]
+// try an alternative
+
+
+// [type=verificationSuccess]
+// good job !!
+
+// [type=walkthroughResource]
+// .AWS Credentials
+// ****
+// * *username:* `username`
+// * *password:* `password`
+// ****
+
+
+// [type=walkthroughResource]
+// walkthrough resource?
 
 
 {empty} +

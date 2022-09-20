@@ -1,32 +1,40 @@
-:toc:
-:toc-placement!:
+:walkthrough: Discord Integration
 
+ifdef::env-github[]
+endif::[]
+
+[id='lab4-discord-integration']
 = Lab 4 - Discord Integration
 
-toc::[]
+Use Camel K to integrate additional chat systems to the platform. 
+// toc::[]
 
-== Overview
+// == Overview
 Up until now we have evolved a solution to interconnect _Gitter_ and _Slack_, and crucially, with the addition of AMQ Streams, now allows for new systems to easily integrate with the platform. In this new Lab we're going to add a new chat option: _Discord_.
 
 _Discord_ is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
 
 The difficulty of this new stage is that we don't have in our _Kamelet Catalog_ connecitivity with _Discord_. We need to create our own connectors.
 
+{empty} +
+
 Target persona: +
 
 * *Camel Developer*
+
+{empty} +
 
 Difficulty level: +
 
 * *MEDIUM*
 
+{empty} +
+
 Estimated time: +
 
 * *20 mn*
 
-
 {empty} +
-
 
 The picture billow illustrates all chat systems communicating via kafka, including the to-be-integrated Discord system, and optionally (for those willing to go the extra mile) Telegram.
 
@@ -48,11 +56,229 @@ and optionally:
 {empty} +
 
 
-== [[discord-onboarding]] Access Discord's chat platform
+// == Access Discord\'s chat platform
 
-Please follow the link below to complete the Discord onboarding process. The guide will describe step by step the setup process. When done, you will be able to continue with the normal flow of the lab.
 
-* link:onboarding-discord.adoc[Discord's platform onboarding]
+== Discord\'s platform onboarding
+
+TIP: If you're unfamiliar with _Discord_, it is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
+
+
+[NOTE]
+--
+If you have never used _Discord_ before, register by using your email address, nothing else is needed.
+
+* https://discord.com/register
+--
+
+{empty} +
+
+=== Join a Discord server.
+
+To accelerate the onboarding process in _Discord_, we've created a shared server for anyone to freely join and use for the purpose of this enablement workshop. 
+
+Follow the invite link to join the workshop's server in _Discord_:
+
+* https://discord.gg/4PyTjzjJJz
+
+CAUTION: The server is open to the public, please be mindful of your actions, don't abuse the space.
+
+[NOTE]
+--
+if you were unsuccessful joining the shared server provided, feel free to create you own _Discord_ server, you should be able to complete the workshop in the same manner.
+
+To create your own server:
+
+. Click the `+` button (add a server).
+. select `Create My Own`.
+. Then select `For me and my friends` (private server). 
+--
+{empty} +
+
+
+=== Join a Discord room (channel).
+. A number of rooms have been made available in the shared server for the workshop (room1, room2, ...roomX). Choose a room number that nobody uses to avoid noisy conversations.
++
+Alternatively, you can also create your own room (channel), use the prefix `room_`, for example:
+
+* `room_x`
+
+{empty} +
+
+// === [[back-connect-camel-to-discord]]Connecting Camel to Discord
+=== Connecting Camel to Discord
+
+To connect from _Camel_ to the chat platform, an App needs to be registered in _Discord_. Apps in _Discord_ are automatically member of all channels in the server.
+
+* If you are running the workshop on your own, you'll have to create an App in _Discord_. Click the link below to follow instructions on how to create your own App.
+
+** link:#creating-your-own-app-for-discord[Creating your own App for Discord]
+
+* If you're part of a workshop group, an App has been made available for all students to share. Ask your workshop's admin to share the App's credentials with you.
++
+You can skip the next section (app creation) and directly jump to the end of this task.
+
+** link:#completion-checks[Skip and go to end of task]
+
+
+// * If you are running your own workshop you'll have to create an App in _Discord_. Click the link below to follow instructions on how to create your own App.
+
+// ** link:#creating-your-own-app-for-discord[Creating your own App for Discord]
+
+// * If you're part of a workshop group, an App has been made available for all students to share. Ask your workshop's admin to share the App's credentials with you.
+
+{empty} +
+
+
+// === Connect Camel to Slack
+
+// To connect from Camel to the chat platform, an App needs to be registered in Slack. You would just need to add the registered App to a particular room to allow Camel to pick up messages.
+
+// * If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
+
+// ** link:#creating-your-own-app-for-slack[Creating your own App for Slack]
+
+// * If you're part of a workshop group, an App has been made available for all students to share. You can skip the next section and directly jump to the section with instructions to add the shared App to your selected room.
+
+// ** link:#adding-an-app-to-a-room[Adding an App to a room]
+
+// {empty} +
+
+
+// ==== Return to the main walkthrough guide
+
+// You are now ready to complete your integration definition. +
+// Click the link below to jump back to the main guide walktrough:
+
+// * link:walkthrough.adoc#discord-onboarding[Back to the main Stage 4 instructions]
+
+// {empty} +
+
+==== [[creating-your-own-app-for-discord]]Creating your own App for Discord
+// ==== Creating your own App for Discord
+
+. Connect to the following URL
++
+--
+* https://discord.com/developers
++
+If you have never used _Discord_ before, register by using your email address, nothing else is needed.
+--
++
+{empty} +
+
+. Create an App
++
+Once in, you'll see your applications dashboard with an empty list of apps (if never created one before).
++
+image::images/discord-apps.png[align="center", width=90%,border-color="green", border-width="3"]
++
+.. Click the `New Application` button
++
+image::images/discord-create-app.png[align="left", width=20%]
++
+.. Give it a name, for example `MyCamelApp`. +
+Click `Create`
++
+Once the App created you'll be presented with its `General Information`
++
+.. Add bot
++
+Select from the left menu:
++
+--
+* SETTINGS => Bot => Add Bot
++
+Click `Yes, do it!`
+--
++
+.. Reset token
++
+Discord only shows the Bot token once, make sure you keep note of it.
++
+Click `Reset Token`. +
+Then, click `Yes, do it!`
++
+The new token will be shown on screen as follows:
++
+image::images/discord-app-token.png[align="left", width=90%]
++
+Copy and keep it safe, you'll need it when configuring Camel.
+
+{empty} +
+
+. Grant permissions 
++
+Select from the left menu:
++
+* SETTINGS => OAuth2 => URL Generator
++
+.. From `SCOPES` select:
++
+--
+- bot
+--
++
+This action will reveal `BOT PERMISSIONS`
+
+.. From `BOT PERMISSIONS` select:
++
+--
+- GENERAL PERMISSIONS -> Read Messages / View Channels
+- TEXT PERMISSIONS -> Send Messages
+--
++
+Selecting the permissions above shapes a generated URL presented below. +
+Scroll down to see the gerented URL, it should look as follows:
++
+image::images/discord-app-generated-url.png[align="left", width=100%]
++
+Click `Copy`
++
+{empty} +
+
+. Authorize your App
++
+Open a new tab in your browser and paste the generated URL in the address bar.
++
+The browser will load an authorization page. +
+Select the Discord server you have previously created. +
+Then click `Continue`.
++
+You then are presented with a summary of bot permissions to authorize, as per the picture below:
++
+image::images/discord-app-auth.png[align="left", width=30%]
++
+click `Authorize`. +
+Tick `I'm a human`.
++
+When the authorization process is done you can close the tab.
+
+{empty} +
+
+Your App should now be visible as a member of the server, with offline status.
+
+In Discord, Apps that are member of a server, automatically become members of all the server channels (rooms).
+
+Click the link below to jump back (scroll up) where you left it:
+
+* link:#back-connect-camel-to-discord[Connecting Camel to _Discord_]
+
+{empty} +
+{empty} +
+
+==== [[completion-checks]] End of task
+
+You completed the task !
+
+=== Completion checks
+
+[type=verification]
+Do you have an App already available in Discord?
+
+[type=verification]
+Do you have the App's credentials to configure Camel?
+
 
 {empty} +
 
@@ -77,17 +303,20 @@ image::images/processing-flow-sink.png[align="center", width=90%]
 
 
 
-* There are 4 key processing steps necessary:
-+
+There are 4 key processing steps necessary:
+
 ====
-Clean Headers::
-    The incoming Camel exchange might have headers that can potentially enter in conflict with the HTTP call to Discord.
-Set Content-Type::
+* *Clean Headers* +
+  The incoming Camel exchange might have headers that can potentially enter in conflict with the HTTP call to Discord.
+
+* *Set Content-Type* +
 	Include an HTTP header to specify the type of payload we send (JSON)
-Set Authorization::
+
+* *Set Authorization* +
 	Include an HTTP header with the security token
-HTTP invokation::
-    Trigger the HTTP call using the Camel HTTP component
+
+* *HTTP invokation* +
+  Trigger the HTTP call using the Camel HTTP component
 ====
 
 {empty} +
@@ -100,7 +329,7 @@ Obviously, developing this process is the task of an experienced Camel developer
 
 The best approach to make rapid progress developing this Kamelet, is to use Camel JBang in your local environment.
 
-image::../stage1/images/camel-jbang.png[align="left", width=40%]
+image::images/camel-jbang.png[align="left", width=40%]
 
 {empty} +
 
@@ -116,6 +345,8 @@ mkdir lab4
 cd lab4
 ```
 +
+{empty} +
++
 .. Create a configuration file
 +
 ```bash
@@ -130,20 +361,23 @@ token=YOUR_TOKEN
 channel=YOUR_ROOM_ID
 ```
 +
+--
+
+{empty} +
+
 Ensure you configure with your _Discord_ values, and save changes.
-+
-token::
+
+- `token`
 * If you're sharing an App with the group, use the App's token your admin has provided.
 * If you created your own App, use your App's Bot token.
-+
-channel::
+
+- `channel` +
 You can find the channel id in the address bar of your Discord browser tab. The pattern is:
 +
---
 * http://discord.com/channels/SERVER_ID/CHANNEL_ID
---
 +
 image::images/discord-room-id.png[align="left", width=100%]
+--
 +
 {empty} +
 
@@ -188,11 +422,6 @@ By the parameter `repeatCount` (copy/replace from the snippet below):
 {empty} +
 
 . Run your test route with:
-+
-// ```bash
-// camel run test-discord.yaml --reload \
-// --properties=stage4.properties
-// ```
 +
 ```bash
 camel run * --reload
@@ -247,6 +476,8 @@ Include the following snipped in your YAML file:
       - to:
           uri: "https://discordapp.com/api/channels/{{channel}}/messages"
 ```
++
+{empty} +
 +
 Save changes. +
 _Camel JBang_ will react: it will load the new definition on the fly and run it.
@@ -396,21 +627,22 @@ We have now the building block we were missing, we can now bind our _Discord_ _K
 
 === Process overview
 
-You should by now be very familiar with the required processing steps. The diagram below illustrates the _Kafka_ to _Discord_ data flow:
+You should by now be very familiar with the necessary processing steps. The diagram below illustrates the _Kafka_ to _Discord_ data flow:
 
 image::images/processing-flow-kafka2discord.png[align="center", width=90%]
 
+There are 4 Kamelets in use:
 
-* There are 4 Kamelets in use:
-+
 ====
-A source::
-consumes events from Kafka.
-Two actions::
-one filters messages to prevent death loops. +
-one transforms events from the standard data model to _Discord_.
-A sink::
-produces events to _Discord_.
+* *A source* +
+Consumes events from Kafka.
+
+* *Two actions* +
+One filters messages to prevent death loops. +
+One transforms events from the standard data model to _Discord_.
+
+* *A sink* +
+Produces events to _Discord_.
 ====
 
 {empty} +
@@ -432,6 +664,8 @@ sed -i '' 's/slack/discord/g' k2d.yaml
 sed -i '' 's/stage3/stage4/g' k2d.yaml
 touch k2d.jslt
 ```
++
+{empty} +
 +
 [NOTE]
 ====
@@ -457,6 +691,8 @@ Copy the snippet below and paste it into your new `k2d.jslt` file:
 	"content":"**"+.user+"@"+.source+"**: "+.text
 }
 ```
++
+{empty} +
 +
 [NOTE]
 ====
