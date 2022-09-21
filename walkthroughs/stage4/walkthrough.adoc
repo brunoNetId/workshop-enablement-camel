@@ -105,7 +105,6 @@ Alternatively, you can also create your own room (channel), use the prefix `room
 
 {empty} +
 
-// === [[back-connect-camel-to-discord]]Connecting Camel to Discord
 === Connecting Camel to Discord
 
 To connect from _Camel_ to the chat platform, an App needs to be registered in _Discord_. Apps in _Discord_ are automatically member of all channels in the server.
@@ -120,42 +119,10 @@ You can skip the next section (app creation) and directly jump to the end of thi
 
 ** link:#completion-checks[Skip and go to end of task]
 
-
-// * If you are running your own workshop you'll have to create an App in _Discord_. Click the link below to follow instructions on how to create your own App.
-
-// ** link:#creating-your-own-app-for-discord[Creating your own App for Discord]
-
-// * If you're part of a workshop group, an App has been made available for all students to share. Ask your workshop's admin to share the App's credentials with you.
-
 {empty} +
 
 
-// === Connect Camel to Slack
-
-// To connect from Camel to the chat platform, an App needs to be registered in Slack. You would just need to add the registered App to a particular room to allow Camel to pick up messages.
-
-// * If you are running the workshop on your own, you'll have to create an App in Slack. Click the link below to follow instructions on how to create your own App.
-
-// ** link:#creating-your-own-app-for-slack[Creating your own App for Slack]
-
-// * If you're part of a workshop group, an App has been made available for all students to share. You can skip the next section and directly jump to the section with instructions to add the shared App to your selected room.
-
-// ** link:#adding-an-app-to-a-room[Adding an App to a room]
-
-// {empty} +
-
-
-// ==== Return to the main walkthrough guide
-
-// You are now ready to complete your integration definition. +
-// Click the link below to jump back to the main guide walktrough:
-
-// * link:walkthrough.adoc#discord-onboarding[Back to the main Stage 4 instructions]
-
-// {empty} +
-
 ==== [[creating-your-own-app-for-discord]]Creating your own App for Discord
-// ==== Creating your own App for Discord
 
 . Connect to the following URL
 +

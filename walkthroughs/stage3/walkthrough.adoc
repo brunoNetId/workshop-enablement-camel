@@ -1,11 +1,19 @@
-:toc:
-:toc-placement!:
+:walkthrough: Gitter to Slack bridge ()
 
+ifdef::env-github[]
+endif::[]
+
+[id='lab3-gitter-kafka-slack']
 = Lab 3 - Gitter ⇔ Kafka ⇔ Slack (via streams)
 
-toc::[]
+// = [[kubernetes-user]] The Kubernetes user deployment flow
 
-== Overview
+Open the architecture by decoupling the chat systems using streaming capabilities with AMQ Streams.
+
+{empty} + 
+
+*Overview*
+
 Lab 1 and 2 enabled Gitter/Slack conversations. However their connectivity was tightly coupled with dedicated data translations between both platforms. On this third lab we want to break them away to open up the architecture to welcome additional systems and services.
 
 Target persona: +
@@ -62,15 +70,17 @@ image::images/standard-data-model.png[align="center", width=90%]
 {empty} +
 
 
-== Setup
+== Setup the Lab working folder
 
 First of all, ensure you eliminate Lab2's deployed bindings, otherwise they will enter in conflict with the ones we're about to create:
 ```bash
 oc delete klb g2s
 oc delete klb s2g
+:
 ```
+{empty} +
 
-We continue growing our solution where we left it in Lab 2. +
+And we continue growing our solution where we left it in Lab 2. +
 We use Lab-2 as the base for this next stage.
 
 The following set of instructions prepare the set of files you will be working with: 
@@ -85,6 +95,8 @@ grep -rl stage2 . | xargs sed -i '' 's/stage2/stage3/g'
  
 ```
 +
+{empty} +
+
 . Split each YAML file in two:
 +
 ```bash
@@ -96,6 +108,8 @@ mkdir flows
 mv *.yaml flows/ 
 ```
 +
+{empty} +
+
 . Rename the bindings:
 +
 ```bash
@@ -105,6 +119,8 @@ sed -i '' 's/s2g/s2k/g' flows/s2k.yaml
 sed -i '' 's/s2g/k2g/g' flows/k2g.yaml
 ```
 +
+{empty} +
+
 . Prepare JSLTs:
 +
 ```bash
@@ -116,6 +132,7 @@ touch maps/s2k.jslt
 touch maps/k2g.jslt
  
 ```
+{empty} +
 
 You're ready to go.
 
@@ -130,6 +147,8 @@ The two data flows we have created in previous labs are almost identical in term
 . transform events
 . push events
 
+{empty} +
+
 For the processes from Gitter/Slack to Kafka, the steps remain the same, we just need to switch to the standard data model (step 3) and target Kafka instead (step 4).
 
 {empty} +
@@ -140,21 +159,25 @@ The diagram below applies to the data flows (2 of them) from Gitter/Slack respec
 
 image::images/processing-flow-chat2kafka.png[align="center", width=90%]
 
+{empty} +
 
-* There are 4 Kamelets in use:
-+
+There are 4 Kamelets in use:
+
 ====
-A source::
-consumes events from Gitter/Slack.
-Two actions::
-one filters messages to prevent death loops. +
-one transforms Gitter/Slack events to the standard data model.
-A sink::
-	produces events to Kafka.
+* *A source* +
+Consumes events from _Gitter/Slack_.
+
+* *Two actions* +
+One filters messages to prevent death loops. +
+One transforms _Gitter/Slack_ events to the standard data model.
+
+* *A sink* +
+Produces events to _Kafka_.
 ====
 
 {empty} +
 
+[NOTE]
 As in lab 1 & 2, this one also fits the _Kubernetes_ user. We compose the definitions using Kamelets to enable the data flows between the different platforms.
 
 {empty} +
@@ -203,6 +226,7 @@ spec:
       name: jslt-action
     properties:
       template: g2k.jslt
+
 ----
 +
 ```yaml
@@ -212,6 +236,8 @@ spec:
       apiVersion: kafka.strimzi.io/v1beta1
       name: YOUR_ROOM_NAME
 ```
++
+{empty} +
 +
 [IMPORTANT]
 ====
@@ -310,9 +336,11 @@ spec:
       name: YOUR_ROOM_NAME
 ```
 +
+{empty} +
++
 [IMPORTANT]
 ====
-Use the same sink's `name` (Kafka topic) than on your Gitter to Kafka flow.
+In the sink definition, use the same `name` (Kafka topic) than on your _Gitter_ to _Kafka_ flow.
 ====
 +
 {empty} +
@@ -356,6 +384,8 @@ The processing steps still remain essentially the same:
 . transform events
 . push events
 
+{empty} +
+
 The main differences are that we are consuming events from Kafka (step 1) and that we have to translate events (step 3) from the standard data model to the target specific model (e.g. Gitter, Slack, other)
 
 {empty} +
@@ -366,17 +396,20 @@ The diagram below applies to the data flows (2 of them) from _Kafka_ to Gitter/S
 
 image::images/processing-flow-kafka2chat.png[align="center", width=90%]
 
+{empty} +
 
-* There are 4 Kamelets in use:
-+
+There are 4 Kamelets in use:
+
 ====
-A source::
-consumes events from Kafka.
-Two actions::
-one filters messages to prevent death loops. +
-one transforms events from the standard data model to Gitter/Slack.
-A sink::
-produces events to Gitter/Slack.
+* *A source* +
+Consumes events from _Kafka_.
+
+* *Two actions* +
+One filters messages to prevent death loops. +
+One transforms events from the standard data model to _Gitter/Slack_.
+
+* *A sink* +
+Produces events to _Gitter/Slack_.
 ====
 
 {empty} +
@@ -395,6 +428,8 @@ Two modifications are required:
 * The source is now Kafka
 * The filter should blocks self-events
 --
++
+{empty} +
 +
 Copy the corresponding snippets and replace in your _Kamelet Binding_:
 +
@@ -452,6 +487,8 @@ spec:
       room: "{{gitter.room}}"
 ----
 +
+{empty} +
++
 [IMPORTANT]
 ====
 Ensure you configure the source's `name` (Kafka topic) by replacing `YOUR_ROOM_NAME` with your chat's room name.
@@ -506,6 +543,8 @@ Two modifications are required:
 * The filter should blocks self-events
 --
 +
+{empty} +
++
 Copy the corresponding snippets and replace in your _Kamelet Binding_:
 +
 ----
@@ -559,6 +598,8 @@ spec:
       token: "{{slack.token}}"
 ----
 +
+{empty} +
++
 [IMPORTANT]
 ====
 Ensure you configure the source's `name` (Kafka topic) by replacing `YOUR_ROOM_NAME` with your chat's room name.
@@ -606,6 +647,7 @@ Run the following `oc` command:
 ```bash
 oc create secret generic stage3 --from-file=stage3.properties
 oc create cm stage3-transform --from-file=maps
+:
 ```
 {empty} +
 
@@ -616,6 +658,8 @@ Run the following command:
 ```bash
 mkdir kafka && touch kafka/room_x.yaml
 ```
++
+{empty} +
 +
 Edit your `room_x.yaml` file under the `kafka` directory. Add the following definition
 +
@@ -661,6 +705,8 @@ You can run the following command to check their state:
 ```bash
 oc get klb
 ```
++
+{empty} +
 +
 When the pods are ready, the command should return:
 +

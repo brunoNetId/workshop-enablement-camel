@@ -1,1 +1,9 @@
+:walkthrough: Discord Integration
+
+ifdef::env-github[]
+endif::[]
+
+[id='lab5-storage']
+= Lab 5 - Storage
+
 pending content
