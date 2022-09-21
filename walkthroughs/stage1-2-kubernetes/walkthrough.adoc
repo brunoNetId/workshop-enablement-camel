@@ -8,12 +8,9 @@ endif::[]
 
 // = [[kubernetes-user]] The Kubernetes user deployment flow
 
-Impersonate the Kubernetes user to complete Lab-1's Gitter to Slack processing flow.
+Impersonate the Kubernetes user to complete Lab-1's _Gitter_ to _Slack_ processing flow.
 
-The instructions below are divided in two segments:
-
-* Local development (and testing)
-* Deployment in OpenShift
+In this second part, the instructions will guide you in defining a _Kamelet Binding_ that enables the data flow, and pushing it to the _OpenShift_ environment where it becomes live.
 
 {empty} +
 
@@ -31,9 +28,10 @@ For example:
 ```bash
 mkdir lab1
 cd lab1
+:
 ```
 +
-{empty}
+{empty} +
 
 . Create the definitions
 .. To start with, we will simply consume Gitter messages and log them. We select the following 2 Kamelets to bind:
@@ -42,6 +40,8 @@ cd lab1
 - gitter-source
 - log-sink
 --
++
+{empty} +
 +
 Create a YAML file `g2s.yaml` (gitter to slack) containing the following definition:
 +
@@ -71,6 +71,8 @@ spec:
       name: log-sink 
 ```
 +
+{empty} +
+
 .. Now create the properties file `stage1.properties` containing the following entries:
 +
 ```properties
@@ -82,9 +84,11 @@ gitter.token=YOUR_ACCESS_TOKEN
 gitter.room=YOUR_ROOM_ID
 ```
 +
+{empty} +
++
 Ensure you configure your settings using your _Gitter_ details accordingly
 +
-NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
+NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read its API documentation here: https://developer.gitter.im/docs/streaming-api
 +
 IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
 +
@@ -97,6 +101,8 @@ Ensure you select your target _OpenShift_ working project, for example by runnin
 ```bash
 oc new-project lab-user1
 ```
++
+{empty} +
 +
 Then create a _Secret_ containing your configuration. Run the following `oc` command:
 +
@@ -112,15 +118,21 @@ oc create secret generic stage1 --from-file=stage1.properties
 oc apply -f g2s.yaml
 ```
 +
+{empty} +
++
 The Camel K operator will immediately react. It will start building the integration and deploy it.
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
++
+{empty} +
 
 .. Check your deployment
 +
 Inspect in your OpenShift Developer view your pod is in healthy state and running:
 +
 image::images/ocp-dev-pod-healthy.png[align="left", width=80%]
++
+{empty} +
 
 .. Check the logs.
 +
@@ -134,21 +146,23 @@ You should see Camel connecting to Gitter and wait for the stream to start:
 +
 {empty} +
 
-. Send a message from Gitter
+. Send a message from _Gitter_
 +
-Now, from Gitter's chat room, send a message, for example "Hello Camel".
+Now, from _Gitter_'s chat room, send a message, for example `Hello Camel`.
 +
-The logs in your pod should show the arrival of a Gitter event similar to the following JSON payload:
+The logs in your pod should show the arrival of a _Gitter_ event similar to the following JSON payload:
 +
 ```json
 {"id":"6318848405ad4a3701dccfb4","text":"Hello Camel","html":"Hello Camel","sent":"2022-09-07T11:46:12.825Z","readBy":0,"urls":[],"mentions":[],"issues":[],"meta":[],"v":1,"fromUser":{"id":"xxxxxxxxxxxxxxxx","username":"demo-user"         }}
 ```
 +
-Hopefully you've been successful in capturing Gitter messages with Camel. +
+{empty} +
++
+Hopefully you've been successful in capturing _Gitter_ messages with _Camel_. 
 +
 {empty} +
 
-. Now we need extend the Kamelet Binding definition to include data transformation to match the JSON structure the target system (Slack) expects.
+. Now we need to extend the _Kamelet Binding_ definition to include data transformation matching the JSON structure the target system (Slack) expects.
 +
 We choose from the Kamelet Catalog the JSLT action to transform the body.
 +
@@ -165,8 +179,8 @@ TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's ins
 +
 [NOTE]
 ====
-* The field `channel` denotes the target room in Slack where messages will be pushed. For now we use a temporary value. +
-* The field `text` includes JsonPath rules extracting values from the input Gitter event.
+* The field `channel` denotes the target room in _Slack_ where messages will be pushed. For now we use a temporary value. +
+* The field `text` includes JsonPath rules extracting values from the input _Gitter_ event.
 ====
 {empty} +
 
@@ -245,29 +259,26 @@ spec:
 oc apply -f g2s.yaml
 ```
 +
+{empty} +
++
 The Camel K operator needs again to download dependencies (JSLT), but after some time it will replace the pod with a new instance containing the data transformation.
 +
 {empty} +
 
-. From Gitter send another chat message and inspect your terminal output. You should see an incoming event now transformed and looking similar to this:
+. From Gitter send another chat message and inspect your terminal output. +
+You should see an incoming event now transformed and looking similar to this:
 +
-```json
+----
 {"channel":"TO_BE_DEFINED","text":"*demo-user@gitter*: Hello Camel"}
-```
+----
++
+{empty} +
 +
 At this stage you're ready to replace the Log sink Kamelet by the real one, the Slack sink Kamelet.
 +
 {empty} +
 
-. If you're not done so yet, onboard onto the Slack chat platform
-+
-Please follow the link below to complete the Slack onboarding process.
-+
-* link:onboarding-slack.adoc[Slack's platform onboarding]
-+
-{empty} +
-
-. [[step-slack-sink]]Replace your Log sink Kamelet by the Slack one.
+. [[step-slack-sink]]Replace your _Log_ sink _Kamelet_ by the _Slack_ one.
 +
 Copy from below the `slack-sink` definition, and replace your old `log-sink` code.
 +
@@ -319,10 +330,14 @@ Previously we defined a dummy value in our JSLT transformation (where the `chann
 +
 image::images/slack-room-details.png[align="left", width=20%]
 +
+{empty} +
+
 .. Copy the Channel ID at the bottom of the details frame
 +
 image::images/slack-room-details-channel-id.png[align="left", width=30%]
 +
+{empty} +
+
 .. Paste its value in your JSLT mapping. It should you similar to the following:
 +
 ```
@@ -331,6 +346,9 @@ image::images/slack-room-details-channel-id.png[align="left", width=30%]
     "text":"*"+.fromUser.username+"@gitter*: "+.text
 }
 ```
++
+{empty} +
++
 Slack will read the `channel` field (target room), from the JSON payload we send, to know where to place the message. +
 +
 {empty} +
@@ -339,10 +357,11 @@ Slack will read the `channel` field (target room), from the JSON payload we send
 ```bash
 oc delete cm stage1-transform
 oc create cm stage1-transform --from-file=g2s.jslt
+:
 ```
 {empty} +
 
-. Include your Slack token in your configuration file.
+. Include your _Slack_ token in your configuration file.
 +
 .. Copy from below the parameter definition `slack.token`, paste it into your properties file, and configure its value with your Slack access token value.
 +
@@ -356,9 +375,12 @@ gitter.room=6317569e6da03739849c519a
 ----
 +
 ```properties
-# Slack credentials
+# Slack 
+# Credentials
 slack.token=YOUR_TOKEN
 ```
++
+{empty} +
 +
 * If you're sharing an App with the group, use the App's token your admin has provided.
 * If you created your own App, use your App's `Bot User OAuth Token`
@@ -369,6 +391,7 @@ slack.token=YOUR_TOKEN
 ```bash
 oc delete secret stage1
 oc create secret generic stage1 --from-file=stage1.properties
+:
 ```
 {empty} +
 
@@ -377,6 +400,8 @@ oc create secret generic stage1 --from-file=stage1.properties
 ```bash
 oc apply -f g2s.yaml
 ```
++
+{empty} +
 +
 Once more the Camel K operator will rebuild the integration and replace the pod with a new instance that points to Slack.
 +
@@ -388,4 +413,12 @@ image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
 
+
+[type=verification]
+Did you see the message going from _Gitter_ showing to _Slack_?
+
+[type=verificationFail]
+Inspect in the pod logs to investigate possible failure causes.
+
+[type=verificationSuccess]
 You've successfully completed stage 1 !!

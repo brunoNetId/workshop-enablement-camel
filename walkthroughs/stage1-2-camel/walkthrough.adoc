@@ -209,7 +209,8 @@ camel run g2s.yaml g2s.jslt \
 ```
 {empty} +
 
-. From Gitter send another chat message and inspect your terminal output. You should see an incoming event now transformed and looking similar to this:
+. From Gitter send another chat message and inspect your terminal output. +
+You should see an incoming event now transformed and looking similar to this:
 +
 ```json
 {"channel":"TO_BE_DEFINED","text":"*demo-user@gitter*: Hello Camel"}
@@ -217,7 +218,7 @@ camel run g2s.yaml g2s.jslt \
 +
 {empty} +
 +
-At this stage you're ready to replace the Log sink Kamelet by the real one, the Slack sink Kamelet.
+At this stage you're ready to replace the `log-sink` by the real one, the `slack-sink` _Kamelet_.
 +
 {empty} +
 
@@ -270,10 +271,14 @@ Previously we defined a dummy value in our JSLT transformation (where the `chann
 +
 image::images/slack-room-details.png[align="left", width=20%]
 +
+{empty} +
+
 .. Copy the Channel ID at the bottom of the details frame
 +
 image::images/slack-room-details-channel-id.png[align="left", width=30%]
 +
+{empty} +
+
 .. Paste its value in your JSLT mapping. It should you similar to the following:
 +
 ```
@@ -282,6 +287,9 @@ image::images/slack-room-details-channel-id.png[align="left", width=30%]
     "text":"*"+.fromUser.username+"@gitter*: "+.text
 }
 ```
++
+{empty} +
++
 Slack will read the `channel` field (target room), from the JSON payload we send, to know where to place the message. +
 +
 {empty} +
@@ -307,6 +315,8 @@ gitter.room=6317569e6da03739849c519a
 slack.token=YOUR_TOKEN
 ```
 +
+{empty} +
++
 * If you're sharing an App with the group, use the App's token your admin has provided.
 * If you created your own App, use your App's `Bot User OAuth Token`
 +
@@ -321,28 +331,30 @@ camel run g2s.yaml g2s.jslt \
 ```
 {empty} +
 
-. One more time, from Gitter send one last message. If all goes well you should see the message listed in your Slack chat window
+. One more time, from _Gitter_ send one last message. If all goes well you should see the message listed in your _Slack_ chat window
 +
 image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
 +
-Hopefully you'll see a successful interaction between both chat systems, similar to the image abov.
+Hopefully you'll see a successful interaction between both chat systems, similar to the image above.
 +
 Press `Ctrl`+`C` to stop your Camel instance.
 +
 {empty} +
 +
-We can consider the local development done. We have a full data flow definition that routes messages from Gitter to Slack. The next step is to deploy the definition in OpenShift
+We can consider the local development done. We have a full data flow definition that routes messages from _Gitter_ to _Slack_. The next step is to deploy the definition in _OpenShift_
 
 {empty} +
 
+[type=verification]
+Did you see the message in _Gitter_ showing up in _Slack_?
 
 [time=5]
 [id="openshift"]
 == Deployment in OpenShift
 
-The definitions that we have developed can almost be taken 'as-is' into OpenShift. 
+The definitions that you have implemented can practically be taken 'as-is' into _OpenShift_. 
 
 The only amendments really to be done are:
 --
@@ -350,6 +362,11 @@ The only amendments really to be done are:
 * Ensure the Kamelet Binding can load the JSLT file as a resource. 
 --
 
+{empty} +
+
+. To start with, make sure you have stopped you local Camel instance. +
+If it is still running, press `Ctrl`+`C` to stop it.
++
 {empty} +
 
 . Apply configuration changes.
@@ -439,6 +456,8 @@ oc create cm stage1-transform --from-file=g2s.jslt
 oc apply -f g2s.yaml
 ```
 +
+{empty} +
++
 The Camel K operator will immediately react. It will start building the integration and deploy it.
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
@@ -454,6 +473,8 @@ Run the command:
 ```bash
 kamel logs g2s
 ```
++
+{empty} +
 +
 When the operator deploys the integration, you should see Camel connecting to Gitter and starting the streaming listener:
 +
@@ -473,5 +494,14 @@ One more time, from Gitter send one last message. If all goes well you should se
 image::images/stage1-msg-gitter-slack.png[align="left", width=80%]
 +
 {empty} +
-+
+
+
+
+[type=verification]
+Did you see the message going from _Gitter_ to _Slack_?
+
+[type=verificationSuccess]
 You've successfully completed stage 1 !!
+
+[type=verificationFail]
+Inspect in the pod logs to investigate possible failure causes.

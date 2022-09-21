@@ -476,33 +476,5 @@ image::images/continue-part-2.png[align="center", width=80%]
 [type=verification]
 Are you ready to choose a path?
 
-// [type=taskResource]
-// .Camel
-// ****
-// * link:https://camel.apache.org/[Test taskResource, window="_blank"]
-// ****
-
-
-// [type=verification]
-// Did you create the flow successfully?
-
-// [type=verificationFail]
-// try an alternative
-
-
-// [type=verificationSuccess]
-// good job !!
-
-// [type=walkthroughResource]
-// .AWS Credentials
-// ****
-// * *username:* `username`
-// * *password:* `password`
-// ****
-
-
-// [type=walkthroughResource]
-// walkthrough resource?
-
 
 {empty} +
