@@ -641,6 +641,11 @@ Copy the snippet below and paste it into your new `k2s.jslt` file:
 }
 ```
 +
+[IMPORTANT]
+====
+Ensure you configure the _Slack_ `channel` by replacing `YOUR_ROOM_ID` with your chat's room identifier.
+====
++
 [NOTE]
 ====
 * The field `channel` denotes the target room in _Slack_ where messages will be pushed. Use your room ID in _Slack_. +

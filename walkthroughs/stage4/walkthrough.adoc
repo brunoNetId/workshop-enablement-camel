@@ -10,11 +10,11 @@ Use Camel K to integrate additional chat systems to the platform.
 // toc::[]
 
 // == Overview
-Up until now we have evolved a solution to interconnect _Gitter_ and _Slack_, and crucially, with the addition of AMQ Streams, now allows for new systems to easily integrate with the platform. In this new Lab we're going to add a new chat option: _Discord_.
+Up until now we have evolved a solution to interconnect _Gitter_ and _Slack_, and crucially, with the addition of AMQ Streams, now the platform allows for new systems to easily integrate. In this new Lab we're going to add a new chat option: _Discord_.
 
-_Discord_ is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
+_Discord_ is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to keep in touch and interact with their clients.
 
-The difficulty of this new stage is that we don't have in our _Kamelet Catalog_ connecitivity with _Discord_. We need to create our own connectors.
+The difficulty of this new stage is that we don't have in our catalog _Kamelets_ for _Discord_. We need to create our own connectors.
 
 {empty} +
 
@@ -36,22 +36,24 @@ Estimated time: +
 
 {empty} +
 
-The picture billow illustrates all chat systems communicating via kafka, including the to-be-integrated Discord system, and optionally (for those willing to go the extra mile) Telegram.
+The picture billow illustrates all chat systems communicating via _Kafka_, including the to-be-integrated _Discord_ system, and optionally (for those willing to go the extra mile) _Telegram_.
 
-image::images/stage-overview-discord.png[align="center", width=90%]
+image::images/stage-overview-discord.png[align="center", width=80%]
 
 {empty} +
 
 In terms of implementation effort for this lab, the main tasks to complete are the following:
 
-- Create a Discord Sink Kamelet
-- Craete a Kafka to Discord flow using the new Kamelet
-- Create a Discord to Kafka flow using Camel K (DSL)
+- Create a _Discord_ sink _Kamelet_
+- Craete a _Kafka_ to _Discord_ flow using the new _Kamelet_
+- Create a _Discord_ to _Kafka_ flow using _Camel K_ (DSL)
+
+{empty} +
 
 and optionally:
 
-- Create a Telegram to Kafka flow
-- Create a Kafka to Teletram flow
+- Create a _Telegram_ to _Kafka_ flow
+- Create a _Kafka_ to _Teletram_ flow
 
 {empty} +
 

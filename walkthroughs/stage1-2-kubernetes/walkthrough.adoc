@@ -152,9 +152,9 @@ Now, from _Gitter_'s chat room, send a message, for example `Hello Camel`.
 +
 The logs in your pod should show the arrival of a _Gitter_ event similar to the following JSON payload:
 +
-```json
+----
 {"id":"6318848405ad4a3701dccfb4","text":"Hello Camel","html":"Hello Camel","sent":"2022-09-07T11:46:12.825Z","readBy":0,"urls":[],"mentions":[],"issues":[],"meta":[],"v":1,"fromUser":{"id":"xxxxxxxxxxxxxxxx","username":"demo-user"         }}
-```
+----
 +
 {empty} +
 +
