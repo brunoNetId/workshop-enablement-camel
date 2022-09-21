@@ -23,7 +23,7 @@ The instructions below are divided in two segments:
 
 The development tool that will help us iterate our code in our local environment is _Camel JBang_.
 
-image::images/camel-jbang.png[align="center", width=50%]
+image::images/camel-jbang.png[align="left", width=40%]
 
 {empty} +
 
@@ -36,9 +36,10 @@ For example:
 ```bash
 mkdir lab1
 cd lab1
+:
 ```
 +
-{empty}
+{empty} +
 
 . Create the definitions
 +
@@ -48,6 +49,8 @@ cd lab1
 - gitter-source
 - log-sink
 --
++
+{empty} +
 +
 Create a YAML file `g2s.yaml` (gitter to slack) containing the following definition:
 +
@@ -74,6 +77,8 @@ spec:
       name: log-sink 
 ```
 +
+{empty} +
++
 .. Now create the properties file `stage1.properties` containing the following entries:
 +
 ```properties
@@ -88,7 +93,9 @@ gitter.token=YOUR_ACCESS_TOKEN
 gitter.room=YOUR_ROOM_ID
 ```
 +
-NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read more its API documentation here: https://developer.gitter.im/docs/streaming-api
+{empty} +
++
+NOTE: The `gitter-source` kamelet is implemented following the specification of Gitter's Streaming API to consume events from the server. To know more, read its API documentation here: https://developer.gitter.im/docs/streaming-api
 +
 IMPORTANT: You will notice the presence of the property `streamCachingEnabled` that requires to be disabled. This allows Camel to process the input as an continuous input stream.
 +
@@ -104,6 +111,8 @@ camel run g2s.yaml \
 --properties=stage1.properties
 ```
 +
+{empty} +
++
 Camel JBang will build a local runnable and start Camel. +
 In the output logs you should see Camel connecting to Gitter, similar to the following:
 +
@@ -112,23 +121,27 @@ In the output logs you should see Camel connecting to Gitter, similar to the fol
 ... : Opening connection to Gitter...
 ----
 +
+{empty} +
++
 Now, from Gitter's chat room, send a message, for example "Hello Camel". +
 Your terminal should show the arrival of a Gitter event similar to the following JSON payload:
 +
-```json
+----
 {"id":"6318848405ad4a3701dccfb4","text":"Hello Camel","html":"Hello Camel","sent":"2022-09-07T11:46:12.825Z","readBy":0,"urls":[],"mentions":[],"issues":[],"meta":[],"v":1,"fromUser":{"id":"xxxxxxxxxxxxxxxx","username":"demo-user"         }}
-```
+----
++
+{empty} +
 +
 Hopefully you've been successful in capturing Gitter messages with Camel. +
 Press `Ctrl`+`C` to stop Camel.
 +
 {empty} +
 
-. Now we need extend the Kamelet Binding definition to include data transformation to match the JSON structure the target system (Slack) expects.
+. Now we need to extend the Kamelet Binding definition to include data transformation that matches the JSON structure the target system (Slack) expects.
 +
 We choose from the Kamelet Catalog the JSLT action to transform the body.
 +
-TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's inspired in XSLT (XML Transformation) to define stylesheets containing transformation rules for JSON.
+TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's inspired by XSLT (XML Transformation) to define stylesheets containing transformation rules for JSON.
 +
 Create the JSLT file `g2s.jslt` containing the following definition:
 +
@@ -202,15 +215,9 @@ camel run g2s.yaml g2s.jslt \
 {"channel":"TO_BE_DEFINED","text":"*demo-user@gitter*: Hello Camel"}
 ```
 +
-At this stage you're ready to replace the Log sink Kamelet by the real one, the Slack sink Kamelet.
-+
 {empty} +
-
-. If you're not done so yet, onboard onto the Slack chat platform
 +
-Please follow the link below to complete the Slack onboarding process.
-+
-* link:onboarding-slack.adoc[Slack's platform onboarding]
+At this stage you're ready to replace the Log sink Kamelet by the real one, the Slack sink Kamelet.
 +
 {empty} +
 

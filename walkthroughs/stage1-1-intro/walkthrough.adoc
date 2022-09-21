@@ -6,7 +6,7 @@ endif::[]
 [id='lab1-part1-intro']
 = Lab 1 - Gitter to Slack bridge (part-1, Introduction)
 
-This first stage (part-1) is all about completing our first integration flow using a Kamelet Binding.
+Part 1 (out of 2) introduces the first integration flow to implement as a Kamelet Binding, and will guide you to onboard into the chat platforms.
 
 {empty} +
 
@@ -34,7 +34,7 @@ The picture billow illustrates the data flow traversing our Camel instance:
 
 image::images/data-flow.png[align="center", width=80%]
 
-The above process bridges chat messages from Gitter to Slack. It requires to enable access to both chat platforms.
+The above process bridges chat messages from _Gitter_ to _Slack_. It requires enabling access to both chat platforms.
 
 The tasks to complete in this lab will guide you on how to onboard to both chat systems..
 
@@ -71,7 +71,7 @@ https://developer.gitter.im/login
 +
 Once logged in, you'll be presented with your personal access token and an empty list of apps (if never created one before).
 +
-image::images/gitter-dev-token.png[align="left", width=30%,border-color="green", border-width="3"]
+image::images/gitter-dev-token.png[align="left", width=30%,border-color="green", border-width="2"]
 +
 {empty} +
 
@@ -157,7 +157,7 @@ curl -v https://gitter.im/login/oauth/token \
 +
 For example:
 +
-```curl
+----
 CLIENT_ID=4b03ca9d94d128f1a219027b776722059cc89bba \
 CLIENT_SECRET=8306c0803f4c15319ed20e436870515b8660bad4 \
 CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
@@ -165,19 +165,19 @@ CODE=0119b1eb4d69eb1c2bcf3c9a0570a711cd4b038b \
 curl -v https://gitter.im/login/oauth/token \
 -H "accept: application/json" \
 -d "client_id="$CLIENT_ID"&client_secret="$CLIENT_SECRET"&redirect_uri=http://localhost:8080&grant_type=authorization_code&code="$CODE
-```
+----
 +
 {empty} +
 +
 This above cURL command should return something like:
 +
-```json
+----
 {"access_token":"2d482bdf092e0e2299832b1f38d9560243083894","token_type":"Bearer"}
-```
+----
 +
 {empty} +
 
-.. Now, use the returned token to obtain the Room IDs available using the following base command:
+.. Now, use the returned token to discover available Room IDs. Use the following base command:
 +
 CAUTION: ensure you replace `YOUR_ACCESS_TOKEN`
 +
@@ -193,13 +193,13 @@ curl -v https://api.gitter.im/v1/rooms \
 +
 For example:
 +
-```curl
+----
 TOKEN=2d482bdf092e0e2299832b1f38d9560243083894 \
 && \
 curl -v https://api.gitter.im/v1/rooms \
 -H "Accept: application/json" \
 -H "Authorization: Bearer "$TOKEN
-```
+----
 +
 {empty} +
 +
@@ -221,9 +221,9 @@ https://gitter.im/test-lab-camel/YOUR_ROOM?utm_source=share-link&utm_medium=link
 +
 For example, if choosing `room1`, use the following invite URL
 +
-```http
+----
 https://gitter.im/test-lab-camel/room1?utm_source=share-link&utm_medium=link&utm_campaign=share-link
-```
+----
 +
 {empty} +
 +
@@ -231,9 +231,9 @@ Click `JOIN ROOM` at the bottom of the chat room. At this point you see your ava
 +
 Running the cURL command again to obtain the rooms should return the identifier of the room you just joined, something similar to:
 +
-```json
+----
 [{"id":"6317569e6da03739849c519a"         }]
-```
+----
 +
 {empty} +
 +
@@ -249,11 +249,11 @@ gitter.room=YOUR_ROOM_ID
 +
 For example
 +
-```properties
+----
 # Gitter credentials
 gitter.token=2d482bdf092e0e2299832b1f38d9560243083894
 gitter.room=6317569e6da03739849c519a
-```
+----
 
 {empty} +
 
@@ -261,7 +261,7 @@ gitter.room=6317569e6da03739849c519a
 Were you able to join a Gitter room successfully?
 
 [type=verification]
-Did you complete Gitter's onboarding successfully?
+Did you obtain the room ID?
 
 {empty} +
 
@@ -317,6 +317,8 @@ To connect from Camel to the chat platform, an App needs to be registered in Sla
 . Connect to the following URL
 +
 * https://api.slack.com/apps
++
+{empty} +
 
 . Click on the `Create New App` button
 +
@@ -329,6 +331,8 @@ Select `From scratch`, then
 .. Click `Create App`
 +
 Once the App created you'll be presented with its `Basic Information`
++
+{empty} +
 
 . Select from the left menu:
 +
@@ -348,6 +352,8 @@ Include the following Bot scopes:
 - mpim:history
 --
 +
+{empty} +
+
 .. Generate tokens
 +
 Scroll up until you find `OAuth Tokens for Your Workspace`. +
@@ -357,7 +363,7 @@ You will be requested permissions to access the workspace, click `Allow`.
 +
 Slack then generates and presents the Oauth token for your App:
 +
-image::images/slack-app-oauth-token.png[align="left", width=80%]
+image::images/slack-app-oauth-token.png[align="left", width=50%]
 
 {empty} +
 
@@ -378,18 +384,27 @@ A number of public rooms were made available for this workshop (roomX). Choose a
 You can also create your own room, use the prefix `room_`, for example:
 
 * `room_x`
++
+{empty} +
+
 
 . Open the channel details of the room you joined
 +
 image::images/slack-room-details.png[align="left", width=20%]
++
+{empty} +
 
 . Click on the `Integrations` tab, and add an App
 +
 image::images/slack-add-app.png[align="left", width=50%]
++
+{empty} +
 
 . Find the `CamelWorkshopApp` (or your own app), and click `Add`
 +
 image::images/slack-add-app-to-room.png[align="left", width=60%]
++
+{empty} +
 
 Your room has now the App included. Camel can use the App credentials to communicate with Slack.
 
@@ -417,16 +432,18 @@ The diagram below illustrates the processing flow you're about to create:
 
 image::images/processing-flow.png[align="center", width=80%]
 
+There are 3 Kamelets in use:
 
-* There are 3 Kamelets in use:
-+
+====
+* *A source* +
+Consumes events from _Gitter_.
 
-A source
-consumes events from Gitter
-An action
-	transforms Gitter events to Slack events (in JSON format)
-A sink
-	produces events to Slack
+* *An action* +
+Transforms _Gitter_ events to _Slack_ events (in JSON format).
+
+* *A sink* +
+Produces events to _Slack_.
+====
 
 
 {empty} +
@@ -442,22 +459,22 @@ The way this user consumes _Camel_ is by selecting catalog _Kamelets_ and creati
 * *The Camel developer* +
 The traditional _Camel_ developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 +
-// {empty} +
-// +
-NOTE: The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes User, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
+{empty} +
++
+NOTE: The YAML definitions are identical for both profiles. Although this first lab is targeted for the Kubernetes user, we also want to introduce how the Camel developer uses development tooling to accelerate the creation process.
 
 {empty} +
 
 It's up to you to choose which user to impersonate. Considering how easy are the instructions to follow, we recommend choosing the Camel developer, which will anyway mimic the Kubernetes user when deploying in OpenShift. However, if time is a constraint then choose the Kubernetes user.
 
-Time to choose, continue as:
+You've reached the end of Part 1. To complete Lab 1, choose from the main dashboard part 2, it can either be the Camel developer, or the Kubernetes user as per the picture below:
 
-// * link:../stage1-5-kubernetes/walkthrough.adoc[Kubernetes persona]
+image::images/continue-part-2.png[align="center", width=80%]
 
+{empty} +
 
-* persona-kubernetes-user.adoc
-* persona-camel-developer.adoc
-
+[type=verification]
+Are you ready to choose a path?
 
 // [type=taskResource]
 // .Camel
