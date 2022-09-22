@@ -213,6 +213,7 @@ This action will reveal `BOT PERMISSIONS`
 |===
 |GENERAL PERMISSIONS 
 |{checkedbox} Read Messages / View Channels
+|===
 --
 +
 {empty} +
@@ -221,6 +222,7 @@ This action will reveal `BOT PERMISSIONS`
 |===
 |TEXT PERMISSIONS
 |{checkedbox} Send Messages
+|===
 --
 +
 {empty} +
@@ -439,7 +441,7 @@ Use instead the parameter `repeatCount` (copy/replace from the snippet below):
 camel run * --reload
 ```
 +
-{empty} +
+TIP: the flag `reload` indicates to _Camel JBang_ to hot reload new definitions whenever file changes are detected allowing fast prototyping.
 +
 The output in your terminal should show, only once, the following: `Hello Camel from yaml`.
 +
@@ -467,6 +469,12 @@ Let's modify the code to simulate the JSON payload _Discord_ expects. Replace th
 Save changes. +
 -> _Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
+You should see the following in the log output:
++
+----
+... {"content": "Hello from Camel"}
+----
++ 
 {empty} +
 
 . Post to _Discord_
@@ -506,7 +514,7 @@ Include the following snipped in your YAML file:
 Save changes. +
 -> _Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
-If all goes well, Discord will receive the message and display it in the room, as shown below:
+If all goes well, _Discord_ will receive the message and display it in the room, as shown below:
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
@@ -575,14 +583,14 @@ spec:
       Send messages to Discord.
     required:
       - token
-      - room
+      - channel
     type: object
     properties:
       token:
         title: Security Token
         description: The bot security token
         type: string
-      channelid:
+      channel:
         title: Channel Identifier
         description: The channel id
         type: string
@@ -640,8 +648,8 @@ Replace the HTTP logic with your _Kamelet_:
       - to:
           uri: "kamelet:discord-sink"
           parameters:
-            token:   "{{token}}"
-            channel: "{{channel}}"
+            token:   "{{discord.token}}"
+            channel: "{{discord.channel}}"
 ```
 +
 {empty} +
@@ -649,7 +657,18 @@ Replace the HTTP logic with your _Kamelet_:
 Save changes.
 +
 {empty} +
+.. Update configuration
 +
+We include a prefix on parameters to avoid confusion with other chat systems.
++
+```bash
+sed -i '' 's/token/discord.token/g' stage4.properties
+sed -i '' 's/channel/discord.channel/g' stage4.properties
+:
+```
++
+{empty} +
+
 .. Run it
 +
 ```bash
@@ -742,10 +761,32 @@ The commands above modified the `k2d.yaml` binding with the following changes:
 * Uses the new _Discord sink Kamelet_
 ====
 +
-No extra changes are required on the _Kamelet_ binding, it's good to go.
-+
 {empty} +
 
+. Update the sink definition
++
+In the previous step we modified the sink from a _Slack_ one to _Discord_. However, while _Slack_ only required a `token`, _Discord_ requires also a `channel`. +
+Copy the `channel` parameter from the snipped below in the sink definition of your YAML file:
++
+----
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1
+      name: discord-sink
+    properties:
+      token: "{{discord.token}}"
+----
++
+```yaml
+      channel: "{{discord.channel}}"
+```
++
+{empty} +
++
+Save changes.
++
+{empty} +
 
 . Define the JSLT transformation (Standard -> _Discord_).
 +
@@ -768,3 +809,104 @@ We're mapping values from the Standard data model JSON structure
 And that's it, ready to be deployed.
 
 {empty} +
+
+=== Deploy and test
+
+. Deploy the _Kamelet_
++
+To allow _Kubernetes_ users to consume (use in a binding) the _Discord_ _Kamelet_, we need to push the its definition to _OpenShift_ to become part of the Kamelet catalog.
++
+Push it using the following command:
++
+```bash
+oc apply -f discord-sink.kamelet.yaml
+```
++
+{empty} +
+
+
+. Push the configuration to _OpenShift_
++
+For your _Kamelet_ binding to operate, its configuration needs to be available in _OpenShift_.
++
+Create the _Secret_ and the _ConfigMap_ that includes the JSLT. +
+Run the following `oc` command:
++
+```bash
+oc create secret generic stage4 --from-file=stage4.properties
+oc create cm stage4-transform --from-file=k2d.jslt
+:
+```
+{empty} +
+
+. Deploy the YAML definition containing your new _Kamelet Binding_
+.. Run the following `oc` command to deploy the integration:
++
+```bash
+oc apply -f k2d.yaml
+```
++
+NOTE: Be patient, this action will take some time to complete as the operator needs to download all related dependencies, build the applications and create the image before the integration can be deployed.
+
+.. Wait for readyness
++
+Check the deployment of the pod and logs to ensure all is in healthy state.
++
+You can run the following command to check their state:
++
+```bash
+oc get klb k2d
+```
++
+{empty} +
++
+When the pods are ready, the command should return:
++
+----
+NAME   PHASE   REPLICAS
+k2d    Ready   1
+----
++
+{empty} +
+
+. Send messages to test the system.
++
+.. Go to you _Gitter_'s room and send a message, for example `Hello from Gitter`.
+
+.. Then go to you _Slack_'s room and send a message, for example `Hello from Slack`.
++
+If all goes well you should see something similar to the picture below:
++
+image::images/stage4-msg-k2d-test.png[align="left", width=90%]
++
+{empty} +
+
++
+{empty} +
+
+[type=verification]
+Did you see the message going from _Gitter_ to _Discord_?
+
+[type=verificationSuccess]
+Very good !
+
+[type=verificationFail]
+Inspect in the pod logs to troubleshoot.
+
+
+[type=verification]
+Did you see the message going from _Slack_ to _Discord_?
+
+[type=verificationSuccess]
+Very good !
+
+[type=verificationFail]
+Inspect in the pod logs to troubleshoot.
+
+
+
+[time=5]
+[id="kamelet-binding-create"]
+== Part 3 - Discord ⇒ Kafka
+
+gdfgdjfgljdgfium
