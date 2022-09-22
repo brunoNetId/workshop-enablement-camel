@@ -1,4 +1,5 @@
 :walkthrough: Discord Integration
+:checkedbox: pass:normal[{startsb}&#10004;{endsb}]
 
 ifdef::env-github[]
 endif::[]
@@ -12,9 +13,9 @@ Use Camel K to integrate additional chat systems to the platform.
 // == Overview
 Up until now we have evolved a solution to interconnect _Gitter_ and _Slack_, and crucially, with the addition of AMQ Streams, now the platform allows for new systems to easily integrate. In this new Lab we're going to add a new chat option: _Discord_.
 
-_Discord_ is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to keep in touch and interact with their clients.
+_Discord_ is a well known chat platform, very popular among gamers, but increasingly embraced by enterprises to connect internal teams but also for external interactions with customers as a way to maintain close contact.
 
-The difficulty of this new stage is that we don't have in our catalog _Kamelets_ for _Discord_. We need to create our own connectors.
+The difficulty of this new stage is that the catalog does not have _Kamelets_ for _Discord_. We need to create our own connectors.
 
 {empty} +
 
@@ -45,15 +46,15 @@ image::images/stage-overview-discord.png[align="center", width=80%]
 In terms of implementation effort for this lab, the main tasks to complete are the following:
 
 - Create a _Discord_ sink _Kamelet_
-- Craete a _Kafka_ to _Discord_ flow using the new _Kamelet_
-- Create a _Discord_ to _Kafka_ flow using _Camel K_ (DSL)
+- Craete a _Kafka_ -> _Discord_ flow using the new _Kamelet_
+- Create a _Discord_ -> _Kafka_ flow using _Camel K_ (DSL)
 
 {empty} +
 
 and optionally:
 
-- Create a _Telegram_ to _Kafka_ flow
-- Create a _Kafka_ to _Teletram_ flow
+- Create a _Telegram_ -> _Kafka_ flow
+- Create a _Kafka_ -> _Teletram_ flow
 
 {empty} +
 
@@ -61,14 +62,16 @@ and optionally:
 // == Access Discord\'s chat platform
 
 
+[time=5]
+[id="discord-chat"]
 == Discord\'s platform onboarding
 
-TIP: If you're unfamiliar with _Discord_, it is a well known chat platform, very popular among gamers, but more and more embraced by enterprises for internal communications and to connect with their clients.
+TIP: If you're unfamiliar with _Discord_, it is a well known chat platform, very popular among gamers, but increasingly embraced by enterprises to connect internal teams but also for external interactions with customers as a way to maintain close contact.
 
 
 [NOTE]
 --
-If you have never used _Discord_ before, register by using your email address, nothing else is needed.
+If you have never used _Discord_ before, it's easy to register by using your email address (no phone numbers required).
 
 * https://discord.com/register
 --
@@ -115,7 +118,9 @@ To connect from _Camel_ to the chat platform, an App needs to be registered in _
 
 ** link:#creating-your-own-app-for-discord[Creating your own App for Discord]
 
-* If you're part of a workshop group, an App has been made available for all students to share. Ask your workshop's admin to share the App's credentials with you.
+{empty} +
+
+* If you're part of a workshop group, an App has been made available for all students to share. Ask your workshop's admin for the App's credentials to configure your Camel instance.
 +
 You can skip the next section (app creation) and directly jump to the end of this task.
 
@@ -131,7 +136,7 @@ You can skip the next section (app creation) and directly jump to the end of thi
 --
 * https://discord.com/developers
 +
-If you have never used _Discord_ before, register by using your email address, nothing else is needed.
+If you have never used _Discord_ before, register by using your email address (no phone numbers required).
 --
 +
 {empty} +
@@ -140,17 +145,23 @@ If you have never used _Discord_ before, register by using your email address, n
 +
 Once in, you'll see your applications dashboard with an empty list of apps (if never created one before).
 +
-image::images/discord-apps.png[align="center", width=90%,border-color="green", border-width="3"]
+image::images/discord-apps.png[align="left", width=90%,border-color="green", border-width="3"]
 +
+{empty} +
+
 .. Click the `New Application` button
 +
-image::images/discord-create-app.png[align="left", width=20%]
+image::images/discord-create-app.png[align="left", width=15%]
 +
+{empty} +
+
 .. Give it a name, for example `MyCamelApp`. +
 Click `Create`
 +
 Once the App created you'll be presented with its `General Information`
 +
+{empty} +
+
 .. Add bot
 +
 Select from the left menu:
@@ -161,6 +172,8 @@ Select from the left menu:
 Click `Yes, do it!`
 --
 +
+{empty} +
+
 .. Reset token
 +
 Discord only shows the Bot token once, make sure you keep note of it.
@@ -171,6 +184,8 @@ Then, click `Yes, do it!`
 The new token will be shown on screen as follows:
 +
 image::images/discord-app-token.png[align="left", width=90%]
++
+{empty} +
 +
 Copy and keep it safe, you'll need it when configuring Camel.
 
@@ -185,22 +200,37 @@ Select from the left menu:
 .. From `SCOPES` select:
 +
 --
-- bot
+{checkedbox} bot
 --
 +
 This action will reveal `BOT PERMISSIONS`
++
+{empty} +
 
 .. From `BOT PERMISSIONS` select:
 +
 --
-- GENERAL PERMISSIONS -> Read Messages / View Channels
-- TEXT PERMISSIONS -> Send Messages
+|===
+|GENERAL PERMISSIONS 
+|{checkedbox} Read Messages / View Channels
 --
++
+{empty} +
++
+--
+|===
+|TEXT PERMISSIONS
+|{checkedbox} Send Messages
+--
++
+{empty} +
 +
 Selecting the permissions above shapes a generated URL presented below. +
 Scroll down to see the gerented URL, it should look as follows:
 +
 image::images/discord-app-generated-url.png[align="left", width=100%]
++
+{empty} +
 +
 Click `Copy`
 +
@@ -208,18 +238,20 @@ Click `Copy`
 
 . Authorize your App
 +
-Open a new tab in your browser and paste the generated URL in the address bar.
+Open a new tab in your browser and paste the generated URL in the address bar. +
+-> The browser will load an authorization page. +
 +
-The browser will load an authorization page. +
-Select the Discord server you have previously created. +
+Select from the dropdown list the _Discord_ server you have previously created. +
 Then click `Continue`.
 +
 You then are presented with a summary of bot permissions to authorize, as per the picture below:
 +
 image::images/discord-app-auth.png[align="left", width=30%]
 +
+{empty} +
++
 click `Authorize`. +
-Tick `I'm a human`.
+Tick `I'm a human` {checkedbox}
 +
 When the authorization process is done you can close the tab.
 
@@ -227,11 +259,12 @@ When the authorization process is done you can close the tab.
 
 Your App should now be visible as a member of the server, with offline status.
 
-In Discord, Apps that are member of a server, automatically become members of all the server channels (rooms).
+image::images/discord-app-offline.png[align="left", width=20%]
 
-Click the link below to jump back (scroll up) where you left it:
+{empty} +
 
-* link:#back-connect-camel-to-discord[Connecting Camel to _Discord_]
+In _Discord_, Apps that are member of a server, automatically become members of all the server channels (rooms).
+
 
 {empty} +
 {empty} +
@@ -243,22 +276,25 @@ You completed the task !
 === Completion checks
 
 [type=verification]
-Do you have an App already available in Discord?
+Do you have an App available in _Discord_ (your own or shared)?
 
 [type=verification]
-Do you have the App's credentials to configure Camel?
+Do you have the App's credentials to configure _Camel_?
 
 
 {empty} +
 
+
+[time=10]
+[id="kamelet-create"]
 == Part 1 - Create the Sink Kamelet
 
 TIP: _Kamelets_ are [underline big]_**Camel**_ route snipp[underline big]**ets**. +
 A Kamelet encapsulates a normal _Camel_ route.
 
-Our Kamelet definition consists in defining a Camel route that targets _Discord_ as the endpoint.
+The _Kamelet_ to create involves defining a Camel route that targets _Discord_ as the endpoint system.
 
-To integrate with _Discord_ we need to understand well its API, but don't worry, we got you covered. For reference, here's Discord's documentation on how to post messages:
+To integrate with _Discord_ we need to understand well its API, but don't worry, we got you covered. For reference, here's _Discord_'s documentation on how to post messages:
 
 * https://discord.com/developers/docs/resources/channel#create-message
 
@@ -276,7 +312,7 @@ There are 4 key processing steps necessary:
 
 ====
 * *Clean Headers* +
-  The incoming Camel exchange might have headers that can potentially enter in conflict with the HTTP call to Discord.
+  The incoming _Camel_ exchange might have headers that can potentially enter in conflict with the HTTP call to _Discord_.
 
 * *Set Content-Type* +
 	Include an HTTP header to specify the type of payload we send (JSON)
@@ -285,18 +321,18 @@ There are 4 key processing steps necessary:
 	Include an HTTP header with the security token
 
 * *HTTP invokation* +
-  Trigger the HTTP call using the Camel HTTP component
+  Trigger the HTTP call using the _Camel_ HTTP component
 ====
 
 {empty} +
 
-Obviously, developing this process is the task of an experienced Camel developer. When the Kamelet is fully implemented, the Camel developer can place it along the rest of _Kamelets_ in the catalogue, that would allow non-Camel users (the _Kubernetes_ user) to consume it inside _Kamelet Bindings_.
+Obviously, developing this process is the task of an experienced _Camel_ developer. When the _Kamelet_ is fully implemented, it gets deployed along the rest of _Kamelets_ in the catalogue, which allows non-_Camel_ users (the _Kubernetes_ user) to consume it inside _Kamelet Bindings_.
 
 {empty} +
 
 === Process definition
 
-The best approach to make rapid progress developing this Kamelet, is to use Camel JBang in your local environment.
+The best approach to make rapid progress developing this _Kamelet_, is to use _Camel JBang_ in your local environment.
 
 image::images/camel-jbang.png[align="left", width=40%]
 
@@ -312,6 +348,7 @@ The first step is to create a little prototype that will validate our _Camel_ ro
 ```bash
 mkdir lab4
 cd lab4
+:
 ```
 +
 {empty} +
@@ -321,6 +358,8 @@ cd lab4
 ```bash
 touch stage4.properties
 ```
++
+{empty} +
 +
 Include your _Discord_ details:
 +
@@ -341,7 +380,7 @@ Ensure you configure with your _Discord_ values, and save changes.
 * If you created your own App, use your App's Bot token.
 
 - `channel` +
-You can find the channel id in the address bar of your Discord browser tab. The pattern is:
+You can find the channel id in the address bar of your _Discord_ browser tab. The pattern is:
 +
 * http://discord.com/channels/SERVER_ID/CHANNEL_ID
 +
@@ -350,13 +389,15 @@ image::images/discord-room-id.png[align="left", width=100%]
 +
 {empty} +
 
-. Create a skeleton using Camel JBang in YAML format:
+. Create a skeleton using _Camel JBang_ in YAML format:
 +
 For example:
 +
 ```bash
 camel init test-discord.yaml
 ```
++
+{empty} +
 
 . Open and Edit the `test-discord.yaml` file
 +
@@ -366,7 +407,9 @@ Replace the parameter:
 * `period: "1000"`
 --
 +
-By the parameter `repeatCount` (copy/replace from the snippet below):
+{empty} +
++
+Use instead the parameter `repeatCount` (copy/replace from the snippet below):
 +
 ----
 # camel-k: language=yaml
@@ -396,7 +439,9 @@ By the parameter `repeatCount` (copy/replace from the snippet below):
 camel run * --reload
 ```
 +
-The output in your terminal should show, once, the following: `Hello Camel from yaml`.
+{empty} +
++
+The output in your terminal should show, only once, the following: `Hello Camel from yaml`.
 +
 {empty} +
 
@@ -404,13 +449,23 @@ The output in your terminal should show, once, the following: `Hello Camel from 
 +
 Let's modify the code to simulate the JSON payload _Discord_ expects. Replace the body with the following:
 +
-```yaml
+----
+    steps:
       - setBody:
+----
++
+```yaml
           constant: '{"content": "Hello from Camel"}'
 ```
 +
+----
+      - log: "${body}"
+----
++
+{empty} +
++
 Save changes. +
-_Camel JBang_ will react: it will load the new definition on the fly and run it.
+-> _Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
 {empty} +
 
@@ -449,29 +504,44 @@ Include the following snipped in your YAML file:
 {empty} +
 +
 Save changes. +
-_Camel JBang_ will react: it will load the new definition on the fly and run it.
+-> _Camel JBang_ will react: it will load the new definition on the fly and run it.
 +
 If all goes well, Discord will receive the message and display it in the room, as shown below:
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
+{empty} +
+
+=== End of prototyping
+
+[type=verification]
+Did you see the message showing in _Discord_?
+
+[type=verificationSuccess]
 The first goal has been accomplished. image:images/emoji-clap.png[width=3%]
-+
+
+[type=verificationFail]
+Verify the snippet copy/paste actions were well followed.
+
+{empty} +
+
 Press `ctrl`+`c` to stop _Camel JBang_.
-+
+
 {empty} +
 
 ==== Encapsulate as a Sink
 
-Now that our prototype is fully functional, let's encapsulate the code as a Kamalet Sink.
+Now that our prototype is fully functional, let's encapsulate the code as a _Kamelet_ sink.
 
 . Create skeleton
 +
-Use the following command to create a Kamelet skeleton:
+Use the following command to create a _Kamelet_ skeleton:
 +
 ```bash
 camel init discord-sink.kamelet.yaml
 ```
++
+{empty} +
 +
 Open the file in your editor.
 +
@@ -479,7 +549,7 @@ Open the file in your editor.
 
 . Define your Kamelet
 +
-.. define its type as _Sink_
+.. define its type as `sink`
 +
 ----
 apiVersion: camel.apache.org/v1alpha1
@@ -492,6 +562,8 @@ metadata:
 ```yaml
     camel.apache.org/kamelet.type: "sink"
 ```
++
+{empty} +
 +
 .. define metadata and parameters
 +
@@ -525,6 +597,8 @@ spec:
       steps:
 ```
 +
+{empty} +
++
 .. include your prototype code
 +
 ```yaml
@@ -542,11 +616,11 @@ spec:
 + 
 {empty} +
 
-. Test your Kamelet
+. Test your _Kamelet_
 +
 .. Modify your prototype `test-discord.yaml`
 +
-Replace the HTTP logic by your Kamelet:  
+Replace the HTTP logic with your _Kamelet_:  
 +
 ----
 # camel-k: language=yaml
@@ -570,6 +644,8 @@ Replace the HTTP logic by your Kamelet:
             channel: "{{channel}}"
 ```
 +
+{empty} +
++
 Save changes.
 +
 {empty} +
@@ -580,19 +656,39 @@ Save changes.
 camel run *
 ```
 +
-Again, if all goes well, Discord will receive the message and display it in the room, as shown below:
+{empty} +
++
+Again, if all goes well, _Discord_ will receive the message and display it in the room, as shown below:
 +
 image::images/discord-room-hello.png[align="left", width=40%]
 +
+{empty} +
++
+
+
+=== End of encapsulation
+
+[type=verification]
+Did you see the message showing in _Discord_?
+
+[type=verificationSuccess]
 The second goal has been accomplished. image:images/emoji-clap.png[width=3%]
-+
-Press `ctrl`+`c` to stop _Camel JBang_.
-+
+
+[type=verificationFail]
+Verify the snippet copy/paste actions were well followed.
+
 {empty} +
 
+Press `ctrl`+`c` to stop _Camel JBang_.
+
+{empty} +
+
+
+[time=5]
+[id="kamelet-binding-create"]
 == Part 2 - Kafka ⇒ Discord
 
-We have now the building block we were missing, we can now bind our _Discord_ _Kamelet_ to Kafka to push chat conversations to Discord.
+We have now the building block we were missing, we can now bind our _Discord_ _Kamelet_ to _Kafka_ to push chat conversations to _Discord_.
 
 === Process overview
 
@@ -604,7 +700,7 @@ There are 4 Kamelets in use:
 
 ====
 * *A source* +
-Consumes events from Kafka.
+Consumes events from _Kafka_.
 
 * *Two actions* +
 One filters messages to prevent death loops. +
@@ -620,9 +716,9 @@ Produces events to _Discord_.
 
 === Process definition
 
-. Setup the Kamelet Binding
+. Setup the _Kamelet_ binding
 +
-Given the process is almost identical to the Kafka to Gitter/Slack ones, we can use one of those as a base for our definition.
+Given the process is almost identical to the _Kafka_ to _Gitter_/_Slack_ ones, we can use one of those as a base for our definition.
 +
 Run the following commands in your terminal:
 +
@@ -638,20 +734,20 @@ touch k2d.jslt
 +
 [NOTE]
 ====
-The commands above changed the `k2d.yaml` binding with the following amendments:
+The commands above modified the `k2d.yaml` binding with the following changes:
 
-* Its name is `k2d` (Kafka to Discord)
+* Its name is `k2d` (_Kafka_ to _Discord_)
 * The filter blocks `discord` source events
 * Applies the `k2d.jslt` transformation (to be defined)
-* Uses the new _Discord Sink Kamelet_
+* Uses the new _Discord sink Kamelet_
 ====
 +
-No extra changes are required on the _Kamelet Binding_, it's good to go.
+No extra changes are required on the _Kamelet_ binding, it's good to go.
 +
 {empty} +
 
 
-. Define the JSLT transformation (Standard -> Discord).
+. Define the JSLT transformation (Standard -> _Discord_).
 +
 Copy the snippet below and paste it into your new `k2d.jslt` file:
 +
@@ -665,7 +761,7 @@ Copy the snippet below and paste it into your new `k2d.jslt` file:
 +
 [NOTE]
 ====
-We're mapping values from the Standard data model
+We're mapping values from the Standard data model JSON structure
 ====
 {empty} +
 
