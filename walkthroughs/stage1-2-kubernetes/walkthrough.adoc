@@ -8,7 +8,7 @@ endif::[]
 
 // = [[kubernetes-user]] The Kubernetes user deployment flow
 
-Impersonate the Kubernetes user to complete Lab-1's _Gitter_ to _Slack_ processing flow.
+Impersonate the Kubernetes user to complete Lab-1's Gitter to Slack processing flow.
 
 In this second part, the instructions will guide you in defining a _Kamelet Binding_ that enables the data flow, and pushing it to the _OpenShift_ environment where it becomes live.
 

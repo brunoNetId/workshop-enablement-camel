@@ -2,3 +2,4 @@
 test*
 lab*
 walkthroughs/webapp.db
+.vscode/*
