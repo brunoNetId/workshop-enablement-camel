@@ -4,7 +4,8 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab3-gitter-kafka-slack']
-= Lab 3 - Gitter ⇔ Kafka ⇔ Slack (via streams)
+// = Lab 3 - Gitter ⇔ Kafka ⇔ Slack (via streams)
+= Lab 3 - Decoupled Re-Architecture
 
 // = [[kubernetes-user]] The Kubernetes user deployment flow
 

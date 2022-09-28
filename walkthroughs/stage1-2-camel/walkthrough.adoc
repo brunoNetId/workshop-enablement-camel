@@ -4,7 +4,8 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab1-part2-camel']
-= Lab 1 - Gitter to Slack bridge (part-2, Camel developer)
+// = Lab 1 - Gitter to Slack bridge (part-2, Camel developer)
+= Lab 1.path1 - LiasonHub - Be the Camel developer
 
 // = [[camel-developer]] The Camel user development flow
 

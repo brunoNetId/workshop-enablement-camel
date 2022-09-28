@@ -4,6 +4,9 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab5-storage']
-= Lab 5 - Storage
+// = Lab 5 - Storage
+= Lab 5 - Add Storage to the Architecture
 
-pending content
+Use OpenShift Data Foundations to provide storage capabilities and services to the LiaisonHub platform.
+
+Pending to document

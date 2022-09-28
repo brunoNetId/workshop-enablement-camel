@@ -4,7 +4,8 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab1-part2-kubernetes']
-= Lab 1 - Gitter to Slack bridge (part-2, Kubernetes user)
+// = Lab 1 - Gitter to Slack bridge (part-2, Kubernetes user)
+= Lab 1.path2 - LiasonHub - Be the Kubernetes user
 
 // = [[kubernetes-user]] The Kubernetes user deployment flow
 

@@ -5,7 +5,8 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab4-discord-integration']
-= Lab 4 - Discord Integration
+// = Lab 4 - Discord Integration
+= Lab 4 - Integrate a new platform
 
 Use Camel K to integrate additional chat systems to the platform. 
 // toc::[]

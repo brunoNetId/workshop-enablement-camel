@@ -4,7 +4,8 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab2-gitter-slack-two-ways']
-= Lab 2 - Gitter ⇔ Slack (two ways)
+// = Lab 2 - Gitter ⇔ Slack (two ways)
+= Lab 2 - Enable two way interactions
 
 // = [[kubernetes-user]] The Kubernetes user deployment flow
 
