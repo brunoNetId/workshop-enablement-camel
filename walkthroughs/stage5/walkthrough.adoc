@@ -1,4 +1,4 @@
-:walkthrough: Discord Integration
+:walkthrough: Storage
 
 ifdef::env-github[]
 endif::[]
@@ -8,5 +8,12 @@ endif::[]
 = Lab 5 - Add Storage to the Architecture
 
 Use OpenShift Data Foundations to provide storage capabilities and services to the LiaisonHub platform.
+
+Pending to document
+
+
+[time=5]
+[id="storage"]
+== Pending title
 
 Pending to document
