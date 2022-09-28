@@ -5,7 +5,7 @@ endif::[]
 
 [id='lab1-part1-intro']
 // = Lab 1 - Gitter to Slack bridge (part-1, Introduction)
-= Lab 1.intro - Liason Hub - Scenario Introduction
+= Lab 1.intro - MessageHub - Scenario Introduction
 
 Part 1 (out of 2) introduces the first integration flow to implement as a Kamelet Binding, and will guide you to onboard into the chat platforms.
 

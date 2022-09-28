@@ -7,7 +7,7 @@ endif::[]
 // = Lab 5 - Storage
 = Lab 5 - Add Storage to the Architecture
 
-Use OpenShift Data Foundations to provide storage capabilities and services to the LiaisonHub platform.
+Use OpenShift Data Foundation to provide storage capabilities and services to the MessageHub platform.
 
 Pending to document
 
