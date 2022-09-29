@@ -30,15 +30,18 @@ image::images/camel-jbang.png[align="left", width=40%]
 
 TIP: Camel JBang is an upstream tool for Camel. It is not supported yet by Red Hat but it is an extremely useful tool for all things Camel. It simplifies many of the common tasks a Camel developer undergoes. 
 
-. Create a folder where you will work
+. Create a folder and resources where you will work
 +
 For example:
 +
 ```bash
 mkdir lab1
 cd lab1
-:
+touch g2s.yaml
+touch stage1.properties
 ```
++
+NOTE: The commands above also create the file sources you need for the exercise.
 +
 {empty} +
 
@@ -51,9 +54,11 @@ cd lab1
 - log-sink
 --
 +
+NOTE: The `gitter-source` _Kamelet_ is not provided out of the box by Camel K. It has been specifically created and deployed for this workshop.
++
 {empty} +
 +
-Create a YAML file `g2s.yaml` (gitter to slack) containing the following definition:
+Include in your YAML file `g2s.yaml` (gitter to slack) the following definition:
 +
 ```yaml
 apiVersion: camel.apache.org/v1alpha1
@@ -80,7 +85,7 @@ spec:
 +
 {empty} +
 +
-.. Now create the properties file `stage1.properties` containing the following entries:
+.. Now include in your properties file `stage1.properties` the following entries:
 +
 ```properties
 # Allows HTTP streaming from Gitter

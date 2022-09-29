@@ -22,15 +22,18 @@ In this second part, the instructions will guide you in defining a _Kamelet Bind
 
 The instructions below will make you progress one Camel step at a time rather than providing a complete _Kamelet Binding_ of the full data flow. This will allow you to play with different _Kamelets_ and understand better the mechanics of _Kamelet Bindings_.
 
-. Create a folder where you will work
+. Create a folder and resources where you will work
 +
 For example:
 +
 ```bash
 mkdir lab1
 cd lab1
-:
+touch g2s.yaml
+touch stage1.properties
 ```
++
+NOTE: The commands above also create the file sources you need for the exercise.
 +
 {empty} +
 
@@ -42,9 +45,11 @@ cd lab1
 - log-sink
 --
 +
+NOTE: The `gitter-source` _Kamelet_ is not provided out of the box by Camel K. It has been specifically created and deployed for this workshop.
++
 {empty} +
 +
-Create a YAML file `g2s.yaml` (gitter to slack) containing the following definition:
+Include in your YAML file `g2s.yaml` (gitter to slack) the following definition:
 +
 ```yaml
 apiVersion: camel.apache.org/v1alpha1
@@ -74,7 +79,7 @@ spec:
 +
 {empty} +
 
-.. Now create the properties file `stage1.properties` containing the following entries:
+.. Now include in your properties file `stage1.properties` the following entries:
 +
 ```properties
 # Allows HTTP streaming from Gitter
@@ -124,6 +129,23 @@ oc apply -f g2s.yaml
 The Camel K operator will immediately react. It will start building the integration and deploy it.
 +
 NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
++
+{empty} +
++
+You can monitor the state of the resource with the following command:
++
+```bash
+oc get klb
+```
++
+TIP: the argument `klb` stands for _Kamelet Binding_.
++
+While Camel K builds the integration, the command above shows:
++
+----
+NAME   PHASE      REPLICAS
+g2s    Creating   
+----
 +
 {empty} +
 
