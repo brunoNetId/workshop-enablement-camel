@@ -31,19 +31,40 @@ Estimated time: +
 
 
 There is no previous Camel experience required. +
+
+{empty} +
+
+=== User profiles
+
+This workshop has been designed to attend two different user profiles:
+
+
+* *The Kubernetes user* (no previous Camel experience) +
+The way this user consumes _Camel_ is by selecting catalog _Kamelets_ and creating _Kamelet Bindings_ in YAML definitions. The user creates local YAML files and then pushes them to _OpenShift_. The _Camel K_ operator automates the process of building, creating images and deploying the integrations.
+
+* *The Camel developer* +
+The traditional _Camel_ developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
+
+{empty} +
+
+[time=2]
+[id="scenario-intro"]
+== Scenario introduction
+
 The picture billow illustrates the data flow traversing our Camel instance:
 
 image::images/data-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from _Gitter_ to _Slack_. It requires enabling access to both chat platforms.
 
-The tasks to complete in this lab will guide you on how to onboard to both chat systems..
+The tasks to complete in this lab will guide you on how to onboard to both chat systems.
 
 {empty} +
 
+
 [time=5]
 [id="gitter-chat"]
-== Gitter\'s platform onboarding
+== Gitter's platform onboarding
 
 TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
 
@@ -269,7 +290,7 @@ Did you obtain the room ID?
 
 [time=5]
 [id="slack-chat"]
-== Slack\'s platform onboarding
+== Slack's platform onboarding
 
 
 === Join a Slack workspace.
