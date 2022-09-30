@@ -8,88 +8,96 @@ endif::[]
 
 Start from here to familiarise yourself with the goals of this workshop and the scenario it is based on.
 
-Apache Camel has taken a major evolution step with the release of version 3, and now reaches a wider audience with a significant increase of automation level on Kubernetes environments.
+_Apache Camel_ has taken a major evolution step with the release of version 3. It now reaches a wider audience and delivers significant automation on _Kubernetes_ environments to provide cloud native integration.
 
 {empty} +
 
 
-=== Workshop's progression
+[time=1]
+[id="workshop-progression"]
+== Workshop progression
 
-This workshop has been designed to start with the non-_Camel_ user in mind (the _Kubernetes_ user). All the initial data flows are delivered by the Kubernetes user to showcase the no-code building blocks of _Camel_.
+This workshop has been designed to start with the non-_Camel_ user in mind (the _Kubernetes_ user). All the initial data flows are delivered by the _Kubernetes_ user to showcase the no-code building blocks of _Camel_.
 
-Gradually, as the student progresses with the labs, the scenario builds up in a more sophisticated architecture. The presented new use cases per chapter require more and more level of control, an area where the experienced _Camel_ developer is better suited.
+As the student progresses with the labs, the scenario builds up in a more sophisticated architecture. Gradually, each new use case requires increased level of control, an area where the experienced _Camel_ developer is better suited.
 
-Every step you complete in the lab delivers value to the platform under construction. The further you go, the more fascinating power you uncover. It all starts, however, with the simplicity and easiness of no-code building blocks enabling anyone to move data from A to B.  
+Every step you complete in the lab delivers value to the end platform under development. The further you go, the more fascinating power you uncover. It all starts, however, with the simplicity and easiness of no-code building blocks allowing anyone to define data flows from A to B.  
 
-{empty} +
+image::images/lab-progress-value.png[align="center", width=60%]
 
-=== User profiles
+
+
+[time=1]
+[id="workshop-user-profiles"]
+== User profiles
 
 The workshop has been designed to attend two different user profiles:
 
 
 * *The Kubernetes user* (no previous Camel experience) +
-The way this user consumes _Camel_ is by selecting catalog _Kamelets_ and creating _Kamelet Bindings_ in YAML definitions. The user creates local YAML files and then pushes them to _OpenShift_. The _Camel K_ operator automates the process of building, creating images and deploying the integrations.
+The way this user consumes _Camel_ is by selecting _Kamelets_ (no-code building blocks) from a catalogue, and creating _Kamelet Bindings_ (concatenated _Kamelets_) in YAML definitions. The user creates local YAML files and then pushes them to _OpenShift_. The _Camel K_ operator automates the process of building, creating images and deploying the integrations.
 
 * *The Camel developer* +
 The traditional _Camel_ developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 
+image::images/lab-user-profiles.png[align="center", width=40%]
+
+
+
+[time=1]
+[id="workshop-goals"]
+== Workshop goals
+
+The list below summarises, among others, the main goals the workshop sets for you:
+
+* *Be the Kubernetes user* +
+Experience how to define and deploy integration flows connecting multiple _Kamelets_ (no-code building blocks) into _Kamelet Bindings_. +
 {empty} +
 
-=== Workshop goals
-
-The list below summarises the main goals the workshop sets for you:
-
-* *Be the Kubernetes user*
-+ 
-Experience how to define and deploy integration flows with _Camel's_ no-code building blocks: Kamelet Bindings
-+
+* *Be the Camel developer* + 
+Experience first hand powerful _Camel_ tooling that accelerates the development process, and how the _Camel DSL_ (Domain Specific Language) can help you to implement advanced use cases. +
 {empty} +
 
-* *Be the Camel developer*
-+ 
-Experience first hand powerful _Camel_ tooling that accelerates the development process, and how the Camel DSL can help you to implement advanced use cases.
-+
+* *Extend/Amplify connectivity* +
+Learn how both personas (_Kubernetes/Camel_ users) can coordinate to maximise reusability by taking advantage of _Camel's_ open framework. +
 {empty} +
 
-* *Extend/Amplify connectivity*
-+ 
-Learn how both personas (_Kubernetes/Camel_ users) can coordinate to maximise reusability by taking advantage of _Camel's_ open framework.
-+
+* *Understand different levels of control* + 
+Familiarise yourself with simple/medium/advanced integrations use cases and how _Camel_ helps to accelerate their delivery. +
 {empty} +
 
-
-* *Understand different levels of control*
-+ 
-Familiarise yourself with simple/medium/advanced integrations use cases and how _Camel_ helps you to accelerate in their delivery. 
-+
+* *Evolve an architecture towards maturity* +
+Understand the justification behind certain design/architecture principles. Experience hands-on how evolving a platform in the right direction delivers a future proof architecture. +
 {empty} +
 
-* *Evolve an architecture towards maturity*
-+
-Understand the justification behind certain design/architecture principles. Experience hands-on how evolving a platform in the right direction gives it a future proof architecture. 
-+
+* *Play with an exciting collaboration use case* + 
+Get to know the architecture of a collaboration platform, an increasingly needed capability, strategic for any industry/organisation, to connect internally and externally with colleagues and customers. +
 {empty} +
 
 
-* *Play with an exciting collaboration use case*
-+ 
-Get to know the architecture of a collaboration platform. This is an increasingly needed capability, strategic for any industry/organisation, to connect internally and externally with colleagues and customers.
-+
-{empty} +
-
-
-[time=2]
+[time=1]
 [id="scenario-intro"]
 == Scenario introduction
 
-The picture billow illustrates the data flow traversing our Camel instance:
+As internet evolves and technologies and trends emerge, so does the way people and organisations connect. Not only digitalisation is transforming and automating processes, but also social changes and events are making an impact that is shaping how we interact.
 
-image::images/data-flow.png[align="center", width=80%]
+Email and SMSs started to replace direct phone conversations, and soon instant messaging platforms gained popularity over them. Today we have a big landscape of messaging platforms and often we feel divided on which one to use to communicate with family and friends.
 
-The above process bridges chat messages from _Gitter_ to _Slack_. It requires enabling access to both chat platforms.
+On the professional side, organisations mandate one common communication platform for all associates, but often, more than one survives, splitting work discussions between them.
 
-The tasks to complete in this lab will guide you on how to onboard to both chat systems.
+It becomes even more inconvenient when a sales department, for example, needs to communicate with customers. Telephone / email are old fashioned channels that are no longer effective. Sales agents try to stay in close contact with their customers via instant messaging platforms, and of course, each customer uses a different one.
+
+image::images/scenario-problem.png[align="center", width=40%]
+
+In the picture above, the _Service Agent_ needs to manage multiple and diverse platform accounts in order to stay in contact with different customers.
+
+The workshop proposes to build a platform that addresses this problem. It would integrate all platforms as one, and plug in additional services associated with those interactions. Additionally, the platform would provide new collaboration possibilities and new capabilities to help complying with government regulations, like data privacy and security.
+
+The picture below illustrates a system that integrates all platforms and allows communication exchanges between different members from unrelated entities
+
+image::images/scenario-message-hub.png[align="center", width=40%]
+
+Under such solution, The _Service Agent_ would be abstracted from all external platforms and would simply be another member of the unified platform. 
 
 {empty} +
 

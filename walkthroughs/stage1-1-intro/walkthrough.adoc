@@ -7,30 +7,29 @@ endif::[]
 // = Lab 1 - Gitter to Slack bridge (part-1, Introduction)
 = Lab 1.intro - MessageHub - Scenario Introduction
 
-Part 1 (out of 2) introduces the first integration flow to implement as a Kamelet Binding, and will guide you to onboard into the chat platforms.
+Part 1 (out of 2) introduces the first integration flow to implement, and will guide you to onboard into the chat platforms.
 
 {empty} +
 
 Target persona: +
-
-* *Kubernetes User*
-
+--
+* *Kubernetes User* +
 {empty} +
-
+--
 Difficulty level: +
-
-* *EASY*
-
+--
+* *EASY* +
 {empty} +
-
+--
 Estimated time: +
-
-* *20 mn*
+--
+* *20 mn* +
+{empty} +
+--
 
 {empty} +
 
-
-There is no previous Camel experience required. +
+No previous Camel experience is required. +
 
 {empty} +
 
@@ -57,6 +56,8 @@ image::images/data-flow.png[align="center", width=80%]
 
 The above process bridges chat messages from _Gitter_ to _Slack_. It requires enabling access to both chat platforms.
 
+Both _Gitter_ and _Slack_ are independent instant messaging systems. _Gitter_ is designed to be a developer collaboration tool while _Slack_ is more generic and aims to be the platform of choice for the entire office. They both have convenient online web access making them ideal for students to use in this workshop.
+
 The tasks to complete in this lab will guide you on how to onboard to both chat systems.
 
 {empty} +
@@ -66,7 +67,7 @@ The tasks to complete in this lab will guide you on how to onboard to both chat 
 [id="gitter-chat"]
 == Gitter's platform onboarding
 
-TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to discuss project topics.
+TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to collaborate and discuss project topics.
 
 {empty} +
 
