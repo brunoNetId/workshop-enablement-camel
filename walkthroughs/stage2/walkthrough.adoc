@@ -20,21 +20,28 @@ Lab 1 enabled a _Gitter_ to _Slack_ data flow. On this second lab we want the fl
 {empty} + 
 
 Target persona: +
-
-* *Kubernetes User*
-
-{empty} + 
-
+--
+* *Kubernetes User* +
+{empty} +
+--
 Difficulty level: +
-
-* *EASY*
-
-{empty} + 
-
+--
+* *EASY* +
+{empty} +
+--
 Estimated time: +
+--
+* *10 mn* +
+{empty} +
+--
 
-* *10 mn*
+{empty} +
 
+
+Technical goals and milestones:
+
+* Enable two-way communications.
+* Include event filters.
 
 {empty} +
 

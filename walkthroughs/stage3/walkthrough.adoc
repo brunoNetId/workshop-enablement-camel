@@ -21,24 +21,30 @@ Lab 1 and 2 enabled _Gitter_/_Slack_ conversations. However their connectivity w
 {empty} +
 
 Target persona: +
-
-* *Kubernetes User*
-
+--
+* *Kubernetes User* +
 {empty} +
-
+--
 Difficulty level: +
-
-* *EASY*
-
+--
+* *EASY* +
 {empty} +
-
+--
 Estimated time: +
-
-* *20 mn*
+--
+* *20 mn* +
+{empty} +
+--
 
 {empty} +
 
+Technical goals and milestones:
 
+* Evolve and mature the architecture.
+* Adopt a standard interface
+* Switch bindings to platform resources.
+
+{empty} +
 
 The picture billow illustrates an asynchronous decoupled architecture, via a streaming platform (_Kafka_). This approach increases the number of data flows from two to four.
 

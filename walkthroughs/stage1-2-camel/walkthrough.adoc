@@ -4,12 +4,19 @@ ifdef::env-github[]
 endif::[]
 
 [id='lab1-part2-camel']
-// = Lab 1 - Gitter to Slack bridge (part-2, Camel developer)
 = Lab 1.path1 - MessageHub - Be the Camel developer
 
-// = [[camel-developer]] The Camel user development flow
-
 Impersonate the Camel developer to complete Lab-1's Gitter to Slack processing flow.
+
+Technical goals and milestones:
+
+* Development of a _no-code_ integration (_Kamelet_ binding)
+* Define JSON data transformers.
+* Use of _Camel JBang_ for fast prototyping
+* Local execution and testing
+* Deployment in OpenShift
+
+{empty} +
 
 The instructions below are divided in two segments:
 

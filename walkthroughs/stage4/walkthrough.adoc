@@ -20,23 +20,31 @@ The difficulty of this new stage is that the catalog does not have _Kamelets_ fo
 
 {empty} +
 
+
 Target persona: +
-
-* *Camel Developer*
-
+--
+* *Camel Developer* +
 {empty} +
-
+--
 Difficulty level: +
-
-* *MEDIUM*
-
+--
+* *MEDIUM* +
 {empty} +
-
+--
 Estimated time: +
+--
+* *20 mn* +
+{empty} +
+--
 
-* *20 mn*
+Technical goals and milestones:
+
+* Prototype custom _Kamelets_ to extend catalogue.
+* Integrate new platforms with new _Kamelets_.
+* _Camel DSL_ for more advanced use cases.
 
 {empty} +
+
 
 The picture billow illustrates all chat systems communicating via _Kafka_, including the to-be-integrated _Discord_ system, and optionally (for those willing to go the extra mile) _Telegram_.
 
