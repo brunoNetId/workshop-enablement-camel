@@ -60,9 +60,9 @@ public class HelperStage5 extends RouteBuilder {
         return new Controller(){
 
             // Helper variables
-            boolean stopProcessing = false;
-            CountDownLatch latch   = null;
-            long lastMessageTime   = 0;
+            boolean expiredTimeWindow = false;
+            CountDownLatch latch      = null;
+            long lastMessageTime      = 0;
 
 
             public synchronized void newMessage(CamelContext context) {
@@ -80,7 +80,7 @@ public class HelperStage5 extends RouteBuilder {
 
                 //if message not in the time window, we stop processing messages.
                 if(elapsed > cutoffTime){
-                    stopProcessing = true;
+                    expiredTimeWindow = true;
                 }
 
                 //reset time
@@ -97,8 +97,8 @@ public class HelperStage5 extends RouteBuilder {
                 latch.countDown();
             }
 
-            public boolean stopProcessing() {
-                return stopProcessing;
+            public boolean expiredTimeWindow() {
+                return expiredTimeWindow;
             }
 
         };
