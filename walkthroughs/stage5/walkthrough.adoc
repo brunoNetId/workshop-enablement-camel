@@ -35,7 +35,7 @@ Difficulty level: +
 --
 Estimated time: +
 --
-* *10 mn* +
+* *20 mn* +
 {empty} +
 --
 

@@ -23,7 +23,7 @@ As the student progresses with the labs, the scenario builds up in a more sophis
 
 Every step you complete in the lab delivers value to the end platform under development. The further you go, the more fascinating power you uncover. It all starts, however, with the simplicity and easiness of no-code building blocks allowing anyone to define data flows from A to B.  
 
-image::images/lab-progress-value.png[align="center", width=60%]
+image::images/workshop-progress-value.png[align="center", width=60%]
 
 
 
@@ -40,7 +40,7 @@ The way this user consumes _Camel_ is by selecting _Kamelets_ (no-code building 
 * *The Camel developer* +
 The traditional _Camel_ developer would typically, first, use his local environment for the inner loop development cycle. This strategy allows speeding up the process of prototyping and validating the code. Once the basics covered, it would follow the same deployment flow as the Kubernetes user.
 
-image::images/lab-user-profiles.png[align="center", width=40%]
+image::images/workshop-user-profiles.png[align="center", width=40%]
 
 
 
