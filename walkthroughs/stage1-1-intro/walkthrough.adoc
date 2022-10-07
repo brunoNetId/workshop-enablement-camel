@@ -4,7 +4,7 @@
 :namespace: {user-username}
 
 // URLs
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: http://codeready-che.{openshift-app-host}/
 
 
 ifdef::env-github[]
@@ -12,9 +12,9 @@ endif::[]
 
 [id='lab1-part1-intro']
 // = Lab 1 - Gitter to Slack bridge (part-1, Introduction)
-= Lab 1.intro - MessageHub - Scenario Introduction
+= Lab 1.intro - MessageHub - Scenario and Environment
 
-Part 1 (out of 2) introduces the first integration flow to implement, and will guide you to onboard into the chat platforms.
+Part 1 (out of 2) introduces the first integration flow to implement, helps you to onboard onto the chat platforms, and presents your development environment.
 
 {empty} +
 
@@ -72,7 +72,7 @@ The tasks to complete in this lab will guide you on how to onboard to both chat 
 
 [time=5]
 [id="gitter-chat"]
-== Gitter's platform onboarding
+== Gitter platform onboarding
 
 TIP: If you're unfamiliar with Gitter, it is an open-source chat platform designed for developers to have a space where to collaborate and discuss project topics.
 
@@ -298,7 +298,7 @@ Did you obtain the room ID?
 
 [time=5]
 [id="slack-chat"]
-== Slack's platform onboarding
+== Slack platform onboarding
 
 
 === Join a Slack workspace.
@@ -456,16 +456,17 @@ Did you complete Slack's onboarding successfully?
 
 
 [time=2]
-[id='getting-ready']
-== Getting Ready for the Labs
+[id='dev-environment']
+== Open your development environment
 
 The following instructions introduce you to your development environment, and the cluster where you'll deploy your applications throughout this workshop.
 
-*Overview*
+=== Overview
 
 Built on the open Eclipse Che project, Red Hat OpenShift Dev Spaces uses Kubernetes and containers to provide any member of the development or IT team with a consistent, secure, and zero-configuration development environment. The experience is as fast and familiar as an integrated development environment on your laptop.
 
 OpenShift Dev Spaces is included with your OpenShift subscription and is available in the Operator Hub. It provides development teams a faster and more reliable foundation on which to work, and it gives operations centralized control and peace of mind.
+
 
 [type=walkthroughResource,serviceName=codeready]
 .Red Hat OpenShift Dev Spaces
@@ -485,10 +486,13 @@ OpenShift Dev Spaces is included with your OpenShift subscription and is availab
 ****
 
 // :sectnums:
+{empty} +
 
 === Accessing a Development Environment
 
 The development environment you use throughout the workshop is a web-hosted IDE known as link:https://developers.redhat.com/products/codeready-workspaces/overview[Red Hat OpenShift Dev Spaces, window="_blank"].
+
+{empty} +
 
 === Login to OpenShift Dev Spaces
 
@@ -569,11 +573,9 @@ Login successful.
 You have access to the following projects and can switch between them with 'oc project <projectname>':
 
   * {user-username}
-    {user-username}-codeready
-    {user-username}-dayinthel-7a87
+    {user-username}-che
     {user-username}-shared-475f
-    {user-username}-smartcity-central
-    {user-username}-smartcity-edge
+    {user-username}-workshop-a14c
 
 Using project "user1".
 Welcome! See 'oc help' to get started.
@@ -582,8 +584,11 @@ Welcome! See 'oc help' to get started.
 {blank}
 +
 image:images/002-terminal-cli-login.png[OC Login Command, role="integr8ly-img-responsive"]
++
+{empty} +
 
-. Most of the work will be deploy to your own `{namespace}` project namespace, so be sure to have it as a _working_ project by executing the following command:
+. Most of the work will be deploy to your own `{namespace}` project namespace. +
+Be sure to have it as a _working_ project by executing the following command:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -593,9 +598,6 @@ oc project {namespace}
 {blank}
 
 Now you are ready to start working on the application services!
-
-
-
 
 
 [time=2]
