@@ -137,11 +137,22 @@ This action should include:
 +
 or simply run the commands below in your terminal:
 +
+* **Linux**
++
 ```bash
 mv stage1.properties stage2.properties
 sed -i '' 's/stage1/stage2/g' g2s.yaml 
 : 
 ```
++
+* **MacOS**
++
+```bash
+mv stage1.properties stage2.properties
+sed -i 's/stage1/stage2/g' g2s.yaml 
+: 
+```
++
 {empty} +
 
 . Include the filter

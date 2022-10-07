@@ -103,12 +103,24 @@ The following set of instructions prepare the set of files you will be working w
 
 . Prepare Lab 3 folder
 +
+* **Linux**
++
+```bash
+cp -r lab2 lab3
+cd lab3
+mv stage2.properties stage3.properties
+grep -rl stage2 . | xargs sed -i 's/stage2/stage3/g'
+: 
+```
++
+* **MacOS**
++
 ```bash
 cp -r lab2 lab3
 cd lab3
 mv stage2.properties stage3.properties
 grep -rl stage2 . | xargs sed -i '' 's/stage2/stage3/g'
- 
+: 
 ```
 +
 {empty} +
@@ -127,6 +139,17 @@ mv *.yaml flows/
 {empty} +
 
 . Rename the bindings:
++
+* **Linux**
++
+```bash
+sed -i 's/g2s/g2k/g' flows/g2k.yaml
+sed -i 's/g2s/k2s/g' flows/k2s.yaml
+sed -i 's/s2g/s2k/g' flows/s2k.yaml
+sed -i 's/s2g/k2g/g' flows/k2g.yaml
+```
++
+* **MacOS**
 +
 ```bash
 sed -i '' 's/g2s/g2k/g' flows/g2k.yaml
