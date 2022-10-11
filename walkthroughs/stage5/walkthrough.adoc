@@ -433,7 +433,7 @@ Replace in your `store.xml` the existing _Camel_ route, by the following one:
 +
 ```xml
     <!-- Temporary route. To be removed when integrating with Kafka -->
-    <route>
+    <route id="timer-mock-1">
         <from uri="timer:mock-1?repeatCount=5&amp;period=1000"/>
         <setBody>
             <simple>{{producer.mock.body}}</simple>
@@ -640,7 +640,7 @@ Copy the snippet below and paste it below the other mock producer.
 +
 ```xml
     <!-- Temporary route. To be removed when integrating with Kafka -->
-    <route>
+    <route id="timer-mock-2">
         <from uri="timer:mock-2?repeatCount=5&amp;period=1000&amp;delay=13000"/>
         <setBody>
             <simple>{{producer.mock.body}}</simple>
@@ -707,4 +707,45 @@ You can consider your code to be validated if your execution behaved as above.
 [id="deploy-openshift"]
 == Deploy in OpenShift
 
-Let's recap how the _Camel_ process workflow should shape up:
+During the prototyping phase we used _Timer_ components to mock _Kafka_ events, and we bypassed the action of pushing the data to the Storage layer.
+
+Let's put in place the real components and deploy in OpenShift.
+
+. Define a _Kafka_ consumer
++
+Delete the `timer-mock-1` and `timer-mock-2` _Camel_ routes and replace with the one defined below:
++
+```xml
+    <route id="kafka-consumer">
+        <from uri="kafka:roomx?{{camel.uri.kafka.parameters}}"/>
+        <to uri="direct:main-processor"/>
+    </route>
+```
++
+{empty} +
++
+It's a very simple Camel route that consumes Kafka events and directs them to the main processor.
++
+[NOTE] 
+--
+The component is configured to consume _Kafka_ messages from the topic `roomx`.
+--
++
+[NOTE] 
+--
+The property `camel.uri.kafka.parameters` contains two important settings to configure manual commit:
+
+* Disable automatic commit: `autoCommitEnable = false`
+* Allow manual commit: `allowManualCommit = true`
+--
++
+{empty} +
+
+. Define a _Camel_ producer to store the data in an S3 bucket 
++
+Copy the snippet below, and paste into your `store-data` Camel route:
++
+```xml
+      <to uri="aws2-s3:chatrooms.bucket?{{camel.uri.s3.parameters}}"/>
+```
++
