@@ -154,7 +154,8 @@ The first step is to create a little prototype that will validate our _Camel_ ro
 cd /projects/MessageHub
 mkdir lab5
 cd lab5
-touch HelperStage5.java
+cp ../support/stage5/HelperStage5.java .
+:
 ```
 +
 {empty} +
@@ -205,6 +206,7 @@ In your Java file you will find the following code that implements the _Controll
 Inspect carefully the code below to familiarise yourself with the _Controller_:
 
 ----
+        //Controller implementation
         return new Controller(){
 
             // Helper variables
@@ -219,7 +221,7 @@ Inspect carefully the code below to familiarise yourself with the _Controller_:
                 if(latch == null){
                     lastMessageTime = System.currentTimeMillis();
                     latch = new CountDownLatch(1);
-                    context.createProducerTemplate().asyncSendBody("direct:wait-until-done", null);
+                    context.createProducerTemplate().asyncSendBody("direct:wait-until-aggregation-done", null);
                 }
 
                 //calculate time split between last 2 messages
@@ -235,19 +237,20 @@ Inspect carefully the code below to familiarise yourself with the _Controller_:
                 lastMessageTime = now;
             }
 
-            public void waitUntilJobDone() throws Exception {
+            public void waitUntilAggregationDone() throws Exception {
                 if(latch != null){
                     latch.await();
                 }
             }
 
-            public void jobDone() throws Exception{
+            public void aggregationDone() throws Exception{
                 latch.countDown();
             }
 
-            public boolean expiredTimeWindow() {
+            public boolean isTimeWindowExpired() {
                 return expiredTimeWindow;
             }
+
         };
 ----
 
@@ -271,19 +274,19 @@ Upon first event arrival, this method will: +
 
 * Set arrival time
 * Initialise the latch
-* Trigger the `wait-until-done` Camel route. +
+* Trigger the `wait-until-aggregation-done` Camel route. +
 This action maintains an _Exchange_ always alive (in-flight) to prevent the cronjob from terminating _Camel_ too early. 
 --
 
-* A method `waitUntilJobDone` that waits for the latch to be released. +
-This method is invoked from the `wait-until-done` _Camel_ route. +
+* A method `waitUntilAggregationDone` that waits for the latch to be released. +
+This method is invoked from the `wait-until-aggregation-done` _Camel_ route. +
 {empty} +
 
-* A method `jobDone` to announce the run has completed. +
+* A method `aggregationDone` to announce the run has completed. +
 The aggregator logic invokes this method to signal completion. +
 {empty} +
 
-* A method `expiredTimeWindow` to return the status of the variable. +
+* A method `isTimeWindowExpired` to return the status of the variable. +
 The method is invoked from the _Camel_ route to evaluate if an incoming event falls in or outside the time window. +
 {empty} +
 
@@ -332,6 +335,12 @@ Inspect carefully the code below to familiarise yourself with it:
     }
 ----
 
+[NOTE] 
+--
+In your source file you may find the manual Kafka commit commented out to perform local testing without a _Kafka_ instance. +
+When deploying in OpenShift it will be uncommented.
+--
+
 {empty} +
 
 In the code you'll find the following highlights:
@@ -372,8 +381,6 @@ Uploads the daily digest into an S3 bucket.
 ====
 
 {empty} +
-
-Now you can see how the Controller and Aggregation are involved in the process.
 
 NOTE: Do not hesitate to navigate back to previous chapters to have a second look to the detailed sequence diagram describing the interactions.
 
@@ -431,7 +438,7 @@ Replace in your `store.xml` the existing _Camel_ route, by the following one:
         <setBody>
             <simple>{{producer.mock.body}}</simple>
         </setBody>
-        <to uri="{{producer.main}}"/>
+        <to uri="direct:main-processor"/>
     </route>
 ```
 +
@@ -462,7 +469,7 @@ Copy the snippet below and paste it below the previously defined mock route.
 +
 ```xml
     <route id="main-processor">
-        <from uri="{{producer.main}}"/>
+        <from uri="direct:main-processor"/>
 
         <!-- The controller helps keeping the instance alive while the aggregation is undergoing -->
         <bean ref="controller" method="newMessage"/>
@@ -638,7 +645,7 @@ Copy the snippet below and paste it below the other mock producer.
         <setBody>
             <simple>{{producer.mock.body}}</simple>
         </setBody>
-        <to uri="{{producer.main}}"/>
+        <to uri="direct:main-processor"/>
     </route>
 ```
 +
@@ -648,7 +655,6 @@ The route above is equivalent to the first one, except the timer `mock-2` uses t
 --
 +
 {empty} +
-
 
 .. Stop and restart your local instance with _Camel JBang_:
 +
