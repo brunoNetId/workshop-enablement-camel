@@ -442,12 +442,12 @@ spec:
 
 . Push configuration and resources to _OpenShift_
 +
-.. Ensure you select your target _OpenShift_ working project, for example by running:
+.. Be sure your _working_ project in _OpenShift_ is selected by executing the following command:
 +
-```bash
-oc create project demo-camelk
-
-```
+[source,bash,subs="attributes+"]
+----
+oc project {namespace}
+----
 +
 .. Create a _Secret_ containing your configuration. Run the following `oc` command:
 +

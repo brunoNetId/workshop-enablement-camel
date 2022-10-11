@@ -108,11 +108,12 @@ IMPORTANT: You will notice the presence of the property `streamCachingEnabled` t
 
 . Push the configuration to _OpenShift_
 +
-Ensure you select your target _OpenShift_ working project, for example by running:
+Be sure your _working_ project in _OpenShift_ is selected by executing the following command:
 +
-```bash
-oc new-project lab-user1
-```
+[source,bash,subs="attributes+"]
+----
+oc project {namespace}
+----
 +
 {empty} +
 +
@@ -197,7 +198,15 @@ We choose from the Kamelet Catalog the JSLT action to transform the body.
 +
 TIP: JSLT is a very convenient transformer to manipulate JSON payloads. It's inspired in XSLT (XML Transformation) to define stylesheets containing transformation rules for JSON.
 +
-.. Create the JSLT file `g2s.jslt` containing the following definition:
+.. Create the JSLT file `g2s.jslt` using the command:
++
+```bash
+touch g2s.jslt
+```
++
+{empty} +
+
+.. Open it in your editor and paste the following definition:
 +
 ```
 {

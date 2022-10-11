@@ -117,6 +117,7 @@ You can tell from the list above that this second lab suits very well the _Kuber
 .. Using the sources of _Stage1_ as a base, make a copy of your previous exercise, for example:
 +
 ```bash
+cd /projects/MessageHub
 cp -r lab1 lab2
 cd lab2
 : 
@@ -141,7 +142,7 @@ or simply run the commands below in your terminal:
 +
 ```bash
 mv stage1.properties stage2.properties
-sed -i '' 's/stage1/stage2/g' g2s.yaml 
+sed -i 's/stage1/stage2/g' g2s.yaml 
 : 
 ```
 +
@@ -149,7 +150,7 @@ sed -i '' 's/stage1/stage2/g' g2s.yaml
 +
 ```bash
 mv stage1.properties stage2.properties
-sed -i 's/stage1/stage2/g' g2s.yaml 
+sed -i '' 's/stage1/stage2/g' g2s.yaml 
 : 
 ```
 +
@@ -495,7 +496,7 @@ oc create secret generic stage2 --from-file=stage2.properties
 
 oc delete cm stage2-transform
 oc create cm stage2-transform --from-file=g2s.jslt --from-file=s2g.jslt
-
+:
 ```
 {empty} +
 

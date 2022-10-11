@@ -151,6 +151,7 @@ The first step is to create a little prototype that will validate our _Camel_ ro
 .. Create your working folder:
 +
 ```bash
+cd /projects/MessageHub
 mkdir lab5
 cd lab5
 touch HelperStage5.java

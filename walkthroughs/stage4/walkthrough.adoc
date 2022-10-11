@@ -73,7 +73,7 @@ and optionally:
 
 [time=5]
 [id="discord-chat"]
-== Discord\'s platform onboarding
+== Discord platform onboarding
 
 TIP: If you're unfamiliar with _Discord_, it is a well known chat platform, very popular among gamers, but increasingly embraced by enterprises to connect internal teams but also for external interactions with customers as a way to maintain close contact.
 
@@ -375,6 +375,7 @@ The first step is to create a little prototype that will validate our _Camel_ ro
 .. Create your working folder:
 +
 ```bash
+cd /projects/MessageHub
 mkdir lab4-k2d
 cd lab4-k2d
 :
@@ -1034,6 +1035,7 @@ The _Camel_ developer needs to open a websocket connection and ensure the follow
 Execute the following commands to create your working folder and configuration:
 +
 ```bash
+cd /projects/MessageHub
 mkdir lab4-d2k
 cd lab4-d2k
 cp ../lab4-k2d/stage4.properties .
