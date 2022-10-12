@@ -588,23 +588,7 @@ Open the file in your editor.
 
 . Define your Kamelet
 +
-.. define its type as `sink`
-+
-----
-apiVersion: camel.apache.org/v1alpha1
-kind: Kamelet
-metadata:
-  name: discord-sink
-  labels:
-----
-+
-```yaml
-    camel.apache.org/kamelet.type: "sink"
-```
-+
-{empty} +
-+
-.. define metadata and parameters
+.. Define metadata and parameters
 +
 ```yaml
 spec:
@@ -638,7 +622,7 @@ spec:
 +
 {empty} +
 +
-.. include your prototype code
+.. Include your prototype code
 +
 ```yaml
       - remove-headers:
