@@ -182,6 +182,14 @@ message.aggregator.timeout = 10000
 # Attention: cut-off time should be less than aggregator timeout
 messege.controller.cutoff.time = 5000
 
+# AMQ Strams connectivity
+camel.uri.kafka.parameters=\
+brokers=my-cluster-kafka-bootstrap:9092\
+&clientId=lab\
+&groupId=lab\
+&autoCommitEnable=false\
+&allowManualCommit=true
+
 # S3 connectivity
 camel.uri.s3.parameters=\
 accessKey=YOUR_ACCESS_KEY\
@@ -579,7 +587,7 @@ The condition `in-flight = 0` is however still `false` because a new _Exchange_ 
 +
 {empty} +
 +
-Make sure you save all the changes done.
+Make sure you save all the changes done (automatic by default in _OpenShift Dev Spaces_).
 +
 {empty} +
 
@@ -711,6 +719,40 @@ During the prototyping phase we used _Timer_ components to mock _Kafka_ events, 
 
 Let's put in place the real components and deploy in OpenShift.
 
+[NOTE] 
+--
+As _Camel JBang_ is an upstream tool (not Red Hat supported), it runs on a slight upper version of _Camel_.
+
+Now we intend to run the code with _Red Hat Camel K_ which is a version behind. Generally the syntax is the same, but from time to time you might bump into the occasional difference.
+--
+
+{empty} +
+
+. Include explicit Camel K declarations
++
+This release of _Camel K_ is still missing to resolve adequately some dependencies, so we include explicit flags to remediate the problem using what's know as _modeline hooks_.
++
+Open your `store.xml` file and modify (top of file) the _modeline_ configuration as follows:
++
+* from:
++
+----
+<!-- camel-k: language=xml -->
+----
++
+{blank}
++
+* to:
++
+```
+<!-- camel-k: language=xml dependency=camel-kafka dependency=camel-jackson dependency=camel-csv  -->
+```
++
+NOTE: The modeline above resolves dependencies for JSON to CSV data transformation.
++
+{empty} +
+
+
 . Define a _Kafka_ consumer
 +
 Delete the `timer-mock-1` and `timer-mock-2` _Camel_ routes and replace with the one defined below:
@@ -735,17 +777,220 @@ The component is configured to consume _Kafka_ messages from the topic `roomx`.
 --
 The property `camel.uri.kafka.parameters` contains two important settings to configure manual commit:
 
-* Disable automatic commit: `autoCommitEnable = false`
-* Allow manual commit: `allowManualCommit = true`
+* `autoCommitEnable = false`: disables automatic commit.
+* `allowManualCommit = true`: allows manual commit.
 --
 +
 {empty} +
 
-. Define a _Camel_ producer to store the data in an S3 bucket 
+. Update minor _Camel_ syntax keyword
++
+Another minor adjustment is needed because of a syntax difference between _Camel_ versions. +
+Modify the following line in your `store.xml` file:
++
+from:
++
+----
+        <aggregate aggregationStrategy="msgStrategy" completionTimeout="{{message.aggregator.timeout}}">
+----
++
+to:
++
+```
+        <aggregate strategyRef="msgStrategy" completionTimeout="{{message.aggregator.timeout}}">
+
+```
++
+{empty} +
+
+
+. Include code to push the data to an S3 bucket 
 +
 Copy the snippet below, and paste into your `store-data` Camel route:
 +
-```xml
-      <to uri="aws2-s3:chatrooms.bucket?{{camel.uri.s3.parameters}}"/>
+
+[source, xml, subs="verbatim,attributes"]
+----
+      <setHeader name="CamelAwsS3Key">
+        <simple>roomx/${date:now:yyyy-MM-dd_HH-mm-ssZ}.csv</simple>
+      </setHeader>
+
+      <setHeader name="CamelAwsS3ContentType">
+        <simple>text/csv</simple>
+      </setHeader>
+
+      <to uri="aws2-s3:chatrooms-{user-username}.bucket?{{camel.uri.s3.parameters}}"/>
+----
++
+[NOTE] 
+--
+* We define the S3 object name (or key) appending a timestamp.
+* We indicate the payload type `text/csv`.
+* The default pattern used above to name the _S3_ bucket is as follows:
++
+** `chatrooms-{username}.bucket`
++
+{blank}
++
+where `username` is your username in _OpenShift_.
+--
++
+{empty} +
+
+. Uncomment Kafka's manual commit
++
+If you remember, in order to test locally with _Camel JBang_, the code had some pieces commented out to bypass the manual commit to Kafka.
++
+Open your `HelperStage5.java` file and make sure the following lines are uncommented:
++
+----
+import org.apache.camel.component.kafka.KafkaConstants;
+import org.apache.camel.component.kafka.KafkaManualCommit;
+----
++
+{blank}
++
+and
++
+----
+                // Manual Kafka commit
+                // Messages not committed will be retried and subsequent Cron runs
+                newExchange
+                     .getIn()
+                     .getHeader(KafkaConstants.MANUAL_COMMIT, KafkaManualCommit.class)
+                     .commitSync();
+----
++
+{empty} +
+
+
+. Configure the integration
++
+Right at the start we created a properties file with some default values. Let's complete its configuration and fine tune some of the settings.
++
+Open your `stage5.properties` and edit the following settings:
+
+.. Configure longer timeouts
++
+To test out the _Controller's_ time window we initially used low values. In a real environment we would probably want to back up conversations once a day (every 24h). We will however just increase the timeout values a bit to see the cronjob launching and terminating pods at a rate that is comfortable for you to observe.
++
+Use the following settings instead:
++
+```
+# Time the aggregator will wait for messages before the data storage process is triggered
+message.aggregator.timeout = 20000
+
+# Cut-off time the controller uses to allow messages to be aggregated.
+# Messages arriving after cut-off time will be aggregated in the next cron run
+# Attention: cut-off time should be less than aggregator timeout
+messege.controller.cutoff.time = 15000
 ```
 +
+{empty} +
+
+.. Configure your S3 credentials
++
+Ask the workshop's administrator for the following parameters:
++
+--
+* S3's Access Key
+* S3's Secret Key
+--
++
+{blank}
++
+Use the values above to update `accessKey` and `secretKey` from the configuration below:
++
+----
+accessKey=YOUR_ACCESS_KEY\
+&secretKey=RAW(YOUR_SECRET_KEY)\
+----
++
+NOTE: Make sure your secret key is defined inside the `RAW()` statement.
++
+{empty} +
+
+. Run it
++
+Execute the CLI command using the `camelk` client to deploy and run your integration:
++
+```bash
+kamel run --name store \
+store.xml \
+HelperStage5.java \
+--property file:stage5.properties \
+--trait cron.enabled=true \
+--trait cron.schedule="0/1 * * * ?"
+```
++
+NOTE: Be patient, this action will take some time to complete as the operator needs to download all the maven dependencies, build the application and create the image before the integration can be deployed.
++
+NOTE: You will notice the use of the `cron` trait in the command. The trait instructs Camel K to deploy the integration as a _Cronjob_. It's configured to run every minute.
++
+{blank}
++
+Run the following command:
++
+```bash
+oc get cronjob -w
+```
++
+{blank}
++
+You'll see that _Camel K_ has materialized a cron job (it might take one minute to appear.). At first you should see something similar to:
++
+----
+NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+store   0/1 * * * ?   False     0        <none>          3s
+----
++
+And as time passes you'll see new entries (new executions).
++
+When looking at the _Developer Console_ you will see the _Camel K_ instance transitioning through various colors (phases) indicating the state of the _Cronjob_.
++
+image::images/cronjob-colors.png[align="center", width=60%]
++
+After the first run (blue color), it will terminate and wait for the next run (green color). This cycle (start/stop) will continue at schedule intervals as per the cronjob configuration.
++
+{empty} +
+
+. Visualise the uploads in the Console UI
++
+When _Camel_ completes a run you should be able to see in the UI console the S3 object in its bucket.
++
+Open the storage UI from the link below:
++
+--
+* https://noobaa-mgmt-openshift-storage.{openshift-app-host}/fe?skip-oauth
+--
++
+{blank}
++
+Enter the admin credentials (ask for them to your workshop administrator). +
+Click `Login`.
++
+image::images/noobaa-login.png[align="left", width=40%]
++
+{blank}
++
+Then from the left vertical menu, select `Buckets`:
++
+image::images/noobaa-buckets.png[align="left", width=20%]
++
+{blank}
++
+Select your bucket (as defined in your _Camel_ process):
++
+image::images/noobaa-bucket-user.png[align="left", width=90%]
++
+{blank}
++
+From the bucket view, select `Objects`, as per the picture below:
++
+image::images/noobaa-objects.png[align="left", width=90%]
++
+{blank}
++
+You should then see (enclosed in red) the list of objects _Camel_ has uploaded, as many as runs where Kafka events where available.
++
+NOTE: When no new Kafka messages are available, no aggregation occurs and therefore no upload to S3 takes place.
